@@ -294,13 +294,23 @@ def extract_tilesets(rom, symbols, manifest, out_dir, assets_dir):
 
     doors = {}
     address = door_pointers.address
+
     while True:
         tileset_id = rom.byte(door_pointers.bank, address)
         if tileset_id == 0xFF:
             break
+
         pointer = rom.word(door_pointers.bank, address + 1)
+
+        print(
+            f"[DOOR] entry=${address:04X} "
+            f"tileset={tileset_id:02X} "
+            f"pointer=${pointer:04X}"
+        )
+
         doors[tileset_id] = _read_terminated(
             rom, door_pointers.bank, pointer, 0)
+
         address += 3
 
     out = {}
