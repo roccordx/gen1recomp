@@ -33,7 +33,7 @@ def main():
     parser.add_argument(
         "--top",
         type=int,
-        default=1,
+        default=5,
     )
 
     args = parser.parse_args()
