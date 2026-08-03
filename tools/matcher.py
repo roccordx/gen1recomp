@@ -69,6 +69,36 @@ class SymbolMatch:
 
         return self.results[0].score - self.results[1].score
 
+    @property
+    def second(self) -> MatchResult | None:
+        if len(self.results) < 2:
+            return None
+        return self.results[1]
+
+    @property
+    def relocation(self) -> int | None:
+        best = self.best
+        if best is None:
+            return None
+        return best.offset
+
+    @property
+    def matched(self) -> bool:
+        return self.best is not None
+
+    @property
+    def exact(self) -> bool:
+        best = self.best
+        return best is not None and best.score == 1.0
+
+    @property
+    def reliable(self) -> bool:
+        confidence = self.confidence
+
+        if confidence is None:
+            return False
+
+        return confidence >= 0.30
 
 class SymbolMatcher:
 
