@@ -16,7 +16,7 @@ class SymbolInfo:
 class SymbolDatabase:
     def __init__(self, symbols_data: Dict[str, list]):
         self._symbols = symbols_data
-        self._banks = {}
+        self._banks: Dict[int, List[SymbolInfo]] = {}
 
         for name, (bank, address) in symbols_data.items():
             self._banks.setdefault(bank, []).append(
@@ -30,7 +30,19 @@ class SymbolDatabase:
         for symbols in self._banks.values():
             symbols.sort(key=lambda s: s.address)
 
+    # ------------------------------------------------------------
+    # Query
+    # ------------------------------------------------------------
+
+    def bank(self, bank: int) -> List[SymbolInfo]:
+        """
+        Restituisce tutti i simboli appartenenti al bank.
+        """
+
+        return list(self._banks.get(bank, []))
+
     def next(self, symbol: Symbol) -> Optional[SymbolInfo]:
+
         bank_symbols = self._banks.get(symbol.bank)
 
         if bank_symbols is None:
@@ -49,6 +61,7 @@ class SymbolDatabase:
         return None
 
     def length(self, symbol: Symbol) -> Optional[int]:
+
         nxt = self.next(symbol)
 
         if nxt is None:
@@ -60,8 +73,8 @@ class SymbolDatabase:
         """
         Restituisce la lunghezza del simbolo.
 
-        Se il simbolo è l'ultimo del bank oppure la lunghezza
-        non è determinabile, usa il valore di fallback.
+        Se il simbolo è l'ultimo del bank,
+        utilizza il fallback.
         """
 
         length = self.length(symbol)
