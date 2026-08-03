@@ -61,11 +61,13 @@ def main():
     print(
         f"{'Symbol':40}"
         f"{'Found':>10}"
-        f"{'Offset':>10}"
+        f"{'Reloc':>8}"
         f"{'Score':>10}"
+        f"{'Conf':>10}"
+        f"{'OK':>8}"
     )
 
-    print("-" * 72)
+    print("-" * 90)
 
     for info in db.bank(args.bank):
 
@@ -82,11 +84,22 @@ def main():
         if best is None:
             continue
 
+        confidence = result.confidence
+        confidence_text = (
+            f"{confidence * 100:7.2f}%"
+            if confidence is not None
+            else "   N/A"
+        )
+
+        ok = "YES" if result.reliable else "NO"
+
         print(
             f"{info.name:40}"
             f"${best.address:04X}"
-            f"{best.offset:+10d}"
-            f"{best.score*100:9.2f}%"
+            f"{result.relocation:+8d}"
+            f"{best.score * 100:9.2f}%"
+            f"{confidence_text:>10}"
+            f"{ok:>8}"
         )
 
     print()
