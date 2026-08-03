@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from matcher import SymbolMatcher
+from analyzer import RomAnalyzer
 from rom_data import RomImage, SymbolTable
 from symbol_database import SymbolDatabase
 
@@ -48,9 +48,10 @@ def main():
     usa = RomImage(args.source, expected_sha1=None)
     ita = RomImage(args.target, expected_sha1=None)
 
-    matcher = SymbolMatcher(
+    analyzer = RomAnalyzer(
         usa,
         ita,
+        symbols,
         db,
     )
 
@@ -69,35 +70,30 @@ def main():
 
     print("-" * 90)
 
-    for info in db.bank(args.bank):
+    analysis = analyzer.scan_bank(
+    args.bank,
+    matcher_name=args.matcher,
+    top=args.top,
+)
 
-        symbol = symbols[info.name]
+    for symbol in analysis.matches:
 
-        result = matcher.find(
-            symbol,
-            matcher_name=args.matcher,
-            top=args.top,
-        )
-
-        best = result.best
-
-        if best is None:
+        if symbol.best is None:
             continue
 
-        confidence = result.confidence
         confidence_text = (
-            f"{confidence * 100:7.2f}%"
-            if confidence is not None
+            f"{symbol.confidence * 100:7.2f}%"
+            if symbol.confidence is not None
             else "   N/A"
         )
 
-        ok = "YES" if result.reliable else "NO"
+        ok = "YES" if symbol.reliable else "NO"
 
         print(
-            f"{info.name:40}"
-            f"${best.address:04X}"
-            f"{result.relocation:+8d}"
-            f"{best.score * 100:9.2f}%"
+            f"{symbol.name:40}"
+            f"${symbol.address:04X}"
+            f"{symbol.relocation:+8d}"
+            f"{symbol.score * 100:9.2f}%"
             f"{confidence_text:>10}"
             f"{ok:>8}"
         )
