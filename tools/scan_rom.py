@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from matcher import SymbolMatcher
+from analyzer import RomAnalyzer
 from rom_data import RomImage, SymbolTable
 from symbol_database import SymbolDatabase
 
@@ -40,9 +40,10 @@ def main():
     usa = RomImage(args.source, expected_sha1=None)
     ita = RomImage(args.target, expected_sha1=None)
 
-    matcher = SymbolMatcher(
+    analyzer = RomAnalyzer(
         usa,
         ita,
+        symbols,
         db,
     )
 
@@ -50,76 +51,29 @@ def main():
     print("Scanning ROM...")
     print()
 
-    total_symbols = 0
-    reliable_symbols = 0
+    analysis = analyzer.scan_rom(
+        matcher_name=args.matcher,
+        top=args.top,
+    )
 
-    for bank in sorted(db._banks.keys()):
-
-        bank_symbols = db.bank(bank)
-
-        bank_total = 0
-        bank_reliable = 0
-
-        relocation_sum = 0
-        confidence_sum = 0.0
-        confidence_count = 0
-
-        for info in bank_symbols:
-
-            symbol = symbols[info.name]
-
-            result = matcher.find(
-                symbol,
-                matcher_name=args.matcher,
-                top=args.top,
-            )
-
-            bank_total += 1
-            total_symbols += 1
-
-            if result.reliable:
-                bank_reliable += 1
-                reliable_symbols += 1
-
-            if result.relocation is not None:
-                relocation_sum += result.relocation
-
-            if result.confidence is not None:
-                confidence_sum += result.confidence
-                confidence_count += 1
-
-        review = bank_total - bank_reliable
-
-        avg_relocation = (
-            relocation_sum / bank_total
-            if bank_total else 0
-        )
-
-        avg_confidence = (
-            confidence_sum / confidence_count * 100
-            if confidence_count else 0
-        )
+    for bank in analysis.banks:
 
         print(
-            f"Bank {bank:02X} | "
-            f"Symbols {bank_total:4d} | "
-            f"Reliable {bank_reliable:4d} | "
-            f"Review {review:3d} | "
-            f"Avg reloc {avg_relocation:+6.2f} | "
-            f"Avg conf {avg_confidence:6.2f}%"
+            f"Bank {bank.bank:02X} | "
+            f"Symbols {bank.total:4d} | "
+            f"Reliable {bank.reliable:4d} | "
+            f"Review {bank.review:3d} | "
+            f"Avg reloc {bank.average_relocation:+6.2f} | "
+            f"Avg conf {bank.average_confidence * 100:6.2f}%"
         )
 
     print()
     print("-" * 80)
-    print(
-        f"TOTAL SYMBOLS : {total_symbols}"
-    )
-    print(
-        f"RELIABLE     : {reliable_symbols}"
-    )
-    print(
-        f"REVIEW       : {total_symbols - reliable_symbols}"
-    )
+
+    print(f"TOTAL SYMBOLS : {analysis.total_symbols}")
+    print(f"RELIABLE     : {analysis.reliable_symbols}")
+    print(f"REVIEW       : {analysis.review_symbols}")
+
     print()
 
 

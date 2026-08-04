@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 
 from matcher import SymbolMatch
 
+
 @dataclass(frozen=True)
 class SymbolAnalysis:
     name: str
@@ -36,6 +37,7 @@ class SymbolAnalysis:
         best = self.match.best
         return best.address if best is not None else None
 
+
 @dataclass
 class BankAnalysis:
     bank: int
@@ -50,7 +52,24 @@ class BankAnalysis:
     relocations: defaultdict[int, list[str]] = field(
         default_factory=lambda: defaultdict(list)
     )
+
+    @property
+    def average_relocation(self) -> float:
+
+        if not self.relocations:
+            return 0.0
+
+        total = 0
+        count = 0
+
+        for reloc, names in self.relocations.items():
+            total += reloc * len(names)
+            count += len(names)
+
+        return total / count if count else 0.0
+
     matches: list[SymbolAnalysis] = field(default_factory=list)
+
 
 @dataclass
 class RomAnalysis:

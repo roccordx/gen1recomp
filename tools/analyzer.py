@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from collections import Counter
-
 from analysis import (
     BankAnalysis,
+    RomAnalysis,
     SymbolAnalysis,
 )
 from matcher import SymbolMatcher
@@ -53,12 +52,14 @@ class RomAnalyzer:
                 matcher_name=matcher_name,
                 top=top,
             )
+
             analysis.matches.append(
                 SymbolAnalysis(
                     name=info.name,
                     match=result,
                 )
             )
+
             analysis.total += 1
 
             if result.reliable:
@@ -76,7 +77,7 @@ class RomAnalyzer:
                 confidence_sum += result.confidence
                 confidence_count += 1
 
-            if result.reliable is not None:
+            if result.reliable:
                 analysis.relocations[result.relocation].append(info.name)
 
         if score_count:
@@ -87,9 +88,24 @@ class RomAnalyzer:
                 confidence_sum / confidence_count
             )
 
-        if confidence_count:
-            analysis.average_confidence = (
-                confidence_sum / confidence_count
-    )
+        return analysis
+
+    def scan_rom(
+        self,
+        matcher_name: str = "raw",
+        top: int = 5,
+    ) -> RomAnalysis:
+
+        analysis = RomAnalysis()
+
+        for bank in sorted(self.database._banks.keys()):
+
+            analysis.banks.append(
+                self.scan_bank(
+                    bank,
+                    matcher_name=matcher_name,
+                    top=top,
+                )
+            )
 
         return analysis
