@@ -86,3 +86,42 @@ class RomAnalysis:
     @property
     def review_symbols(self) -> int:
         return sum(bank.review for bank in self.banks)
+
+
+from dataclasses import dataclass, field
+@dataclass
+class RelocationAnalysis:
+    bank: int
+
+    dominant_offset: int | None
+
+    confidence: float
+
+    reliable: int
+
+    review: int
+
+    offsets: dict[int, int]
+
+
+@dataclass
+class RomRelocationAnalysis:
+    banks: list[RelocationAnalysis] = field(default_factory=list)
+
+@dataclass
+class BoundarySegment:
+    start: int
+    end: int
+    offset: int
+    symbols: list[str] = field(default_factory=list)
+
+
+@dataclass
+class BankBoundaryAnalysis:
+    bank: int
+    segments: list[BoundarySegment] = field(default_factory=list)
+
+
+@dataclass
+class RomBoundaryAnalysis:
+    banks: list[BankBoundaryAnalysis] = field(default_factory=list)
