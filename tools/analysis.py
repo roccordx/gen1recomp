@@ -125,3 +125,74 @@ class BankBoundaryAnalysis:
 @dataclass
 class RomBoundaryAnalysis:
     banks: list[BankBoundaryAnalysis] = field(default_factory=list)
+
+
+@dataclass
+class NormalizedSegment:
+    start: int
+    end: int
+
+    offset: int
+
+    symbols: list[str] = field(default_factory=list)
+
+    structural: bool = True
+
+    outlier: bool = False
+
+
+@dataclass
+class BankNormalizedAnalysis:
+    bank: int
+    segments: list[NormalizedSegment] = field(default_factory=list)
+
+
+@dataclass
+class RomNormalizedAnalysis:
+    banks: list[BankNormalizedAnalysis] = field(default_factory=list)
+
+
+@dataclass
+class BankQualityAnalysis:
+    bank: int
+
+    total_segments: int
+
+    structural_segments: int
+
+    outlier_segments: int
+
+    total_symbols: int
+
+    structural_symbols: int
+
+    outlier_symbols: int
+
+    quality: float
+
+    ready: bool
+
+
+@dataclass
+class RomQualityAnalysis:
+    banks: list[BankQualityAnalysis] = field(default_factory=list)
+
+    ready_banks: int = 0
+
+
+@dataclass
+class AddressResolution:
+    bank: int
+
+    source_address: int
+
+    target_address: int | None
+
+    resolved: bool
+
+    offset: int | None
+
+
+@dataclass
+class RomAddressResolution:
+    resolutions: list[AddressResolution] = field(default_factory=list)

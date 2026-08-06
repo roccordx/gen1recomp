@@ -1,0 +1,5 @@
+Bank 06  $4000 -> $4000 (offset +0)
+Bank 06  $42A1 -> $42A1 (offset +0)
+Bank 06  $5B2F -> $5B34 (offset +5)
+Bank 06  $5C06 -> $5C0B (offset +5)
+Bank 06  $6708 -> $670D (offset +5)
