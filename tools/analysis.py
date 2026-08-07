@@ -196,3 +196,45 @@ class AddressResolution:
 @dataclass
 class RomAddressResolution:
     resolutions: list[AddressResolution] = field(default_factory=list)
+
+
+@dataclass
+class GeneratedSymbol:
+    bank: int
+
+    source_address: int
+
+    target_address: int
+
+    name: str
+
+
+@dataclass
+class SymbolMap:
+    symbols: list[GeneratedSymbol] = field(default_factory=list)
+
+
+@dataclass
+class QualityExplanation:
+
+    bank: int
+
+    ready: bool
+
+    quality: float
+
+    total_segments: int
+
+    structural_segments: int
+
+    total_symbols: int
+
+    structural_symbols: int
+
+    reasons: list[str] = field(default_factory=list)
+
+
+@dataclass
+class RomQualityExplanation:
+
+    banks: list[QualityExplanation] = field(default_factory=list)

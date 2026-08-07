@@ -70,6 +70,11 @@ class SymbolTable:
             key=lambda s: (s.bank, s.address, s.name),
         )
 
+    def all_symbols(self):
+        return sorted(
+            self.by_name.values(),
+            key=lambda s: (s.bank, s.address, s.name),
+        )
 
 class RomImage:
     def __init__(self, path, expected_sha1=CANONICAL_RED_SHA1):
