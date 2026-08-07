@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from heapq import nsmallest
+from operator import eq
+import time
 
 from rom_data import RomImage, Symbol
 from symbol_database import SymbolDatabase
@@ -14,11 +17,26 @@ def raw_similarity(source: bytes, candidate: bytes) -> float:
     if not source:
         return 1.0
 
-    return sum(a == b for a, b in zip(source, candidate)) / len(source)
+    return sum(map(eq, source, candidate)) / len(source)
 
 
 MATCHERS = {"raw": raw_similarity}
 
+
+_profiler = None
+
+
+def _candidate_slice(target: bytes, offset: int, window: int) -> bytes:
+
+    profiler = _profiler
+
+    if profiler is None:
+        return target[offset:offset + window]
+
+    start = time.perf_counter()
+    candidate = target[offset:offset + window]
+    profiler.record_slice_creation(time.perf_counter() - start)
+    return candidate
 
 def find_best_matches(source: bytes, target: bytes, matcher, limit: int = 10):
     """Score every target window and return the best ``(score, offset)`` pairs."""
@@ -28,11 +46,40 @@ def find_best_matches(source: bytes, target: bytes, matcher, limit: int = 10):
     if not source or len(source) > len(target):
         return []
 
+    profiler = _profiler
+    window = len(source)
+    candidate_count = len(target) - window + 1
+
+    if profiler is None and matcher is raw_similarity:
+        return nsmallest(
+            limit,
+            (
+                (matcher(source, target[offset:offset + window]), offset)
+                for offset in range(candidate_count)
+            ),
+            key=lambda match: (-match[0], match[1]),
+        )
+
+    if profiler is None:
+        matches = [
+            (matcher(source, target[offset:offset + window]), offset)
+            for offset in range(candidate_count)
+        ]
+        return sorted(matches, key=lambda match: (-match[0], match[1]))[:limit]
+
+    profiler.record_candidate_windows(candidate_count)
+    candidate_start = time.perf_counter()
+
     matches = [
-        (matcher(source, target[offset:offset + len(source)]), offset)
-        for offset in range(len(target) - len(source) + 1)
+        (matcher(source, _candidate_slice(target, offset, window)), offset)
+        for offset in range(candidate_count)
     ]
-    return sorted(matches, key=lambda match: (-match[0], match[1]))[:limit]
+
+    profiler.record_candidate_list(time.perf_counter() - candidate_start)
+    sort_start = time.perf_counter()
+    results = sorted(matches, key=lambda match: (-match[0], match[1]))[:limit]
+    profiler.record_sorting(time.perf_counter() - sort_start)
+    return results
 
 
 @dataclass(frozen=True)
