@@ -111,8 +111,27 @@ class RomImage:
         return self.data[pos] | (self.data[pos + 1] << 8)
 
     def bytes(self, bank, address, length):
+        """Return bytes without crossing the selected ROM bank boundary.
+
+        Matching windows near the end of a bank are clamped to the bytes
+        available in that bank.  This keeps diagnostics and matchers from
+        implicitly wrapping into the next bank while preserving the existing
+        slice-style API for callers.
+        """
+
+        if length < 0:
+            raise ValueError("length must be non-negative")
+
         pos = self.offset(bank, address)
-        return self.data[pos:pos + length]
+        bank_pos = bank * ROM_BANK_SIZE
+        bank_end = min(bank_pos + ROM_BANK_SIZE, len(self.data))
+        return self.data[pos:min(pos + length, bank_end)]
+
+    @property
+    def bank_count(self):
+        if not self.data:
+            return 0
+        return (len(self.data) + ROM_BANK_SIZE - 1) // ROM_BANK_SIZE
 
     def at(self, symbol):
         return self.offset(symbol.bank, symbol.address)

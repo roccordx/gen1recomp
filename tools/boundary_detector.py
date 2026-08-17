@@ -38,7 +38,11 @@ class BoundaryDetector:
 
             best = symbol.match.best
 
-            if best is None:
+            # Only reliable matches may contribute structural evidence.
+            # Non-reliable best candidates remain available on SymbolAnalysis
+            # for diagnostics, but are intentionally excluded here to prevent
+            # false positives from becoming structural segments.
+            if best is None or not symbol.match.reliable:
                 continue
 
             address = symbol.match.symbol.address
@@ -66,14 +70,15 @@ class BoundaryDetector:
             current_symbols.append(symbol.name)
             previous_address = address
 
-        result.segments.append(
-            BoundarySegment(
-                start=current_start,
-                end=previous_address,
-                offset=current_offset,
-                symbols=current_symbols,
+        if current_symbols:
+            result.segments.append(
+                BoundarySegment(
+                    start=current_start,
+                    end=previous_address,
+                    offset=current_offset,
+                    symbols=current_symbols,
+                )
             )
-        )
 
         return result
 

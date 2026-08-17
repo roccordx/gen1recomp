@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from heapq import nsmallest
 from operator import eq
 import time
+from typing import ClassVar
 
 from rom_data import RomImage, Symbol
 from symbol_database import SymbolDatabase
@@ -90,6 +91,20 @@ class MatchResult:
 
 
 @dataclass(frozen=True)
+class MatchValidation:
+    """Centralized thresholds for accepting an automatic symbol match.
+
+    A match is reliable only when it has both a strong absolute score and
+    enough separation from the second-best candidate.  A single candidate is
+    kept for diagnostics but is not reliable because ambiguity cannot be
+    measured.
+    """
+
+    MIN_BEST_SCORE: ClassVar[float] = 0.70
+    MIN_CONFIDENCE: ClassVar[float] = 0.30
+
+
+@dataclass(frozen=True)
 class SymbolMatch:
     symbol: Symbol
     window: int
@@ -145,9 +160,20 @@ class SymbolMatch:
         if confidence is None:
             return False
 
-        return confidence >= 0.30
+        best = self.best
+
+        if best is None:
+            return False
+
+        return (
+            best.score >= MatchValidation.MIN_BEST_SCORE
+            and confidence >= MatchValidation.MIN_CONFIDENCE
+        )
 
 class SymbolMatcher:
+
+    CONTEXT_WINDOWS = (32, 64, 128)
+    GROUP_RADIUS = 2
 
     def __init__(
         self,
@@ -167,10 +193,39 @@ class SymbolMatcher:
         fallback_window: int = 128,
     ) -> SymbolMatch:
 
-        window = self.database.window(
+        natural_window = self.database.window(
             symbol,
             fallback=fallback_window,
         )
+
+        primary = self._find(symbol, natural_window, matcher_name, top)
+
+        if primary.reliable or primary.exact:
+            return primary
+
+        for window in self.CONTEXT_WINDOWS:
+            if window <= natural_window:
+                continue
+
+            group = self._local_group(symbol, self.GROUP_RADIUS)
+            group_matches = {
+                member: self._find(member, window, matcher_name, top)
+                for member in group
+            }
+
+            consensus_match = group_matches[symbol]
+            if self._has_local_consensus(symbol, group_matches):
+                return consensus_match
+
+        return primary
+
+    def _find(
+        self,
+        symbol: Symbol,
+        window: int,
+        matcher_name: str,
+        top: int,
+    ) -> SymbolMatch:
 
         source_data = self.source.bytes(
             symbol.bank,
@@ -214,3 +269,73 @@ class SymbolMatcher:
             window=window,
             results=results,
         )
+
+    def _local_group(self, symbol: Symbol, radius: int) -> list[Symbol]:
+        bank_symbols = self.database.bank(symbol.bank)
+        index = None
+
+        for idx, info in enumerate(bank_symbols):
+            if info.address == symbol.address and info.name == symbol.name:
+                index = idx
+                break
+
+        if index is None:
+            return [symbol]
+
+        start = max(0, index - radius)
+        end = min(len(bank_symbols), index + radius + 1)
+
+        return [
+            Symbol(member.bank, member.address, member.name)
+            for member in bank_symbols[start:end]
+        ]
+
+    def _has_local_consensus(
+        self,
+        focal: Symbol,
+        group_matches: dict[Symbol, SymbolMatch],
+    ) -> bool:
+        focal_match = group_matches.get(focal)
+        if focal_match is None or focal_match.best is None or not focal_match.reliable:
+            return False
+
+        focal_offset = focal_match.best.offset
+        support = sum(
+            1
+            for member, match in group_matches.items()
+            if (
+                member != focal
+                and match.best is not None
+                and match.reliable
+                and match.best.offset == focal_offset
+            )
+        )
+
+        if support < 2:
+            return False
+
+        counts: dict[int, int] = {}
+        for member, match in group_matches.items():
+            if member == focal or match.best is None or not match.reliable:
+                continue
+            offset = match.best.offset
+            counts[offset] = counts.get(offset, 0) + 1
+
+        max_other = max(
+            (count for offset, count in counts.items() if offset != focal_offset),
+            default=0,
+        )
+
+        if support <= max_other:
+            return False
+
+        neighbor_count = sum(
+            1
+            for member, match in group_matches.items()
+            if member != focal and match.best is not None and match.reliable
+        )
+
+        if support <= neighbor_count / 2:
+            return False
+
+        return True

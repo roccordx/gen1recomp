@@ -64,8 +64,13 @@ class AddressResolver:
                 offset=None,
             )
 
-        # cerca il segmento che contiene l'indirizzo
+        # cerca un segmento strutturale che contiene l'indirizzo.
+        # Outlier e segmenti non strutturali non sono evidenza sufficiente
+        # per risolvere automaticamente un simbolo.
         for segment in normalized.segments:
+
+            if not segment.structural or segment.outlier:
+                continue
 
             if segment.start <= address <= segment.end:
 

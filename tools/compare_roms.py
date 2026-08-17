@@ -82,7 +82,16 @@ def main():
     print("Bank | Equal | Total | Match")
     print("-------------------------------------------")
 
-    for bank in range(0x20):
+    bank_count = min(usa.bank_count, ita.bank_count)
+    if usa.bank_count != ita.bank_count:
+        print(
+            "[WARN] ROM bank count differs: "
+            f"source={usa.bank_count} target={ita.bank_count}; "
+            f"comparing shared first {bank_count} bank(s)."
+        )
+        print()
+
+    for bank in range(bank_count):
 
         (
             equal,
