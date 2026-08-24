@@ -21,6 +21,82 @@ def raw_similarity(source: bytes, candidate: bytes) -> float:
     return sum(map(eq, source, candidate)) / len(source)
 
 
+def _find_best_raw_matches_reference(
+    source: bytes,
+    target: bytes,
+    limit: int,
+):
+    """Reference implementation of the original RAW window scan."""
+
+    window = len(source)
+    candidate_count = len(target) - window + 1
+    return nsmallest(
+        limit,
+        (
+            (raw_similarity(source, target[offset:offset + window]), offset)
+            for offset in range(candidate_count)
+        ),
+        key=lambda match: (-match[0], match[1]),
+    )
+
+
+def _raw_match_occurrences_are_sparse(
+    source: bytes | bytearray,
+    target: bytes | bytearray,
+    candidate_count: int,
+) -> bool:
+    """Return whether occurrence accumulation is cheaper than byte-wise scan.
+
+    The optimized algorithm performs one Python-level increment per matching
+    byte occurrence. A repeated-byte input can therefore be slower than the
+    reference scan; in that case keep using the original implementation.
+    """
+
+    comparisons = len(source) * candidate_count
+    occurrences = sum(
+        source.count(bytes((value,))) * target.count(bytes((value,)))
+        for value in set(source)
+    )
+    return occurrences * 10 <= comparisons
+
+
+def _find_best_raw_matches_optimized(
+    source: bytes | bytearray,
+    target: bytes | bytearray,
+    limit: int,
+):
+    """Find RAW matches by accumulating only equal-byte occurrences."""
+
+    window = len(source)
+    candidate_count = len(target) - window + 1
+    matches = [0] * candidate_count
+
+    for source_offset, value in enumerate(source):
+        needle = bytes((value,))
+        end = source_offset + candidate_count
+        target_offset = target.find(needle, source_offset, end)
+        while target_offset >= 0:
+            matches[target_offset - source_offset] += 1
+            target_offset = target.find(needle, target_offset + 1, end)
+
+    return nsmallest(
+        limit,
+        ((equal_bytes / window, offset) for offset, equal_bytes in enumerate(matches)),
+        key=lambda match: (-match[0], match[1]),
+    )
+
+
+def _find_best_raw_matches(source: bytes, target: bytes, limit: int):
+    """Choose an equivalent RAW implementation appropriate to the input."""
+
+    candidate_count = len(target) - len(source) + 1
+    if not isinstance(source, (bytes, bytearray)) or not isinstance(target, (bytes, bytearray)):
+        return _find_best_raw_matches_reference(source, target, limit)
+    if not _raw_match_occurrences_are_sparse(source, target, candidate_count):
+        return _find_best_raw_matches_reference(source, target, limit)
+    return _find_best_raw_matches_optimized(source, target, limit)
+
+
 MATCHERS = {"raw": raw_similarity}
 
 
@@ -52,14 +128,7 @@ def find_best_matches(source: bytes, target: bytes, matcher, limit: int = 10):
     candidate_count = len(target) - window + 1
 
     if profiler is None and matcher is raw_similarity:
-        return nsmallest(
-            limit,
-            (
-                (matcher(source, target[offset:offset + window]), offset)
-                for offset in range(candidate_count)
-            ),
-            key=lambda match: (-match[0], match[1]),
-        )
+        return _find_best_raw_matches(source, target, limit)
 
     if profiler is None:
         matches = [
