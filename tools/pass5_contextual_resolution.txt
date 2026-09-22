@@ -1,0 +1,110 @@
+PASS 5 - CONTEXTUAL RESOLUTION
+====================================================================================================
+
+Candidate analizzati : 161
+Simboli analizzati   : 121
+
+CONFIRMED           : 9
+PLAUSIBLE           : 0
+STILL_AMBIGUOUS     : 80
+
+
+CONFIRMED
+----------------------------------------------------------------------------------------------------
+_ExclamationText	USA=20:4093	ITA=20:40A4	score=120	pass3=HIGH_CONFIDENCE	reasons=after-prev;before-next;same-neighbour-bank;reasonable-prev-ratio;reasonable-next-ratio;inside-resolved-interval
+_MtMoon1FCooltrainerF1EndBattleText	USA=20:4778	ITA=20:4835	score=120	pass3=HIGH_CONFIDENCE	reasons=after-prev;before-next;same-neighbour-bank;reasonable-prev-ratio;reasonable-next-ratio;inside-resolved-interval
+_MtMoonB1FUnusedText	USA=20:495C	ITA=20:4A2F	score=120	pass3=HIGH_CONFIDENCE	reasons=after-prev;before-next;same-neighbour-bank;reasonable-prev-ratio;reasonable-next-ratio;inside-resolved-interval
+_SSAnneB1FRoomsSailor4EndBattleText	USA=20:5C12	ITA=20:5E05	score=120	pass3=HIGH_CONFIDENCE	reasons=after-prev;before-next;same-neighbour-bank;reasonable-prev-ratio;reasonable-next-ratio;inside-resolved-interval
+_SSAnneBowSailor3EndBattleText	USA=20:508E	ITA=20:51DC	score=120	pass3=HIGH_CONFIDENCE	reasons=after-prev;before-next;same-neighbour-bank;reasonable-prev-ratio;reasonable-next-ratio;inside-resolved-interval
+_SSAnneCaptainsRoomCaptainHM01NoRoomText	USA=20:545D	ITA=20:5606	score=120	pass3=HIGH_CONFIDENCE	reasons=after-prev;before-next;same-neighbour-bank;reasonable-prev-ratio;reasonable-next-ratio;inside-resolved-interval
+_SilphCo3FRocketEndBattleText	USA=20:671A	ITA=20:6A4B	score=120	pass3=HIGH_CONFIDENCE	reasons=after-prev;before-next;same-neighbour-bank;reasonable-prev-ratio;reasonable-next-ratio;inside-resolved-interval
+_SilphCo3FScientistEndBattleText	USA=20:6785	ITA=20:6AD4	score=120	pass3=HIGH_CONFIDENCE	reasons=after-prev;before-next;same-neighbour-bank;reasonable-prev-ratio;reasonable-next-ratio;inside-resolved-interval
+_SilphCo4FRocket1EndBattleText	USA=20:684B	ITA=20:6BBC	score=120	pass3=HIGH_CONFIDENCE	reasons=after-prev;before-next;same-neighbour-bank;reasonable-prev-ratio;reasonable-next-ratio;inside-resolved-interval
+
+
+PLAUSIBLE
+----------------------------------------------------------------------------------------------------
+
+
+STILL_AMBIGUOUS
+----------------------------------------------------------------------------------------------------
+_BecameConfusedText	USA=25:4878	ITA=25:493C	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_BikeShopBagFullText	USA=26:4F4D	ITA=26:4FDD	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_BookcaseText	USA=22:46C9	ITA=22:4762	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_CantCarryMoreText	USA=22:60A9	ITA=22:62B1	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_CeladonCityGramps3TM41NoRoomText	USA=29:5BB8	ITA=29:5D24	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_CeladonDinerGymGuideCoinCaseNoRoomText	USA=27:6090	ITA=27:6213	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_CeladonMart3FClerkTM18NoRoomText	USA=27:48AA	ITA=27:491F	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_CeruleanGymMistyTM11NoRoomText	USA=26:4B90	ITA=26:4C36	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_CinnabarGymSuperNerd2EndBattleText	USA=28:4AF4	ITA=28:4B2E	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_DepositHowManyText	USA=22:5FF5	ITA=22:61FE	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_DidntAffectText	USA=25:48E7	ITA=25:49AE	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_DoesntAffectMonText	USA=22:5AB4	ITA=22:5C79	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_FightingDojoBlackbelt1EndBattleText	USA=28:59B7	ITA=28:5A4E	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_FightingDojoText	USA=22:4EF9	ITA=22:5018	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_FrozenText	USA=25:476D	ITA=25:4834	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_FuchsiaCityPokemonText	USA=29:5F96	ITA=29:6142	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_FuchsiaGoodRodHouseFishingGuruNoRoomText	USA=28:4782	ITA=28:47AD	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_FuchsiaGymKogaTM06NoRoomText	USA=28:4143	ITA=28:4160	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_IsConfusedText	USA=22:597E	ITA=22:5B4E	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_IsFrozenText	USA=22:5920	ITA=22:5AF7	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_IsUnaffectedText	USA=25:48FB	ITA=25:49C3	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_ItemUseNoEffectText	USA=29:6AE9	ITA=29:6D14	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_LinkCableHelpText2	USA=22:5027	ITA=22:5146	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_MtMoonPokecenterClipboardText	USA=22:6A5A	ITA=22:6CCF	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Museum1FScientist2YouDontHaveSpaceText	USA=25:67C9	ITA=25:6AF5	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_OaksLabOak2Text	USA=25:5268	ITA=25:53A2	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PewterGymTM34NoRoomText	USA=26:41AB	ITA=26:41C9	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemartItemBagFullText	USA=28:6670	ITA=28:673F	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemartThankYouText	USA=28:670D	ITA=28:67CC	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonBooksText	USA=22:55C1	ITA=22:5750	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonCenterFarewellText	USA=28:6910	ITA=28:69C0	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonFanClubBagFullText	USA=26:6933	ITA=26:6963	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonMansion1FScientistEndBattleText	USA=28:47D5	ITA=28:47F8	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonMansion1FSwitchNotPressedText	USA=28:4834	ITA=28:4863	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonMansion1FSwitchText	USA=28:480A	ITA=28:4829	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonMansion2FSwitchNotPressedText	USA=21:53F1	ITA=21:5509	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonMansion2FSwitchText	USA=21:53C7	ITA=21:54CF	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_PokemonMansion3FSuperNerdEndBattleText	USA=21:541C	ITA=21:5532	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonMansionB1FBurglarEndBattleText	USA=21:54F7	ITA=21:5612	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_PokemonTower7FRocket1EndBattleText	USA=26:5D56	ITA=26:5DF2	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_RockTunnel1FHiker3EndBattleText	USA=23:4459	ITA=23:4474	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_RockTunnelB1FCooltrainerF2EndBattleText	USA=21:6C3F	ITA=21:6E1D	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route11DiglettsCaveSignText	USA=24:408F	ITA=24:4098	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route12Gate2FBrunetteGirlTM39NoRoomText	USA=23:493C	ITA=23:4953	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route12SnorlaxText	USA=24:409E	ITA=24:40A8	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route12SnorlaxWokeUpText	USA=24:40BF	ITA=24:40D0	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_Route13CooltrainerF1EndBattleText	USA=24:4466	ITA=24:44D7	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route14CooltrainerM1EndBattleText	USA=24:483F	ITA=24:48CE	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route14CooltrainerM6EndBattleText	USA=24:4A59	ITA=24:4AF2	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route15CooltrainerF1EndBattleText	USA=24:4C6E	ITA=24:4D02	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route16FlyHouseBrunetteGirlHM02NoRoomText	USA=23:4EBE	ITA=23:4EDD	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route16SnorlaxWokeUpText	USA=24:52A8	ITA=24:5364	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route16Text7	USA=24:5287	ITA=24:533C	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_Route17Biker1EndBattleText	USA=24:5375	ITA=24:5436	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route2DiglettsCaveSignText	USA=23:576A	ITA=23:5787	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Route5UndergroundPathSignText	USA=23:5C07	ITA=23:5C67	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_Route6UndergroundPathSignText	USA=23:5E49	ITA=23:5EBB	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_Route7UndergroundPathSignText	USA=23:5E7A	ITA=23:5EE6	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_Route8UndergroundSignText	USA=23:6262	ITA=23:62E8	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_SaffronCityFightingDojoSignText	USA=29:65A6	ITA=29:678F	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_SaffronGymChanneler2EndBattleText	USA=28:6091	ITA=28:613E	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_SaffronGymYoungster3EndBattleText	USA=28:61E4	ITA=28:6293	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_SaffronGymYoungster4EndBattleText	USA=28:62CA	ITA=28:6385	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_SilphCo11FSilphPresidentNoRoomText	USA=21:5013	ITA=21:50F1	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_SilphCo6FRocket1BattleText	USA=21:4306	ITA=21:436D	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_SilphCo7FRocket2BattleText	USA=21:47BE	ITA=21:4876	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_SilphCo8FRocket2BattleText	USA=21:4BB1	ITA=21:4C74	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_SilphCo9FRocket2BattleText	USA=21:4D33	ITA=21:4DF7	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_Thanks1Text	USA=2A:4155	ITA=2A:413B	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Thanks2Text	USA=2A:4209	ITA=2A:41E6	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_Thanks3Text	USA=2A:42BC	ITA=2A:428B	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_UnaffectedText	USA=22:5AA4	ITA=22:5C6A	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_VermilionDockUnusedText	USA=27:450E	ITA=27:4561	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_VermilionGymLTSurgeTM24NoRoomText	USA=27:4130	ITA=27:4136	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_VermilionGymSuperNerdEndBattleText	USA=27:4244	ITA=27:4253	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_VermilionOldRodHouseFishingGuruNoRoomText	USA=27:464C	ITA=27:469E	score=45	pass3=PLAUSIBLE	reasons=after-prev;reasonable-prev-ratio
+_VictoryRoad2FSuperNerd1EndBattleText	USA=23:510F	ITA=23:512A	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_ViridianGymGiovanniTM27NoRoomText	USA=25:6104	ITA=25:6394	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_ViridianGymHiker2EndBattleText	USA=25:6285	ITA=25:6533	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
+_VitaminNoEffectText	USA=29:689E	ITA=29:6AA3	score=45	pass3=HIGH_CONFIDENCE	reasons=after-prev;reasonable-prev-ratio
