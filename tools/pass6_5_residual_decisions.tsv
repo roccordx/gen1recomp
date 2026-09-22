@@ -1,0 +1,56 @@
+symbol	manifest_address	source_status	rom_structure	corpus_status	decision	confidence	reason
+_AIBattleWithdrawText	22:40BE	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_BillsHouseInitiatedText	22:49FB	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_BoostedText	22:5BE1	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_BoxFullText	22:6198	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_CanMoveBouldersText	29:4051	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_CardKeySuccessText1	20:4000	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_CeruleanBadgeHouseMiddleAgedManWhichBadgeText	26:513A	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_CeruleanCityRocketIBetterGetMovingText	29:4F96	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_DexRatingText	22:4267	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_EnemyMonFaintedText	22:56C7	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_ExpPointsText	22:5BEE	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_FightingDojoKarateMasterStayAndTrainWithUsText	28:5972	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_GainedText	22:5BC2	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_GotMapText	25:4C9C	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_GotMonText	29:4180	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_HookedMonAttackedText	22:5C33	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_ItemUseBallText05	29:67CF	COMPOSITE		NOT_IN_GENERATOR_REPORT	COMPOSITE	MEDIUM	Famiglia di testi gestita come struttura/comportamento composito nel runtime moderno.
+_ItemUseBallText06	29:6835	COMPOSITE		NOT_IN_GENERATOR_REPORT	COMPOSITE	MEDIUM	Famiglia di testi gestita come struttura/comportamento composito nel runtime moderno.
+_ItemUseBallText07	29:67EE	COMPOSITE		NOT_IN_GENERATOR_REPORT	COMPOSITE	MEDIUM	Famiglia di testi gestita come struttura/comportamento composito nel runtime moderno.
+_ItemUseBallText08	29:6810	COMPOSITE		NOT_IN_GENERATOR_REPORT	COMPOSITE	MEDIUM	Famiglia di testi gestita come struttura/comportamento composito nel runtime moderno.
+_LancesRoomLanceAfterBattleText	21:5E9E	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_LinkCableHelpText1	22:5001	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_MewtwoBattleText	21:5C72	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_MonWasStoredText	22:6159	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_MonsStatsFellText	25:47B3	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_MonsStatsRoseText	25:4795	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_MoveWasDisabledText	25:489E	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_NoMovesLeftText	22:5892	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_OakSpeechText2A	22:647F	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_PewterGymGuideBeginAdviceText	26:43DC	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_PlayedFluteHadEffectText	29:6928	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_PlayerMonFaintedText	22:570C	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_PokemartItemBagFullText	28:6670	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_PokemartTellBuyPriceText	28:6619	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_PokemartTellSellPriceText	28:66AE	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_PokemartThankYouText	28:670D	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_PowerPlantZapdosBattleText	23:45EA	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_SaffronGateGuardImParchedText	22:6AA9	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_SilphCo11FSilphPresidentReceivedMasterBallText	21:4F63	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_TradeSendsText	22:4112	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_TradeTransferredText	22:413B	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_TradeWavesFarewellText	22:4124	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_TradeWentToText	22:40EF	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_TradedForText	2A:40BC	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_TrainerAboutToUseText	22:5784	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
+_UsedCutText	2A:4315	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_UsedStrengthText	29:403C	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_VermilionCitySailor1DoYouHaveATicketText	29:5734	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_VermilionGymTrashFailText	22:548C	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_VermilionGymTrashSuccessText1	22:53C6	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_VermilionGymTrashSuccessText3	22:5451	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_ViridianCityYoungster2YouWantToKnowAboutText	29:4494	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_ViridianGymGiovanniPostBattleAdviceText	25:5F2B	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_ViridianMartClerkParcelQuestText	25:5C79	RUNTIME_CANDIDATE		NOT_IN_GENERATOR_REPORT	UNRESOLVED	PENDING	Simbolo runtime candidato; richiede verifica finale di indirizzo e struttura ROM.
+_WithExpAllText	22:5BD0	HISTORICAL_ONLY		NOT_IN_GENERATOR_REPORT	HISTORICAL_ONLY	HIGH	Runtime moderno ricostruisce il testo direttamente con Strings(); simbolo presente come riferimento storico/commento.
