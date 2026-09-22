@@ -1,5 +1,4 @@
 {
-  "dexEntryFormat": "metric",
   "audio": {
     "battle": {
       "final": "Music_FinalBattle",
@@ -1630,7 +1629,7 @@
   },
   "charmap": {
     "0": "<TEXT>",
-    "10": "ÒéÂ",
+    "10": "ザ",
     "100": "<BOLD_E>",
     "101": "<BOLD_F>",
     "102": "<BOLD_G>",
@@ -1641,29 +1640,29 @@
     "107": "<BOLD_L>",
     "108": "<BOLD_M>",
     "109": "<COLON>",
-    "11": "Òé©",
-    "110": "Òüâ",
-    "111": "Òüà",
-    "112": "ÔÇÿ",
-    "113": "ÔÇÖ",
-    "114": "ÔÇ£",
-    "115": "ÔÇØ",
-    "116": "┬À",
-    "117": "ÔÇª",
-    "118": "Òüü",
-    "119": "Òüç",
-    "12": "Òé║",
-    "120": "Òüë",
-    "121": "Ôöî",
-    "122": "ÔöÇ",
-    "123": "ÔöÉ",
-    "124": "Ôöé",
-    "125": "Ôöö",
-    "126": "Ôöÿ",
+    "11": "ジ",
+    "110": "ぃ",
+    "111": "ぅ",
+    "112": "‘",
+    "113": "’",
+    "114": "“",
+    "115": "”",
+    "116": "·",
+    "117": "…",
+    "118": "ぁ",
+    "119": "ぇ",
+    "12": "ズ",
+    "120": "ぉ",
+    "121": "┌",
+    "122": "─",
+    "123": "┐",
+    "124": "│",
+    "125": "└",
+    "126": "┘",
     "127": " ",
     "128": "A",
     "129": "B",
-    "13": "Òé╝",
+    "13": "ゼ",
     "130": "C",
     "131": "D",
     "132": "E",
@@ -1674,7 +1673,7 @@
     "137": "J",
     "138": "K",
     "139": "L",
-    "14": "Òé¥",
+    "14": "ゾ",
     "140": "M",
     "141": "N",
     "142": "O",
@@ -1685,7 +1684,7 @@
     "147": "T",
     "148": "U",
     "149": "V",
-    "15": "ÒâÇ",
+    "15": "ダ",
     "150": "W",
     "151": "X",
     "152": "Y",
@@ -1696,7 +1695,7 @@
     "157": ";",
     "158": "[",
     "159": "]",
-    "16": "Òâé",
+    "16": "ヂ",
     "160": "a",
     "161": "b",
     "162": "c",
@@ -1707,7 +1706,7 @@
     "167": "h",
     "168": "i",
     "169": "j",
-    "17": "Òâà",
+    "17": "ヅ",
     "170": "k",
     "171": "l",
     "172": "m",
@@ -1718,52 +1717,52 @@
     "177": "r",
     "178": "s",
     "179": "t",
-    "18": "Òâç",
+    "18": "デ",
     "180": "u",
     "181": "v",
     "182": "w",
     "183": "x",
     "184": "y",
     "185": "z",
-    "186": "├á",
-    "187": "├¿",
-    "188": "├®",
-    "189": "├╣",
-    "19": "Òâë",
-    "190": "├Ç",
+    "186": "à",
+    "187": "è",
+    "188": "é",
+    "189": "ù",
+    "19": "ド",
+    "190": "À",
     "191": "'v",
-    "192": "Òüƒ",
-    "193": "Òüí",
-    "194": "Òüñ",
-    "195": "Òüª",
-    "196": "Òü¿",
-    "197": "Òü¬",
-    "198": "├ê",
-    "199": "Òü¼",
-    "200": "Òü¡",
-    "201": "Òü«",
-    "202": "Òü»",
-    "203": "Òü▓",
-    "204": "ÒüÁ",
-    "205": "Òü©",
-    "206": "Òü╗",
-    "207": "Òü¥",
-    "208": "├¼",
-    "209": "ÒéÇ",
-    "210": "Òéü",
-    "211": "├▓",
-    "212": "Òéä",
-    "213": "Òéå",
-    "214": "┬║",
-    "215": "Òéë",
-    "216": "Òéè",
-    "217": "Òéï",
-    "218": "Òéî",
-    "219": "Òéì",
-    "220": "ÒéÅ",
-    "221": "ÒéÆ",
-    "222": "Òéô",
-    "223": "Òüú",
+    "192": "た",
+    "193": "ち",
+    "194": "つ",
+    "195": "て",
+    "196": "と",
+    "197": "な",
+    "198": "È",
+    "199": "ぬ",
+    "200": "ね",
+    "201": "の",
+    "202": "は",
+    "203": "ひ",
+    "204": "ふ",
+    "205": "へ",
+    "206": "ほ",
+    "207": "ま",
+    "208": "ì",
+    "209": "む",
+    "210": "め",
+    "211": "ò",
+    "212": "や",
+    "213": "ゆ",
+    "214": "º",
+    "215": "ら",
+    "216": "り",
+    "217": "る",
+    "218": "れ",
+    "219": "ろ",
+    "220": "わ",
+    "221": "を",
+    "222": "ん",
+    "223": "っ",
     "224": "'",
     "225": "<PK>",
     "226": "<MN>",
@@ -1773,83 +1772,83 @@
     "230": "?",
     "231": "!",
     "232": ".",
-    "233": "Òéí",
-    "234": "ÒéÑ",
-    "235": "Òéº",
-    "236": "ÔûÀ",
-    "237": "Ôû▓",
-    "238": "Ôû╝",
-    "239": "ÔÖé",
+    "233": "ァ",
+    "234": "ゥ",
+    "235": "ェ",
+    "236": "▷",
+    "237": "▲",
+    "238": "▼",
+    "239": "♂",
     "240": "<ED>",
-    "241": "├ù",
+    "241": "×",
     "242": ".",
     "243": "/",
     "244": ",",
-    "245": "ÔÖÇ",
+    "245": "♀",
     "246": "0",
     "247": "1",
     "248": "2",
     "249": "3",
-    "25": "ÒâÉ",
+    "25": "バ",
     "250": "4",
     "251": "5",
     "252": "6",
     "253": "7",
     "254": "8",
     "255": "9",
-    "26": "Òâô",
-    "27": "Òâû",
-    "28": "Òâ£",
-    "38": "Òüî",
-    "39": "ÒüÄ",
-    "40": "ÒüÉ",
-    "41": "ÒüÆ",
-    "42": "Òüö",
-    "43": "Òüû",
-    "44": "Òüÿ",
-    "45": "ÒüÜ",
-    "46": "Òü£",
-    "47": "Òü×",
-    "48": "Òüá",
-    "49": "Òüó",
-    "5": "Òé¼",
-    "50": "ÒüÑ",
-    "51": "Òüº",
-    "52": "Òü®",
-    "58": "Òü░",
-    "59": "Òü│",
-    "6": "Òé«",
-    "60": "ÒüÂ",
-    "61": "Òü╣",
-    "62": "Òü╝",
-    "64": "Òâæ",
-    "65": "Òâö",
-    "66": "Òâù",
-    "67": "ÒâØ",
-    "68": "Òü▒",
-    "69": "Òü┤",
-    "7": "Òé░",
-    "70": "ÒüÀ",
-    "71": "Òü║",
-    "72": "Òü¢",
+    "26": "ビ",
+    "27": "ブ",
+    "28": "ボ",
+    "38": "が",
+    "39": "ぎ",
+    "40": "ぐ",
+    "41": "げ",
+    "42": "ご",
+    "43": "ざ",
+    "44": "じ",
+    "45": "ず",
+    "46": "ぜ",
+    "47": "ぞ",
+    "48": "だ",
+    "49": "ぢ",
+    "5": "ガ",
+    "50": "づ",
+    "51": "で",
+    "52": "ど",
+    "58": "ば",
+    "59": "び",
+    "6": "ギ",
+    "60": "ぶ",
+    "61": "べ",
+    "62": "ぼ",
+    "64": "パ",
+    "65": "ピ",
+    "66": "プ",
+    "67": "ポ",
+    "68": "ぱ",
+    "69": "ぴ",
+    "7": "グ",
+    "70": "ぷ",
+    "71": "ぺ",
+    "72": "ぽ",
     "73": "\f",
-    "74": "POK├®MON",
+    "74": "POKéMON",
     "75": "<_CONT>",
     "76": "<SCROLL>",
     "78": "\n",
     "79": "<LINE>",
-    "8": "Òé▓",
+    "8": "ゲ",
     "80": "<TEXT_END>",
     "81": "<PARA>",
     "82": "<PLAYER>",
     "83": "{RIVAL}",
     "84": "<POKE>",
     "85": "<CONT>",
-    "86": "ÔÇªÔÇª",
+    "86": "……",
     "87": "<DONE>",
     "88": "<PROMPT>",
     "89": "{TARGET}",
-    "9": "Òé┤",
+    "9": "ゴ",
     "90": "{USER}",
     "91": "PC",
     "92": "TM",
@@ -4621,7 +4620,7 @@
           "lines": [
             {
               "column": 6,
-              "text": "POK├®MON"
+              "text": "POKéMON"
             },
             {
               "column": 1,
@@ -9392,7 +9391,7 @@
       "gridPixelSize": 8,
       "locations": {
         "AGATHAS_ROOM": {
-          "name": "POK├®MON LEAGUE",
+          "name": "POKéMON LEAGUE",
           "x": 0,
           "y": 2
         },
@@ -9412,7 +9411,7 @@
           "y": 11
         },
         "BRUNOS_ROOM": {
-          "name": "POK├®MON LEAGUE",
+          "name": "POKéMON LEAGUE",
           "x": 0,
           "y": 2
         },
@@ -9562,7 +9561,7 @@
           "y": 2
         },
         "CHAMPIONS_ROOM": {
-          "name": "POK├®MON LEAGUE",
+          "name": "POKéMON LEAGUE",
           "x": 0,
           "y": 2
         },
@@ -9612,7 +9611,7 @@
           "y": 15
         },
         "COLOSSEUM": {
-          "name": "POK├®MON LEAGUE",
+          "name": "POKéMON LEAGUE",
           "x": 0,
           "y": 2
         },
@@ -9697,7 +9696,7 @@
           "y": 5
         },
         "HALL_OF_FAME": {
-          "name": "POK├®MON LEAGUE",
+          "name": "POKéMON LEAGUE",
           "x": 0,
           "y": 2
         },
@@ -9712,7 +9711,7 @@
           "y": 2
         },
         "LANCES_ROOM": {
-          "name": "POK├®MON LEAGUE",
+          "name": "POKéMON LEAGUE",
           "x": 0,
           "y": 2
         },
@@ -9737,7 +9736,7 @@
           "y": 5
         },
         "LORELEIS_ROOM": {
-          "name": "POK├®MON LEAGUE",
+          "name": "POKéMON LEAGUE",
           "x": 0,
           "y": 2
         },
@@ -9832,57 +9831,57 @@
           "y": 9
         },
         "POKEMON_MANSION_1F": {
-          "name": "POK├®MON MANSION",
+          "name": "POKéMON MANSION",
           "x": 2,
           "y": 15
         },
         "POKEMON_MANSION_2F": {
-          "name": "POK├®MON MANSION",
+          "name": "POKéMON MANSION",
           "x": 2,
           "y": 15
         },
         "POKEMON_MANSION_3F": {
-          "name": "POK├®MON MANSION",
+          "name": "POKéMON MANSION",
           "x": 2,
           "y": 15
         },
         "POKEMON_MANSION_B1F": {
-          "name": "POK├®MON MANSION",
+          "name": "POKéMON MANSION",
           "x": 2,
           "y": 15
         },
         "POKEMON_TOWER_1F": {
-          "name": "POK├®MON TOWER",
+          "name": "POKéMON TOWER",
           "x": 15,
           "y": 5
         },
         "POKEMON_TOWER_2F": {
-          "name": "POK├®MON TOWER",
+          "name": "POKéMON TOWER",
           "x": 15,
           "y": 5
         },
         "POKEMON_TOWER_3F": {
-          "name": "POK├®MON TOWER",
+          "name": "POKéMON TOWER",
           "x": 15,
           "y": 5
         },
         "POKEMON_TOWER_4F": {
-          "name": "POK├®MON TOWER",
+          "name": "POKéMON TOWER",
           "x": 15,
           "y": 5
         },
         "POKEMON_TOWER_5F": {
-          "name": "POK├®MON TOWER",
+          "name": "POKéMON TOWER",
           "x": 15,
           "y": 5
         },
         "POKEMON_TOWER_6F": {
-          "name": "POK├®MON TOWER",
+          "name": "POKéMON TOWER",
           "x": 15,
           "y": 5
         },
         "POKEMON_TOWER_7F": {
-          "name": "POK├®MON TOWER",
+          "name": "POKéMON TOWER",
           "x": 15,
           "y": 5
         },
@@ -10372,7 +10371,7 @@
           "y": 10
         },
         "TRADE_CENTER": {
-          "name": "POK├®MON LEAGUE",
+          "name": "POKéMON LEAGUE",
           "x": 0,
           "y": 2
         },
@@ -11068,631 +11067,631 @@
     },
     {
       "code": 240,
-      "seq": "┬Ñ"
+      "seq": "¥"
     },
     {
       "code": 116,
-      "seq": "┬À"
+      "seq": "·"
     },
     {
       "code": 241,
-      "seq": "├ù"
+      "seq": "×"
     },
     {
       "code": 186,
-      "seq": "├®"
+      "seq": "é"
     },
     {
       "code": 112,
-      "seq": "ÔÇÿ"
+      "seq": "‘"
     },
     {
       "code": 113,
-      "seq": "ÔÇÖ"
+      "seq": "’"
     },
     {
       "code": 114,
-      "seq": "ÔÇ£"
+      "seq": "“"
     },
     {
       "code": 115,
-      "seq": "ÔÇØ"
+      "seq": "”"
     },
     {
       "code": 117,
-      "seq": "ÔÇª"
+      "seq": "…"
     },
     {
       "code": 96,
-      "seq": "ÔÇ▓"
+      "seq": "′"
     },
     {
       "code": 97,
-      "seq": "ÔÇ│"
+      "seq": "″"
     },
     {
       "code": 116,
-      "seq": "Ôäû"
+      "seq": "№"
     },
     {
       "code": 117,
-      "seq": "Ôï»"
+      "seq": "⋯"
     },
     {
       "code": 122,
-      "seq": "ÔöÇ"
+      "seq": "─"
     },
     {
       "code": 124,
-      "seq": "Ôöé"
+      "seq": "│"
     },
     {
       "code": 121,
-      "seq": "Ôöî"
+      "seq": "┌"
     },
     {
       "code": 123,
-      "seq": "ÔöÉ"
+      "seq": "┐"
     },
     {
       "code": 125,
-      "seq": "Ôöö"
+      "seq": "└"
     },
     {
       "code": 126,
-      "seq": "Ôöÿ"
+      "seq": "┘"
     },
     {
       "code": 237,
-      "seq": "Ôû▓"
+      "seq": "▲"
     },
     {
       "code": 237,
-      "seq": "ÔûÂ"
+      "seq": "▶"
     },
     {
       "code": 236,
-      "seq": "ÔûÀ"
+      "seq": "▷"
     },
     {
       "code": 238,
-      "seq": "Ôû╝"
+      "seq": "▼"
     },
     {
       "code": 245,
-      "seq": "ÔÖÇ"
+      "seq": "♀"
     },
     {
       "code": 239,
-      "seq": "ÔÖé"
+      "seq": "♂"
     },
     {
       "code": 127,
-      "seq": "ÒÇÇ"
+      "seq": "　"
     },
     {
       "code": 232,
-      "seq": "ÒÇé"
+      "seq": "。"
     },
     {
       "code": 112,
-      "seq": "ÒÇî"
+      "seq": "「"
     },
     {
       "code": 113,
-      "seq": "ÒÇì"
+      "seq": "」"
     },
     {
       "code": 114,
-      "seq": "ÒÇÄ"
+      "seq": "『"
     },
     {
       "code": 115,
-      "seq": "ÒÇÅ"
+      "seq": "』"
     },
     {
       "code": 118,
-      "seq": "Òüü"
+      "seq": "ぁ"
     },
     {
       "code": 177,
-      "seq": "Òüé"
+      "seq": "あ"
     },
     {
       "code": 110,
-      "seq": "Òüâ"
+      "seq": "ぃ"
     },
     {
       "code": 178,
-      "seq": "Òüä"
+      "seq": "い"
     },
     {
       "code": 111,
-      "seq": "Òüà"
+      "seq": "ぅ"
     },
     {
       "code": 179,
-      "seq": "Òüå"
+      "seq": "う"
     },
     {
       "code": 119,
-      "seq": "Òüç"
+      "seq": "ぇ"
     },
     {
       "code": 180,
-      "seq": "Òüê"
+      "seq": "え"
     },
     {
       "code": 120,
-      "seq": "Òüë"
+      "seq": "ぉ"
     },
     {
       "code": 181,
-      "seq": "Òüè"
+      "seq": "お"
     },
     {
       "code": 182,
-      "seq": "Òüï"
+      "seq": "か"
     },
     {
       "code": 183,
-      "seq": "Òüì"
+      "seq": "き"
     },
     {
       "code": 184,
-      "seq": "ÒüÅ"
+      "seq": "く"
     },
     {
       "code": 185,
-      "seq": "Òüæ"
+      "seq": "け"
     },
     {
       "code": 186,
-      "seq": "Òüô"
+      "seq": "こ"
     },
     {
       "code": 187,
-      "seq": "Òüò"
+      "seq": "さ"
     },
     {
       "code": 188,
-      "seq": "Òüù"
+      "seq": "し"
     },
     {
       "code": 189,
-      "seq": "ÒüÖ"
+      "seq": "す"
     },
     {
       "code": 190,
-      "seq": "Òüø"
+      "seq": "せ"
     },
     {
       "code": 191,
-      "seq": "ÒüØ"
+      "seq": "そ"
     },
     {
       "code": 192,
-      "seq": "Òüƒ"
+      "seq": "た"
     },
     {
       "code": 193,
-      "seq": "Òüí"
+      "seq": "ち"
     },
     {
       "code": 223,
-      "seq": "Òüú"
+      "seq": "っ"
     },
     {
       "code": 194,
-      "seq": "Òüñ"
+      "seq": "つ"
     },
     {
       "code": 195,
-      "seq": "Òüª"
+      "seq": "て"
     },
     {
       "code": 196,
-      "seq": "Òü¿"
+      "seq": "と"
     },
     {
       "code": 197,
-      "seq": "Òü¬"
+      "seq": "な"
     },
     {
       "code": 198,
-      "seq": "Òü½"
+      "seq": "に"
     },
     {
       "code": 199,
-      "seq": "Òü¼"
+      "seq": "ぬ"
     },
     {
       "code": 200,
-      "seq": "Òü¡"
+      "seq": "ね"
     },
     {
       "code": 201,
-      "seq": "Òü«"
+      "seq": "の"
     },
     {
       "code": 202,
-      "seq": "Òü»"
+      "seq": "は"
     },
     {
       "code": 203,
-      "seq": "Òü▓"
+      "seq": "ひ"
     },
     {
       "code": 204,
-      "seq": "ÒüÁ"
+      "seq": "ふ"
     },
     {
       "code": 205,
-      "seq": "Òü©"
+      "seq": "へ"
     },
     {
       "code": 206,
-      "seq": "Òü╗"
+      "seq": "ほ"
     },
     {
       "code": 207,
-      "seq": "Òü¥"
+      "seq": "ま"
     },
     {
       "code": 208,
-      "seq": "Òü┐"
+      "seq": "み"
     },
     {
       "code": 209,
-      "seq": "ÒéÇ"
+      "seq": "む"
     },
     {
       "code": 210,
-      "seq": "Òéü"
+      "seq": "め"
     },
     {
       "code": 211,
-      "seq": "Òéé"
+      "seq": "も"
     },
     {
       "code": 224,
-      "seq": "Òéâ"
+      "seq": "ゃ"
     },
     {
       "code": 212,
-      "seq": "Òéä"
+      "seq": "や"
     },
     {
       "code": 225,
-      "seq": "Òéà"
+      "seq": "ゅ"
     },
     {
       "code": 213,
-      "seq": "Òéå"
+      "seq": "ゆ"
     },
     {
       "code": 226,
-      "seq": "Òéç"
+      "seq": "ょ"
     },
     {
       "code": 214,
-      "seq": "Òéê"
+      "seq": "よ"
     },
     {
       "code": 215,
-      "seq": "Òéë"
+      "seq": "ら"
     },
     {
       "code": 216,
-      "seq": "Òéè"
+      "seq": "り"
     },
     {
       "code": 217,
-      "seq": "Òéï"
+      "seq": "る"
     },
     {
       "code": 218,
-      "seq": "Òéî"
+      "seq": "れ"
     },
     {
       "code": 219,
-      "seq": "Òéì"
+      "seq": "ろ"
     },
     {
       "code": 220,
-      "seq": "ÒéÅ"
+      "seq": "わ"
     },
     {
       "code": 221,
-      "seq": "ÒéÆ"
+      "seq": "を"
     },
     {
       "code": 222,
-      "seq": "Òéô"
+      "seq": "ん"
     },
     {
       "code": 233,
-      "seq": "Òéí"
+      "seq": "ァ"
     },
     {
       "code": 128,
-      "seq": "Òéó"
+      "seq": "ア"
     },
     {
       "code": 176,
-      "seq": "Òéú"
+      "seq": "ィ"
     },
     {
       "code": 129,
-      "seq": "Òéñ"
+      "seq": "イ"
     },
     {
       "code": 234,
-      "seq": "ÒéÑ"
+      "seq": "ゥ"
     },
     {
       "code": 130,
-      "seq": "Òéª"
+      "seq": "ウ"
     },
     {
       "code": 235,
-      "seq": "Òéº"
+      "seq": "ェ"
     },
     {
       "code": 131,
-      "seq": "Òé¿"
+      "seq": "エ"
     },
     {
       "code": 244,
-      "seq": "Òé®"
+      "seq": "ォ"
     },
     {
       "code": 132,
-      "seq": "Òé¬"
+      "seq": "オ"
     },
     {
       "code": 133,
-      "seq": "Òé½"
+      "seq": "カ"
     },
     {
       "code": 134,
-      "seq": "Òé¡"
+      "seq": "キ"
     },
     {
       "code": 135,
-      "seq": "Òé»"
+      "seq": "ク"
     },
     {
       "code": 136,
-      "seq": "Òé▒"
+      "seq": "ケ"
     },
     {
       "code": 137,
-      "seq": "Òé│"
+      "seq": "コ"
     },
     {
       "code": 138,
-      "seq": "ÒéÁ"
+      "seq": "サ"
     },
     {
       "code": 139,
-      "seq": "ÒéÀ"
+      "seq": "シ"
     },
     {
       "code": 140,
-      "seq": "Òé╣"
+      "seq": "ス"
     },
     {
       "code": 141,
-      "seq": "Òé╗"
+      "seq": "セ"
     },
     {
       "code": 142,
-      "seq": "Òé¢"
+      "seq": "ソ"
     },
     {
       "code": 143,
-      "seq": "Òé┐"
+      "seq": "タ"
     },
     {
       "code": 144,
-      "seq": "Òâü"
+      "seq": "チ"
     },
     {
       "code": 172,
-      "seq": "Òââ"
+      "seq": "ッ"
     },
     {
       "code": 145,
-      "seq": "Òâä"
+      "seq": "ツ"
     },
     {
       "code": 146,
-      "seq": "Òâå"
+      "seq": "テ"
     },
     {
       "code": 147,
-      "seq": "Òâê"
+      "seq": "ト"
     },
     {
       "code": 148,
-      "seq": "Òâè"
+      "seq": "ナ"
     },
     {
       "code": 149,
-      "seq": "Òâï"
+      "seq": "ニ"
     },
     {
       "code": 150,
-      "seq": "Òâî"
+      "seq": "ヌ"
     },
     {
       "code": 151,
-      "seq": "Òâì"
+      "seq": "ネ"
     },
     {
       "code": 152,
-      "seq": "ÒâÄ"
+      "seq": "ノ"
     },
     {
       "code": 153,
-      "seq": "ÒâÅ"
+      "seq": "ハ"
     },
     {
       "code": 154,
-      "seq": "ÒâÆ"
+      "seq": "ヒ"
     },
     {
       "code": 155,
-      "seq": "Òâò"
+      "seq": "フ"
     },
     {
       "code": 156,
-      "seq": "Òâø"
+      "seq": "ホ"
     },
     {
       "code": 157,
-      "seq": "Òâ×"
+      "seq": "マ"
     },
     {
       "code": 158,
-      "seq": "Òâƒ"
+      "seq": "ミ"
     },
     {
       "code": 159,
-      "seq": "Òâá"
+      "seq": "ム"
     },
     {
       "code": 160,
-      "seq": "Òâí"
+      "seq": "メ"
     },
     {
       "code": 161,
-      "seq": "Òâó"
+      "seq": "モ"
     },
     {
       "code": 173,
-      "seq": "Òâú"
+      "seq": "ャ"
     },
     {
       "code": 162,
-      "seq": "Òâñ"
+      "seq": "ヤ"
     },
     {
       "code": 174,
-      "seq": "ÒâÑ"
+      "seq": "ュ"
     },
     {
       "code": 163,
-      "seq": "Òâª"
+      "seq": "ユ"
     },
     {
       "code": 175,
-      "seq": "Òâº"
+      "seq": "ョ"
     },
     {
       "code": 164,
-      "seq": "Òâ¿"
+      "seq": "ヨ"
     },
     {
       "code": 165,
-      "seq": "Òâ®"
+      "seq": "ラ"
     },
     {
       "code": 166,
-      "seq": "Òâ½"
+      "seq": "ル"
     },
     {
       "code": 167,
-      "seq": "Òâ¼"
+      "seq": "レ"
     },
     {
       "code": 168,
-      "seq": "Òâ¡"
+      "seq": "ロ"
     },
     {
       "code": 169,
-      "seq": "Òâ»"
+      "seq": "ワ"
     },
     {
       "code": 170,
-      "seq": "Òâ▓"
+      "seq": "ヲ"
     },
     {
       "code": 171,
-      "seq": "Òâ│"
+      "seq": "ン"
     },
     {
       "code": 227,
-      "seq": "Òâ╝"
+      "seq": "ー"
     },
     {
       "code": 240,
-      "seq": "Õåå"
+      "seq": "円"
     },
     {
       "code": 231,
-      "seq": "´╝ü"
+      "seq": "！"
     },
     {
       "code": 242,
-      "seq": "´╝Ä"
+      "seq": "．"
     },
     {
       "code": 243,
-      "seq": "´╝Å"
+      "seq": "／"
     },
     {
       "code": 246,
-      "seq": "´╝É"
+      "seq": "０"
     },
     {
       "code": 247,
-      "seq": "´╝æ"
+      "seq": "１"
     },
     {
       "code": 248,
-      "seq": "´╝Æ"
+      "seq": "２"
     },
     {
       "code": 249,
-      "seq": "´╝ô"
+      "seq": "３"
     },
     {
       "code": 250,
-      "seq": "´╝ö"
+      "seq": "４"
     },
     {
       "code": 251,
-      "seq": "´╝ò"
+      "seq": "５"
     },
     {
       "code": 252,
-      "seq": "´╝û"
+      "seq": "６"
     },
     {
       "code": 253,
-      "seq": "´╝ù"
+      "seq": "７"
     },
     {
       "code": 254,
-      "seq": "´╝ÿ"
+      "seq": "８"
     },
     {
       "code": 255,
-      "seq": "´╝Ö"
+      "seq": "９"
     },
     {
       "code": 230,
-      "seq": "´╝ƒ"
+      "seq": "？"
     },
     {
       "code": 229,
-      "seq": "´¥×"
+      "seq": "ﾞ"
     },
     {
       "code": 228,
-      "seq": "´¥ƒ"
+      "seq": "ﾟ"
     }
   ],
   "format": 2,
@@ -19749,7 +19748,7 @@
     ],
     "AgathasRoom_h": [
       29,
-      25752
+      25633
     ],
     "AlakazamPicBack": [
       12,
@@ -19839,7 +19838,10 @@
       19,
       19134
     ],
-    "BillsHouse_h": [7, 26463],
+    "BillsHouse_h": [
+      7,
+      26462
+    ],
     "BirdKeeperPic": [
       19,
       23771
@@ -19860,7 +19862,10 @@
       9,
       30263
     ],
-    "BluesHouse_h": [6, 23348],
+    "BluesHouse_h": [
+      6,
+      23343
+    ],
     "BrockPic": [
       19,
       27454
@@ -19869,7 +19874,10 @@
       19,
       26947
     ],
-    "BrunosRoom_h": [29, 25409],
+    "BrunosRoom_h": [
+      29,
+      25290
+    ],
     "BugCatcherPic": [
       19,
       16582
@@ -19910,17 +19918,26 @@
       12,
       19017
     ],
-    "CeladonChiefHouse_h": [18,20996],
+    "CeladonChiefHouse_h": [
+      18,
+      20994
+    ],
     "CeladonCity_h": [
       6,
       16384
     ],
-    "CeladonDiner_h": [18,20807],
+    "CeladonDiner_h": [
+      18,
+      20805
+    ],
     "CeladonGym_h": [
       18,
       18686
     ],
-    "CeladonHotel_h": [18,21087],
+    "CeladonHotel_h": [
+      18,
+      21085
+    ],
     "CeladonMansion1F_h": [
       18,
       18056
@@ -19933,7 +19950,10 @@
       18,
       18308
     ],
-    "CeladonMansionRoofHouse_h": [7,23855],
+    "CeladonMansionRoofHouse_h": [
+      7,
+      23854
+    ],
     "CeladonMansionRoof_h": [
       18,
       18527
@@ -19954,7 +19974,10 @@
       18,
       17226
     ],
-    "CeladonMart5F_h": [18,20575],
+    "CeladonMart5F_h": [
+      18,
+      20573
+    ],
     "CeladonMartElevator_h": [
       18,
       17908
@@ -19967,8 +19990,14 @@
       18,
       18604
     ],
-    "CeruleanBadgeHouse_h": [29,20087],
-    "CeruleanCave1F_h": [29,19834],
+    "CeruleanBadgeHouse_h": [
+      29,
+      19965
+    ],
+    "CeruleanCave1F_h": [
+      29,
+      19712
+    ],
     "CeruleanCave2F_h": [
       17,
       24063
@@ -19985,7 +20014,10 @@
       23,
       18087
     ],
-    "CeruleanMart_h": [23,18567],
+    "CeruleanMart_h": [
+      23,
+      18569
+    ],
     "CeruleanPokecenter_h": [
       23,
       17977
@@ -19998,7 +20030,10 @@
       7,
       22137
     ],
-    "ChampionsRoom_h": [29,24456],
+    "ChampionsRoom_h": [
+      29,
+      24337
+    ],
     "ChannelerPic": [
       19,
       30884
@@ -20035,17 +20070,38 @@
       13,
       24332
     ],
-    "CinnabarGym_h": [29,22454],
+    "CinnabarGym_h": [
+      29,
+      22334
+    ],
     "CinnabarIsland_h": [
       7,
       16384
     ],
-    "CinnabarLabFossilRoom_h": [29,23964],
-    "CinnabarLabMetronomeRoom_h": [29,23794],
-    "CinnabarLabTradeRoom_h": [29,23692],
-    "CinnabarLab_h": [29,23543],
-    "CinnabarMart_h": [29,24297],
-    "CinnabarPokecenter_h": [29,24215],
+    "CinnabarLabFossilRoom_h": [
+      29,
+      23845
+    ],
+    "CinnabarLabMetronomeRoom_h": [
+      29,
+      23675
+    ],
+    "CinnabarLabTradeRoom_h": [
+      29,
+      23573
+    ],
+    "CinnabarLab_h": [
+      29,
+      23424
+    ],
+    "CinnabarMart_h": [
+      29,
+      24178
+    ],
+    "CinnabarPokecenter_h": [
+      29,
+      24096
+    ],
     "CircleTile": [
       11,
       32136
@@ -20086,8 +20142,14 @@
       19,
       26165
     ],
-    "CopycatsHouse1F_h": [29,24366],
-    "CopycatsHouse2F_h": [23,19552],
+    "CopycatsHouse1F_h": [
+      29,
+      24247
+    ],
+    "CopycatsHouse2F_h": [
+      23,
+      19557
+    ],
     "CryData": [
       14,
       21574
@@ -20124,8 +20186,14 @@
       10,
       27955
     ],
-    "DiglettsCaveRoute11_h": [7,26031],
-    "DiglettsCaveRoute2_h": [7,24229],
+    "DiglettsCaveRoute11_h": [
+      7,
+      26030
+    ],
+    "DiglettsCaveRoute2_h": [
+      7,
+      24228
+    ],
     "DiglettsCave_h": [
       24,
       24418
@@ -20156,7 +20224,7 @@
     ],
     "DoorTileIDPointers": [
       6,
-      26161
+      26156
     ],
     "DragonairPicBack": [
       11,
@@ -20294,7 +20362,10 @@
       16,
       25881
     ],
-    "FightingDojo_h": [23,19788],
+    "FightingDojo_h": [
+      23,
+      19793
+    ],
     "FisherPic": [
       19,
       20359
@@ -20339,7 +20410,10 @@
       30,
       28532
     ],
-    "FuchsiaBillsGrandpasHouse_h": [29,20614],
+    "FuchsiaBillsGrandpasHouse_h": [
+      29,
+      20492
+    ],
     "FuchsiaCity_h": [
       6,
       19367
@@ -20348,16 +20422,34 @@
       21,
       24944
     ],
-    "FuchsiaGym_h": [29,21675],
-    "FuchsiaMart_h": [7,23933],
-    "FuchsiaMeetingRoom_h": [29,22351],
-    "FuchsiaPokecenter_h": [29,20689],
+    "FuchsiaGym_h": [
+      29,
+      21553
+    ],
+    "FuchsiaMart_h": [
+      7,
+      23932
+    ],
+    "FuchsiaMeetingRoom_h": [
+      29,
+      22231
+    ],
+    "FuchsiaPokecenter_h": [
+      29,
+      20567
+    ],
     "GamblerPic": [
       19,
       21537
     ],
-    "GameCornerPrizeRoom_h": [18,20710],
-    "GameCorner_h": [18,19376],
+    "GameCornerPrizeRoom_h": [
+      18,
+      20708
+    ],
+    "GameCorner_h": [
+      18,
+      19377
+    ],
     "GameFreakIntro": [
       16,
       22873
@@ -20546,7 +20638,10 @@
       12,
       21341
     ],
-    "IndigoPlateauLobby_h": [6,23636],
+    "IndigoPlateauLobby_h": [
+      6,
+      23631
+    ],
     "IndigoPlateau_h": [
       20,
       18718
@@ -20695,9 +20790,18 @@
       19,
       16896
     ],
-    "LavenderCuboneHouse_h": [7,22947],
-    "LavenderMart_h": [23,18718],
-    "LavenderPokecenter_h": [23,18636],
+    "LavenderCuboneHouse_h": [
+      7,
+      22946
+    ],
+    "LavenderMart_h": [
+      23,
+      18720
+    ],
+    "LavenderPokecenter_h": [
+      23,
+      18638
+    ],
     "LavenderTown_h": [
       17,
       16384
@@ -20718,7 +20822,10 @@
       19,
       30585
     ],
-    "LoreleisRoom_h": [29,25062],
+    "LoreleisRoom_h": [
+      29,
+      24943
+    ],
     "LtSurgePic": [
       19,
       27952
@@ -20883,7 +20990,10 @@
       14,
       16384
     ],
-    "MrFujisHouse_h": [7,22685],
+    "MrFujisHouse_h": [
+      7,
+      22684
+    ],
     "MrMimePicBack": [
       10,
       21063
@@ -20892,11 +21002,26 @@
       10,
       20723
     ],
-    "MrPsychicsHouse_h": [7,24113],
-    "MtMoon1F_h": [18,22974],
-    "MtMoonB1F_h": [20,23093],
-    "MtMoonB2F_h": [18,23809],
-    "MtMoonPokecenter_h": [18,21189],
+    "MrPsychicsHouse_h": [
+      7,
+      24112
+    ],
+    "MtMoon1F_h": [
+      18,
+      22972
+    ],
+    "MtMoonB1F_h": [
+      20,
+      23094
+    ],
+    "MtMoonB2F_h": [
+      18,
+      23807
+    ],
+    "MtMoonPokecenter_h": [
+      18,
+      21187
+    ],
     "MukPicBack": [
       12,
       24927
@@ -20913,7 +21038,10 @@
       23,
       17163
     ],
-    "NameRatersHouse_h": [7,23047],
+    "NameRatersHouse_h": [
+      7,
+      23046
+    ],
     "NidokingPicBack": [
       9,
       19552
@@ -21054,7 +21182,10 @@
       23,
       17275
     ],
-    "PewterMart_h": [29,19739],
+    "PewterMart_h": [
+      29,
+      19617
+    ],
     "PewterNidoranHouse_h": [
       7,
       21991
@@ -21151,9 +21282,18 @@
       17,
       17059
     ],
-    "PokemonMansion2F_h": [20,24523],
-    "PokemonMansion3F_h": [20,25057],
-    "PokemonMansionB1F_h": [20,25516],
+    "PokemonMansion2F_h": [
+      20,
+      24524
+    ],
+    "PokemonMansion3F_h": [
+      20,
+      25058
+    ],
+    "PokemonMansionB1F_h": [
+      20,
+      25517
+    ],
     "PokemonTower1F_h": [
       24,
       17440
@@ -21222,7 +21362,10 @@
       13,
       22404
     ],
-    "PowerPlant_h": [7,25275],
+    "PowerPlant_h": [
+      7,
+      25274
+    ],
     "PrimeapePicBack": [
       12,
       17416
@@ -21363,7 +21506,10 @@
       17,
       24543
     ],
-    "RockTunnelPokecenter_h": [18,21424],
+    "RockTunnelPokecenter_h": [
+      18,
+      21422
+    ],
     "RockerPic": [
       19,
       22595
@@ -21396,14 +21542,26 @@
       22,
       17108
     ],
-    "Route11Gate1F_h": [18,21506],
-    "Route11Gate2F_h": [18,21578],
+    "Route11Gate1F_h": [
+      18,
+      21504
+    ],
+    "Route11Gate2F_h": [
+      18,
+      21576
+    ],
     "Route11_h": [
       22,
       17598
     ],
-    "Route12Gate1F_h": [18,21754],
-    "Route12Gate2F_h": [18,21846],
+    "Route12Gate1F_h": [
+      18,
+      21752
+    ],
+    "Route12Gate2F_h": [
+      18,
+      21844
+    ],
     "Route12SuperRodHouse_h": [
       21,
       25715
@@ -21420,15 +21578,30 @@
       21,
       18841
     ],
-    "Route15Gate1F_h": [18,22008],
-    "Route15Gate2F_h": [18,22080],
+    "Route15Gate1F_h": [
+      18,
+      22006
+    ],
+    "Route15Gate2F_h": [
+      18,
+      22078
+    ],
     "Route15_h": [
       22,
       18732
     ],
-    "Route16FlyHouse_h": [7,26093],
-    "Route16Gate1F_h": [18,22196],
-    "Route16Gate2F_h": [18,22529],
+    "Route16FlyHouse_h": [
+      7,
+      26092
+    ],
+    "Route16Gate1F_h": [
+      18,
+      22194
+    ],
+    "Route16Gate2F_h": [
+      18,
+      22527
+    ],
     "Route16_h": [
       22,
       19162
@@ -21437,8 +21610,14 @@
       21,
       19232
     ],
-    "Route18Gate1F_h": [18,22636],
-    "Route18Gate2F_h": [18,22891],
+    "Route18Gate1F_h": [
+      18,
+      22634
+    ],
+    "Route18Gate2F_h": [
+      18,
+      22889
+    ],
     "Route18_h": [
       22,
       19512
@@ -21459,7 +21638,10 @@
       21,
       20479
     ],
-    "Route22Gate_h": [7,26232],
+    "Route22Gate_h": [
+      7,
+      26231
+    ],
     "Route22_h": [
       20,
       16384
@@ -21476,8 +21658,14 @@
       20,
       18331
     ],
-    "Route2Gate_h": [23,21956],
-    "Route2TradeHouse_h": [7,24290],
+    "Route2Gate_h": [
+      23,
+      21960
+    ],
+    "Route2TradeHouse_h": [
+      7,
+      24289
+    ],
     "Route2_h": [
       21,
       16384
@@ -21490,22 +21678,34 @@
       21,
       17296
     ],
-    "Route5Gate_h": [7,24360],
+    "Route5Gate_h": [
+      7,
+      24359
+    ],
     "Route5_h": [
       21,
       17793
     ],
-    "Route6Gate_h": [7,24626],
+    "Route6Gate_h": [
+      7,
+      24625
+    ],
     "Route6_h": [
       22,
       16384
     ],
-    "Route7Gate_h": [7,24821],
+    "Route7Gate_h": [
+      7,
+      24820
+    ],
     "Route7_h": [
       18,
       16384
     ],
-    "Route8Gate_h": [7,25020],
+    "Route8Gate_h": [
+      7,
+      25019
+    ],
     "Route8_h": [
       22,
       16685
@@ -21578,7 +21778,10 @@
       17,
       22623
     ],
-    "SafariZoneGate_h": [29,21051],
+    "SafariZoneGate_h": [
+      29,
+      20929
+    ],
     "SafariZoneNorthRestHouse_h": [
       17,
       23988
@@ -21587,20 +21790,38 @@
       17,
       22943
     ],
-    "SafariZoneSecretHouse_h": [18,25357],
+    "SafariZoneSecretHouse_h": [
+      18,
+      25355
+    ],
     "SafariZoneWestRestHouse_h": [
       17,
       23838
     ],
-    "SafariZoneWest_h": [18,25003],
+    "SafariZoneWest_h": [
+      18,
+      25001
+    ],
     "SaffronCity_h": [
       20,
       18852
     ],
-    "SaffronGym_h": [23,20476],
-    "SaffronMart_h": [23,21497],
-    "SaffronPidgeyHouse_h": [7,24018],
-    "SaffronPokecenter_h": [23,21797],
+    "SaffronGym_h": [
+      23,
+      20481
+    ],
+    "SaffronMart_h": [
+      23,
+      21501
+    ],
+    "SaffronPidgeyHouse_h": [
+      7,
+      24017
+    ],
+    "SaffronPokecenter_h": [
+      23,
+      21801
+    ],
     "SailorPic": [
       19,
       17115
@@ -21705,10 +21926,13 @@
       24,
       24814
     ],
-    "SilphCo1F_h": [23,21566],
+    "SilphCo1F_h": [
+      23,
+      21570
+    ],
     "SilphCo2FSilphWorkerFPleaseTakeThisText": [
       32,
-      26412
+      25684
     ],
     "SilphCo2F_h": [
       22,
@@ -21718,15 +21942,30 @@
       22,
       24399
     ],
-    "SilphCo4F_h": [6,23812],
-    "SilphCo5F_h": [6,24368],
-    "SilphCo6F_h": [6,24994],
-    "SilphCo7F_h": [20,23380],
+    "SilphCo4F_h": [
+      6,
+      23807
+    ],
+    "SilphCo5F_h": [
+      6,
+      24363
+    ],
+    "SilphCo6F_h": [
+      6,
+      24989
+    ],
+    "SilphCo7F_h": [
+      20,
+      23381
+    ],
     "SilphCo8F_h": [
       21,
       25848
     ],
-    "SilphCo9F_h": [23,22443],
+    "SilphCo9F_h": [
+      23,
+      22447
+    ],
     "SilphCoElevator_h": [
       17,
       22452
@@ -21983,10 +22222,22 @@
       24,
       24346
     ],
-    "UndergroundPathRoute5_h": [23,22169],
-    "UndergroundPathRoute6_h": [23,22239],
-    "UndergroundPathRoute7_h": [23,22300],
-    "UndergroundPathRoute8_h": [7,25214],
+    "UndergroundPathRoute5_h": [
+      23,
+      22173
+    ],
+    "UndergroundPathRoute6_h": [
+      23,
+      22243
+    ],
+    "UndergroundPathRoute7_h": [
+      23,
+      22304
+    ],
+    "UndergroundPathRoute8_h": [
+      7,
+      25213
+    ],
     "UndergroundPathWestEast_h": [
       24,
       24382
@@ -22027,22 +22278,46 @@
       6,
       18840
     ],
-    "VermilionDock_h": [7,23367],
-    "VermilionGym_h": [23,18968],
-    "VermilionMart_h": [23,18899],
+    "VermilionDock_h": [
+      7,
+      23366
+    ],
+    "VermilionGym_h": [
+      23,
+      18970
+    ],
+    "VermilionMart_h": [
+      23,
+      18901
+    ],
     "VermilionOldRodHouse_h": [
       21,
       24676
     ],
-    "VermilionPidgeyHouse_h": [7,23281],
-    "VermilionPokecenter_h": [23,18817],
-    "VermilionTradeHouse_h": [6,23563],
+    "VermilionPidgeyHouse_h": [
+      7,
+      23280
+    ],
+    "VermilionPokecenter_h": [
+      23,
+      18819
+    ],
+    "VermilionTradeHouse_h": [
+      6,
+      23558
+    ],
     "Version_GFX": [
       26,
       16431
     ],
-    "VictoryRoad1F_h": [23,23034],
-    "VictoryRoad2F_h": [20,22416],
+    "VictoryRoad1F_h": [
+      23,
+      23038
+    ],
+    "VictoryRoad2F_h": [
+      20,
+      22417
+    ],
     "VictoryRoad3F_h": [
       17,
       18804
@@ -22067,13 +22342,22 @@
       6,
       17239
     ],
-    "ViridianForestNorthGate_h": [23,21879],
-    "ViridianForestSouthGate_h": [23,22092],
+    "ViridianForestNorthGate_h": [
+      23,
+      21883
+    ],
+    "ViridianForestSouthGate_h": [
+      23,
+      22096
+    ],
     "ViridianForest_h": [
       24,
       20737
     ],
-    "ViridianGym_h": [29,18706],
+    "ViridianGym_h": [
+      29,
+      18583
+    ],
     "ViridianMart_h": [
       7,
       21602
@@ -22106,7 +22390,10 @@
       11,
       18724
     ],
-    "WardensHouse_h": [29,20771],
+    "WardensHouse_h": [
+      29,
+      20649
+    ],
     "WarpTileIDPointers": [
       3,
       17612
@@ -22249,7 +22536,7 @@
     ],
     "_AgathaEndBattleText": [
       33,
-      27549
+      27395
     ],
     "_AgathasRoomAgathaDontRunAwayText": [
       33,
@@ -22305,7 +22592,7 @@
     ],
     "_BecameConfusedText": [
       37,
-      18748
+      18552
     ],
     "_BeedrillDexEntry": [
       43,
@@ -22325,7 +22612,7 @@
     ],
     "_BikeShopBagFullText": [
       38,
-      20445
+      20301
     ],
     "_BikeShopCantAffordText": [
       38,
@@ -22437,7 +22724,7 @@
     ],
     "_BookcaseText": [
       34,
-      18274
+      18121
     ],
     "_BoostedText": [
       34,
@@ -22477,7 +22764,7 @@
     ],
     "_BrunoEndBattleText": [
       33,
-      27114
+      27023
     ],
     "_BrunosRoomBrunoDontRunAwayText": [
       33,
@@ -22557,7 +22844,7 @@
     ],
     "_CantCarryMoreText": [
       34,
-      25265
+      24745
     ],
     "_CantDepositLastMonText": [
       34,
@@ -22637,7 +22924,7 @@
     ],
     "_CeladonCityGramps3TM41NoRoomText": [
       41,
-      23844
+      23480
     ],
     "_CeladonCityGramps3Text": [
       41,
@@ -22701,7 +22988,7 @@
     ],
     "_CeladonDinerGymGuideCoinCaseNoRoomText": [
       39,
-      25107
+      24720
     ],
     "_CeladonDinerGymGuideImFlatOutBustedText": [
       39,
@@ -22945,7 +23232,7 @@
     ],
     "_CeladonMart3FClerkTM18NoRoomText": [
       39,
-      18719
+      18602
     ],
     "_CeladonMart3FClerkTM18PreReceiveText": [
       39,
@@ -23025,7 +23312,7 @@
     ],
     "_CeladonMartRoofLittleGirlGiveHerADrinkText": [
       39,
-      20162
+      19990
     ],
     "_CeladonMartRoofLittleGirlGiveHerWhichDrinkText": [
       39,
@@ -23037,7 +23324,7 @@
     ],
     "_CeladonMartRoofLittleGirlImThirstyText": [
       39,
-      20127
+      19950
     ],
     "_CeladonMartRoofLittleGirlNoRoomText": [
       39,
@@ -23297,7 +23584,7 @@
     ],
     "_CeruleanGymMistyTM11NoRoomText": [
       38,
-      19510
+      19344
     ],
     "_CeruleanMartCooltrainerFText": [
       38,
@@ -23457,7 +23744,7 @@
     ],
     "_CinnabarGymSuperNerd2EndBattleText": [
       40,
-      19246
+      19188
     ],
     "_CinnabarGymSuperNerd3AfterBattleText": [
       40,
@@ -23557,11 +23844,11 @@
     ],
     "_CinnabarLabFossilRoomScientist1GoForAWalkText": [
       40,
-      21077
+      20822
     ],
     "_CinnabarLabFossilRoomScientist1GoForAWalkText2": [
       40,
-      21350
+      21135
     ],
     "_CinnabarLabFossilRoomScientist1NoFossilsText": [
       40,
@@ -23701,7 +23988,7 @@
     ],
     "_ColosseumOpponentText": [
       37,
-      19396
+      19204
     ],
     "_ComeBackText": [
       34,
@@ -23949,7 +24236,7 @@
     ],
     "_DidntAffectText": [
       37,
-      18862
+      18663
     ],
     "_DiglettDexEntry": [
       43,
@@ -23993,7 +24280,7 @@
     ],
     "_DoesntAffectMonText": [
       34,
-      23673
+      23220
     ],
     "_DragonairDexEntry": [
       43,
@@ -24105,7 +24392,7 @@
     ],
     "_ExclamationText": [
       32,
-      16548
+      16531
     ],
     "_ExeggcuteDexEntry": [
       43,
@@ -24141,7 +24428,7 @@
     ],
     "_FellText": [
       37,
-      18568
+      18377
     ],
     "_FightingDojoBetterNotGetGreedyText": [
       40,
@@ -24157,7 +24444,7 @@
     ],
     "_FightingDojoBlackbelt1EndBattleText": [
       40,
-      23118
+      22967
     ],
     "_FightingDojoBlackbelt2AfterBattleText": [
       40,
@@ -24221,7 +24508,7 @@
     ],
     "_FightingDojoText": [
       34,
-      20504
+      20217
     ],
     "_FileDataDestroyedText": [
       37,
@@ -24269,11 +24556,11 @@
     ],
     "_FoundItemText": [
       32,
-      16725
+      16665
     ],
     "_FrozenText": [
       37,
-      18484
+      18285
     ],
     "_FuchsiaBillsGrandpasHouseBillsGrandpaText": [
       39,
@@ -24329,7 +24616,7 @@
     ],
     "_FuchsiaCityPokemonText": [
       41,
-      24898
+      24470
     ],
     "_FuchsiaCitySafariGameSignText": [
       41,
@@ -24369,7 +24656,7 @@
     ],
     "_FuchsiaGoodRodHouseFishingGuruNoRoomText": [
       40,
-      18349
+      18306
     ],
     "_FuchsiaGoodRodHouseFishingGuruReceivedGoodRodText": [
       40,
@@ -24417,7 +24704,7 @@
     ],
     "_FuchsiaGymKogaTM06NoRoomText": [
       40,
-      16736
+      16707
     ],
     "_FuchsiaGymRocker1AfterBattleText": [
       40,
@@ -24933,7 +25220,7 @@
     ],
     "_IsConfusedText": [
       34,
-      23374
+      22910
     ],
     "_IsEvolvingText": [
       37,
@@ -24941,7 +25228,7 @@
     ],
     "_IsFrozenText": [
       34,
-      23287
+      22816
     ],
     "_IsItOKToTossItemText": [
       42,
@@ -24949,7 +25236,7 @@
     ],
     "_IsUnaffectedText": [
       37,
-      18883
+      18683
     ],
     "_ItemUseBallText00": [
       41,
@@ -24989,7 +25276,7 @@
     ],
     "_ItemUseNoEffectText": [
       41,
-      27924
+      27369
     ],
     "_ItemUseNotTimeText": [
       41,
@@ -25201,7 +25488,7 @@
     ],
     "_LinkCableHelpText2": [
       34,
-      20806
+      20519
     ],
     "_LinkCableInfoText1": [
       34,
@@ -25453,7 +25740,7 @@
     ],
     "_MtMoon1FCooltrainerF1EndBattleText": [
       32,
-      18485
+      18296
     ],
     "_MtMoon1FCooltrainerF2AfterBattleText": [
       32,
@@ -25529,7 +25816,7 @@
     ],
     "_MtMoonB1FUnusedText": [
       32,
-      18991
+      18780
     ],
     "_MtMoonB2FDomeFossilYouWantText": [
       32,
@@ -25541,7 +25828,7 @@
     ],
     "_MtMoonB2FReceivedFossilText": [
       32,
-      19032
+      18837
     ],
     "_MtMoonB2FRocket1AfterBattleText": [
       32,
@@ -25597,7 +25884,7 @@
     ],
     "_MtMoonB2FSuperNerdThenThisIsMineText": [
       32,
-      19299
+      19091
     ],
     "_MtMoonB2FSuperNerdTheresAPokemonLabText": [
       32,
@@ -25609,7 +25896,7 @@
     ],
     "_MtMoonB2FYouHaveNoRoomText": [
       32,
-      19050
+      18856
     ],
     "_MtMoonB2fSuperNerdEachTakeOneText": [
       32,
@@ -25621,7 +25908,7 @@
     ],
     "_MtMoonPokecenterClipboardText": [
       34,
-      27855
+      27226
     ],
     "_MtMoonPokecenterGentlemanText": [
       34,
@@ -25713,7 +26000,7 @@
     ],
     "_Museum1FScientist2YouDontHaveSpaceText": [
       37,
-      27381
+      26569
     ],
     "_Museum1FScientist3Text": [
       37,
@@ -25937,15 +26224,15 @@
     ],
     "_OaksAideComeBackText": [
       32,
-      17015
+      17038
     ],
     "_OaksAideGotItemText": [
       32,
-      17196
+      17113
     ],
     "_OaksAideHereYouGoText": [
       32,
-      17136
+      17110
     ],
     "_OaksAideHiText": [
       32,
@@ -25957,7 +26244,7 @@
     ],
     "_OaksAideUhOhText": [
       32,
-      16862
+      16939
     ],
     "_OaksLabGirlText": [
       37,
@@ -26013,7 +26300,7 @@
     ],
     "_OaksLabOak2Text": [
       37,
-      21410
+      21096
     ],
     "_OaksLabOakBePatientText": [
       37,
@@ -26213,7 +26500,7 @@
     ],
     "_PalletTownRivalsHouseSignText": [
       41,
-      17458
+      17345
     ],
     "_PalletTownSignText": [
       41,
@@ -26537,11 +26824,11 @@
     ],
     "_PokemonBooksText": [
       34,
-      22352
+      21953
     ],
     "_PokemonCenterFarewellText": [
       40,
-      27072
+      26896
     ],
     "_PokemonCenterWelcomeText": [
       40,
@@ -26553,7 +26840,7 @@
     ],
     "_PokemonFanClubBagFullText": [
       38,
-      26979
+      26931
     ],
     "_PokemonFanClubChairFinalText": [
       38,
@@ -26629,11 +26916,11 @@
     ],
     "_PokemonMansion1FScientistEndBattleText": [
       40,
-      18424
+      18389
     ],
     "_PokemonMansion1FSwitchNotPressedText": [
       40,
-      18531
+      18484
     ],
     "_PokemonMansion1FSwitchPressedText": [
       40,
@@ -26641,7 +26928,7 @@
     ],
     "_PokemonMansion1FSwitchText": [
       40,
-      18473
+      18442
     ],
     "_PokemonMansion2FDiary1Text": [
       33,
@@ -26665,7 +26952,7 @@
     ],
     "_PokemonMansion2FSwitchNotPressedText": [
       33,
-      21769
+      21489
     ],
     "_PokemonMansion2FSwitchPressedText": [
       33,
@@ -26673,7 +26960,7 @@
     ],
     "_PokemonMansion2FSwitchText": [
       33,
-      21711
+      21447
     ],
     "_PokemonMansion3FDiaryText": [
       33,
@@ -26701,7 +26988,7 @@
     ],
     "_PokemonMansion3FSuperNerdEndBattleText": [
       33,
-      21810
+      21532
     ],
     "_PokemonMansionB1FBurglarAfterBattleText": [
       33,
@@ -26713,7 +27000,7 @@
     ],
     "_PokemonMansionB1FBurglarEndBattleText": [
       33,
-      22034
+      21751
     ],
     "_PokemonMansionB1FDiaryText": [
       33,
@@ -26857,7 +27144,7 @@
     ],
     "_PokemonTower5FChanneler2AfterBattleText": [
       38,
-      23132
+      22979
     ],
     "_PokemonTower5FChanneler2BattleText": [
       38,
@@ -26869,7 +27156,7 @@
     ],
     "_PokemonTower5FChanneler3AfterBattleText": [
       38,
-      23195
+      23052
     ],
     "_PokemonTower5FChanneler3BattleText": [
       38,
@@ -26969,7 +27256,7 @@
     ],
     "_PokemonTower7FRocket1EndBattleText": [
       38,
-      24050
+      23894
     ],
     "_PokemonTower7FRocket2AfterBattleText": [
       38,
@@ -27217,7 +27504,7 @@
     ],
     "_RockTunnel1FHiker3EndBattleText": [
       35,
-      17524
+      17497
     ],
     "_RockTunnel1FSignText": [
       35,
@@ -27257,7 +27544,7 @@
     ],
     "_RockTunnelB1FCooltrainerF2EndBattleText": [
       33,
-      28189
+      27711
     ],
     "_RockTunnelB1FHiker1AfterBattleText": [
       33,
@@ -27413,7 +27700,7 @@
     ],
     "_RocketHideoutB1FRocket5EndBattleText": [
       32,
-      24944
+      24362
     ],
     "_RocketHideoutB2FRocketAfterBattleText": [
       32,
@@ -27489,11 +27776,11 @@
     ],
     "_RocketHideoutElevatorAppearsToNeedKeyText": [
       32,
-      26374
+      25656
     ],
     "_RoseText": [
       37,
-      18544
+      18347
     ],
     "_Route10CooltrainerF1AfterBattleText": [
       35,
@@ -27577,7 +27864,7 @@
     ],
     "_Route11DiglettsCaveSignText": [
       36,
-      16536
+      16527
     ],
     "_Route11Gambler1AfterBattleText": [
       35,
@@ -27805,7 +28092,7 @@
     ],
     "_Route12Gate2FBrunetteGirlTM39NoRoomText": [
       35,
-      18771
+      18748
     ],
     "_Route12Gate2FBrunetteGirlYouCanHaveThisText": [
       35,
@@ -27829,11 +28116,11 @@
     ],
     "_Route12SnorlaxText": [
       36,
-      16552
+      16542
     ],
     "_Route12SnorlaxWokeUpText": [
       36,
-      16592
+      16575
     ],
     "_Route12SportFishingSignText": [
       36,
@@ -27921,7 +28208,7 @@
     ],
     "_Route13CooltrainerF1EndBattleText": [
       36,
-      17623
+      17510
     ],
     "_Route13CooltrainerF2AfterBattleText": [
       36,
@@ -28065,7 +28352,7 @@
     ],
     "_Route14CooltrainerM1EndBattleText": [
       36,
-      18638
+      18495
     ],
     "_Route14CooltrainerM2AfterBattleText": [
       36,
@@ -28125,7 +28412,7 @@
     ],
     "_Route14CooltrainerM6EndBattleText": [
       36,
-      19186
+      19033
     ],
     "_Route14SignText": [
       36,
@@ -28189,7 +28476,7 @@
     ],
     "_Route15CooltrainerF1EndBattleText": [
       36,
-      19714
+      19566
     ],
     "_Route15CooltrainerF2AfterBattleText": [
       36,
@@ -28349,7 +28636,7 @@
     ],
     "_Route16FlyHouseBrunetteGirlHM02NoRoomText": [
       35,
-      20189
+      20158
     ],
     "_Route16FlyHouseBrunetteGirlReceivedHM02Text": [
       35,
@@ -28405,11 +28692,11 @@
     ],
     "_Route16SnorlaxWokeUpText": [
       36,
-      21348
+      21160
     ],
     "_Route16Text7": [
       36,
-      21308
+      21127
     ],
     "_Route16biker4BattleText": [
       36,
@@ -28437,7 +28724,7 @@
     ],
     "_Route17Biker1EndBattleText": [
       36,
-      21558
+      21365
     ],
     "_Route17Biker2AfterBattleText": [
       36,
@@ -28689,11 +28976,11 @@
     ],
     "_Route19Swimmer4AfterBattleText": [
       36,
-      23570
+      23198
     ],
     "_Route19Swimmer4BattleText": [
       36,
-      23520
+      23151
     ],
     "_Route19Swimmer4EndBattleText": [
       36,
@@ -29073,7 +29360,7 @@
     ],
     "_Route24CooltrainerF1BattleText": [
       37,
-      16609
+      16557
     ],
     "_Route24CooltrainerF1EndBattleText": [
       37,
@@ -29085,7 +29372,7 @@
     ],
     "_Route24CooltrainerF2BattleText": [
       37,
-      16800
+      16691
     ],
     "_Route24CooltrainerF2EndBattleText": [
       37,
@@ -29149,7 +29436,7 @@
     ],
     "_Route24Youngster1BattleText": [
       37,
-      16705
+      16653
     ],
     "_Route24Youngster1EndBattleText": [
       37,
@@ -29161,7 +29448,7 @@
     ],
     "_Route24Youngster2BattleText": [
       37,
-      16975
+      16844
     ],
     "_Route24Youngster2EndBattleText": [
       37,
@@ -29281,7 +29568,7 @@
     ],
     "_Route2DiglettsCaveSignText": [
       35,
-      22407
+      22378
     ],
     "_Route2GateOaksAideFlashExplanationText": [
       34,
@@ -29429,7 +29716,7 @@
     ],
     "_Route5UndergroundPathSignText": [
       35,
-      23655
+      23559
     ],
     "_Route6CooltrainerAfterBattleText": [
       35,
@@ -29477,7 +29764,7 @@
     ],
     "_Route6UndergroundPathSignText": [
       35,
-      24251
+      24137
     ],
     "_Route6Youngster1AfterBattleText": [
       35,
@@ -29505,7 +29792,7 @@
     ],
     "_Route7UndergroundPathSignText": [
       35,
-      24294
+      24186
     ],
     "_Route8CooltrainerF1AfterBattleText": [
       35,
@@ -29617,7 +29904,7 @@
     ],
     "_Route8UndergroundSignText": [
       35,
-      25320
+      25186
     ],
     "_Route9CooltrainerF1AfterBattleText": [
       35,
@@ -29789,7 +30076,7 @@
     ],
     "_SSAnne1FRoomsWigglytuffText": [
       32,
-      22156
+      21719
     ],
     "_SSAnne1FRoomsYoungsterAfterBattleText": [
       32,
@@ -29925,7 +30212,7 @@
     ],
     "_SSAnneB1FRoomsMachokeText": [
       32,
-      23668
+      23210
     ],
     "_SSAnneB1FRoomsSailor1AfterBattleText": [
       32,
@@ -29969,11 +30256,11 @@
     ],
     "_SSAnneB1FRoomsSailor4BattleText": [
       32,
-      24028
+      23539
     ],
     "_SSAnneB1FRoomsSailor4EndBattleText": [
       32,
-      24069
+      23570
     ],
     "_SSAnneB1FRoomsSailor5AfterBattleText": [
       32,
@@ -30021,7 +30308,7 @@
     ],
     "_SSAnneBowSailor3EndBattleText": [
       32,
-      20956
+      20622
     ],
     "_SSAnneBowSuperNerdText": [
       32,
@@ -30029,7 +30316,7 @@
     ],
     "_SSAnneCaptainsRoomCaptainHM01NoRoomText": [
       32,
-      22022
+      21597
     ],
     "_SSAnneCaptainsRoomCaptainIFeelMuchBetterText": [
       32,
@@ -30041,11 +30328,11 @@
     ],
     "_SSAnneCaptainsRoomCaptainReceivedHM01Text": [
       32,
-      21935
+      21517
     ],
     "_SSAnneCaptainsRoomRubCaptainsBackText": [
       32,
-      21605
+      21213
     ],
     "_SSAnneCaptainsRoomSeasickBookText": [
       32,
@@ -30269,7 +30556,7 @@
     ],
     "_SaffronCityFightingDojoSignText": [
       41,
-      26511
+      26022
     ],
     "_SaffronCityGentlemanText": [
       41,
@@ -30405,7 +30692,7 @@
     ],
     "_SaffronGymChanneler2EndBattleText": [
       40,
-      24894
+      24721
     ],
     "_SaffronGymChanneler3AfterBattleText": [
       40,
@@ -30485,7 +30772,7 @@
     ],
     "_SaffronGymYoungster3EndBattleText": [
       40,
-      25235
+      25060
     ],
     "_SaffronGymYoungster4AfterBattleText": [
       40,
@@ -30497,7 +30784,7 @@
     ],
     "_SaffronGymYoungster4EndBattleText": [
       40,
-      25477
+      25290
     ],
     "_SaffronMartCooltrainerFText": [
       40,
@@ -30677,7 +30964,7 @@
     ],
     "_SilphCo11FSilphPresidentNoRoomText": [
       33,
-      20721
+      20499
     ],
     "_SilphCo11FSilphPresidentReceivedMasterBallText": [
       33,
@@ -30741,7 +31028,7 @@
     ],
     "_SilphCo2FSilphWorkerFReceivedTM36Text": [
       32,
-      26491
+      25786
     ],
     "_SilphCo2FSilphWorkerFTM36ExplanationText": [
       32,
@@ -30761,7 +31048,7 @@
     ],
     "_SilphCo3FRocketEndBattleText": [
       32,
-      27211
+      26394
     ],
     "_SilphCo3FScientistAfterBattleText": [
       32,
@@ -30773,7 +31060,7 @@
     ],
     "_SilphCo3FScientistEndBattleText": [
       32,
-      27348
+      26501
     ],
     "_SilphCo3FSilphWorkerMWhatShouldIDoText": [
       32,
@@ -30793,7 +31080,7 @@
     ],
     "_SilphCo4FRocket1EndBattleText": [
       32,
-      27580
+      26699
     ],
     "_SilphCo4FRocket2AfterBattleText": [
       32,
@@ -30901,7 +31188,7 @@
     ],
     "_SilphCo6FRocket1BattleText": [
       33,
-      17261
+      17158
     ],
     "_SilphCo6FRocket1EndBattleText": [
       33,
@@ -31009,7 +31296,7 @@
     ],
     "_SilphCo7FRocket2BattleText": [
       33,
-      18550
+      18366
     ],
     "_SilphCo7FRocket2EndBattleText": [
       33,
@@ -31097,7 +31384,7 @@
     ],
     "_SilphCo8FRocket2BattleText": [
       33,
-      19572
+      19377
     ],
     "_SilphCo8FRocket2EndBattleText": [
       33,
@@ -31141,7 +31428,7 @@
     ],
     "_SilphCo9FRocket2BattleText": [
       33,
-      19959
+      19763
     ],
     "_SilphCo9FRocket2EndBattleText": [
       33,
@@ -31293,15 +31580,15 @@
     ],
     "_Thanks1Text": [
       42,
-      16699
+      16725
     ],
     "_Thanks2Text": [
       42,
-      16870
+      16905
     ],
     "_Thanks3Text": [
       42,
-      17035
+      17084
     ],
     "_ThrashingAboutText": [
       34,
@@ -31353,7 +31640,7 @@
     ],
     "_TradeCenterOpponentText": [
       37,
-      19393
+      19201
     ],
     "_TradeForText": [
       34,
@@ -31429,15 +31716,15 @@
     ],
     "_TurnedOnPC1Text": [
       34,
-      24845
+      24318
     ],
     "_TurnedOnPC2Text": [
       34,
-      25028
+      24489
     ],
     "_UnaffectedText": [
       34,
-      23658
+      23204
     ],
     "_UndergroundPathRoute6GirlText": [
       35,
@@ -31617,7 +31904,7 @@
     ],
     "_VermilionDockUnusedText": [
       39,
-      17761
+      17678
     ],
     "_VermilionGymGentlemanAfterBattleText": [
       39,
@@ -31657,7 +31944,7 @@
     ],
     "_VermilionGymLTSurgeTM24NoRoomText": [
       39,
-      16694
+      16688
     ],
     "_VermilionGymLTSurgeThunderBadgeInfoText": [
       39,
@@ -31685,7 +31972,7 @@
     ],
     "_VermilionGymSuperNerdEndBattleText": [
       39,
-      16979
+      16964
     ],
     "_VermilionGymTrashFailText": [
       34,
@@ -31729,7 +32016,7 @@
     ],
     "_VermilionOldRodHouseFishingGuruNoRoomText": [
       39,
-      18078
+      17996
     ],
     "_VermilionOldRodHouseFishingGuruTakeThisText": [
       39,
@@ -31825,7 +32112,7 @@
     ],
     "_VictoryRoad2FSuperNerd1EndBattleText": [
       35,
-      20778
+      20751
     ],
     "_VictoryRoad2FSuperNerd2AfterBattleText": [
       35,
@@ -32153,7 +32440,7 @@
     ],
     "_ViridianGymGiovanniTM27NoRoomText": [
       37,
-      25492
+      24836
     ],
     "_ViridianGymGuidePostBattleText": [
       37,
@@ -32185,7 +32472,7 @@
     ],
     "_ViridianGymHiker2EndBattleText": [
       37,
-      25907
+      25221
     ],
     "_ViridianGymHiker3AfterBattleText": [
       37,
@@ -32273,7 +32560,7 @@
     ],
     "_ViridianSchoolBlackboardText2": [
       34,
-      21086
+      20814
     ],
     "_ViridianSchoolHouseBrunetteGirlText": [
       37,
@@ -32305,7 +32592,7 @@
     ],
     "_VitaminNoEffectText": [
       41,
-      27299
+      26782
     ],
     "_VitaminStatRoseText": [
       41,
@@ -32514,42 +32801,6 @@
     "_ZubatDexEntry": [
       43,
       24717
-    ],
-    "_LoreleiEndBattleText": [
-      33,
-      26804
-    ],
-    "_PokemonCenterPCDepositText": [
-      34,
-      25086
-    ],
-    "_PokemonCenterPCTossText": [
-      34,
-      25323
-    ],
-    "_PokemonCenterPCWithdrawText": [
-      34,
-      25207
-    ],
-    "_Route24M3BattleText": [
-      37,
-      16513
-    ],
-    "_SafariZoneCenterRestHouseText": [
-      33,
-      22836
-    ],
-    "_SafariZoneEastRestHouseText": [
-      33,
-      22276
-    ],
-    "_SafariZoneNorthRestHouseText": [
-      33,
-      22377
-    ],
-    "_SafariZoneWestRestHouseText": [
-      33,
-      22597
     ]
   },
   "text": {
@@ -44980,7 +45231,3 @@
     "TypeNames.Dragon"
   ]
 }
-
-
-
-
