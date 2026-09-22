@@ -103,6 +103,8 @@ def main():
     resolved = []
     unresolved = []
     ambiguous = []
+    ambiguous_corpus = []
+    ambiguous_rom = []
     no_corpus = []
     encoding_unknown = []
 
@@ -114,9 +116,7 @@ def main():
             continue
 
         if symbol in collisions:
-            ambiguous.append(
-                (symbol, "multiple PokeCorpus QIDs: " + ", ".join(collisions[symbol]))
-            )
+            ambiguous_corpus.append((symbol, collisions[symbol]))
             continue
 
         try:
@@ -176,12 +176,24 @@ def main():
             unresolved.append((symbol, row.qid, "no full-ROM match"))
 
         else:
-            ambiguous.append(
+            ambiguous_rom.append(
                 (
                     symbol,
-                    f"{len(hits)} full-ROM matches",
+                    row.qid,
+                    hits,
+                    len(pattern),
+                    sum(v is None for v in pattern),
                 )
             )
+
+    ambiguous = [
+        (symbol, "multiple PokeCorpus QIDs: " + ", ".join(qids))
+        for symbol, qids in ambiguous_corpus
+    ]
+    ambiguous.extend(
+        (symbol, f"{len(hits)} full-ROM matches")
+        for symbol, qid, hits, pattern_len, wildcard_count in ambiguous_rom
+    )
 
     # Create a copy of the manifest; never modify the source manifest.
     out_manifest = json.loads(json.dumps(manifest))
@@ -248,8 +260,22 @@ def main():
     report.append("")
     report.append("AMBIGUOUS")
     report.append("-" * 80)
-    for symbol, reason in ambiguous:
-        report.append(f"{symbol}\t{reason}")
+
+    for symbol, qids in ambiguous_corpus:
+        report.append(
+            f"{symbol}\tmultiple PokeCorpus QIDs: {', '.join(qids)}"
+        )
+
+    for symbol, qid, hits, pattern_len, wildcard_count in ambiguous_rom:
+        report.append(
+            f"{symbol}\t{len(hits)} full-ROM matches\t{qid}\t"
+            f"len={pattern_len}\twildcards={wildcard_count}"
+        )
+        for hit in hits:
+            bank, address = offset_location(hit.offset)
+            report.append(
+                f"  - {bank:02X}:{address:04X}\toffset=0x{hit.offset:06X}"
+            )
 
     report.append("")
     report.append("NO CORPUS")
