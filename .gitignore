@@ -71,3 +71,12 @@ tools/italian_rom_locator_report.txt
 *.gb
 *.gbc
 *.gba
+
+# Italian ROM analysis artifacts
+tools/ambiguous_candidates.tsv
+tools/ambiguous_candidate_scoring.tsv
+tools/pass2_neighbor_context.txt
+tools/pass3_ambiguous_analysis.tsv
+tools/pass3_ambiguous_analysis.txt
+tools/pass4_content_verification.tsv
+tools/pass4_content_verification.txt
