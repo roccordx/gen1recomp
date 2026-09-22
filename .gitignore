@@ -11,7 +11,7 @@ save/
 
 __pycache__/
 *.pyc
-.venv
+.venv/
 .*/
 .*
 !.github/
@@ -32,7 +32,6 @@ mobile/ios/build/
 
 # Final packaged build artifacts (mac/win/web/android/ios) — see scripts/build.sh
 /dist/
-
 # Legacy manual convenience-copy location (superseded by /dist/android/)
 mobile/dist/
 
@@ -42,3 +41,33 @@ mobile/dist/
 
 # per-machine iOS bundle-id pin (see scripts/build_ios.sh)
 mobile/ios/bundle_id.local
+
+# Generated analysis artifacts
+tools/*_audit.tsv
+tools/*_validation.tsv
+tools/*_runtime_usage.tsv
+tools/*_semantic_audit.tsv
+tools/bank20_chain_*.tsv
+tools/bank20_pass1_candidates.tsv
+tools/italian_rom_locator.tsv
+tools/pokecorpus_gen1recomp_analysis.tsv
+tools/*_audit.txt
+tools/*_validation.txt
+tools/*_runtime_usage.txt
+tools/*_semantic_audit.txt
+tools/italian_text_manifest_report.txt
+tools/pokecorpus_gen1recomp_analysis.txt
+tools/italian_rom_locator.txt
+
+# Persistent ROM mapping used as generator input
+!tools/bank20_mapping.tsv
+
+# Generated analysis reports
+tools/bank20_alignment_diagnostics.txt
+tools/bank20_chain_analysis.txt
+tools/italian_rom_locator_report.txt
+
+# Local development
+*.gb
+*.gbc
+*.gba
