@@ -21932,7 +21932,7 @@
     ],
     "SilphCo2FSilphWorkerFPleaseTakeThisText": [
       32,
-      25684
+      26412
     ],
     "SilphCo2F_h": [
       22,
@@ -22536,7 +22536,7 @@
     ],
     "_AgathaEndBattleText": [
       33,
-      27395
+      27549
     ],
     "_AgathasRoomAgathaDontRunAwayText": [
       33,
@@ -22592,7 +22592,7 @@
     ],
     "_BecameConfusedText": [
       37,
-      18552
+      18748
     ],
     "_BeedrillDexEntry": [
       43,
@@ -22612,7 +22612,7 @@
     ],
     "_BikeShopBagFullText": [
       38,
-      20301
+      20445
     ],
     "_BikeShopCantAffordText": [
       38,
@@ -22724,7 +22724,7 @@
     ],
     "_BookcaseText": [
       34,
-      18121
+      18274
     ],
     "_BoostedText": [
       34,
@@ -22764,7 +22764,7 @@
     ],
     "_BrunoEndBattleText": [
       33,
-      27023
+      27114
     ],
     "_BrunosRoomBrunoDontRunAwayText": [
       33,
@@ -22844,7 +22844,7 @@
     ],
     "_CantCarryMoreText": [
       34,
-      24745
+      25265
     ],
     "_CantDepositLastMonText": [
       34,
@@ -22924,7 +22924,7 @@
     ],
     "_CeladonCityGramps3TM41NoRoomText": [
       41,
-      23480
+      23844
     ],
     "_CeladonCityGramps3Text": [
       41,
@@ -22988,7 +22988,7 @@
     ],
     "_CeladonDinerGymGuideCoinCaseNoRoomText": [
       39,
-      24720
+      25107
     ],
     "_CeladonDinerGymGuideImFlatOutBustedText": [
       39,
@@ -23232,7 +23232,7 @@
     ],
     "_CeladonMart3FClerkTM18NoRoomText": [
       39,
-      18602
+      18719
     ],
     "_CeladonMart3FClerkTM18PreReceiveText": [
       39,
@@ -23312,7 +23312,7 @@
     ],
     "_CeladonMartRoofLittleGirlGiveHerADrinkText": [
       39,
-      19990
+      20162
     ],
     "_CeladonMartRoofLittleGirlGiveHerWhichDrinkText": [
       39,
@@ -23324,7 +23324,7 @@
     ],
     "_CeladonMartRoofLittleGirlImThirstyText": [
       39,
-      19950
+      20127
     ],
     "_CeladonMartRoofLittleGirlNoRoomText": [
       39,
@@ -23584,7 +23584,7 @@
     ],
     "_CeruleanGymMistyTM11NoRoomText": [
       38,
-      19344
+      19510
     ],
     "_CeruleanMartCooltrainerFText": [
       38,
@@ -23744,7 +23744,7 @@
     ],
     "_CinnabarGymSuperNerd2EndBattleText": [
       40,
-      19188
+      19246
     ],
     "_CinnabarGymSuperNerd3AfterBattleText": [
       40,
@@ -23844,11 +23844,11 @@
     ],
     "_CinnabarLabFossilRoomScientist1GoForAWalkText": [
       40,
-      20822
+      21077
     ],
     "_CinnabarLabFossilRoomScientist1GoForAWalkText2": [
       40,
-      21135
+      21350
     ],
     "_CinnabarLabFossilRoomScientist1NoFossilsText": [
       40,
@@ -23988,7 +23988,7 @@
     ],
     "_ColosseumOpponentText": [
       37,
-      19204
+      19396
     ],
     "_ComeBackText": [
       34,
@@ -24236,7 +24236,7 @@
     ],
     "_DidntAffectText": [
       37,
-      18663
+      18862
     ],
     "_DiglettDexEntry": [
       43,
@@ -24280,7 +24280,7 @@
     ],
     "_DoesntAffectMonText": [
       34,
-      23220
+      23673
     ],
     "_DragonairDexEntry": [
       43,
@@ -24392,7 +24392,7 @@
     ],
     "_ExclamationText": [
       32,
-      16531
+      16548
     ],
     "_ExeggcuteDexEntry": [
       43,
@@ -24428,7 +24428,7 @@
     ],
     "_FellText": [
       37,
-      18377
+      18568
     ],
     "_FightingDojoBetterNotGetGreedyText": [
       40,
@@ -24444,7 +24444,7 @@
     ],
     "_FightingDojoBlackbelt1EndBattleText": [
       40,
-      22967
+      23118
     ],
     "_FightingDojoBlackbelt2AfterBattleText": [
       40,
@@ -24508,7 +24508,7 @@
     ],
     "_FightingDojoText": [
       34,
-      20217
+      20504
     ],
     "_FileDataDestroyedText": [
       37,
@@ -24556,11 +24556,11 @@
     ],
     "_FoundItemText": [
       32,
-      16665
+      16725
     ],
     "_FrozenText": [
       37,
-      18285
+      18484
     ],
     "_FuchsiaBillsGrandpasHouseBillsGrandpaText": [
       39,
@@ -24616,7 +24616,7 @@
     ],
     "_FuchsiaCityPokemonText": [
       41,
-      24470
+      24898
     ],
     "_FuchsiaCitySafariGameSignText": [
       41,
@@ -24656,7 +24656,7 @@
     ],
     "_FuchsiaGoodRodHouseFishingGuruNoRoomText": [
       40,
-      18306
+      18349
     ],
     "_FuchsiaGoodRodHouseFishingGuruReceivedGoodRodText": [
       40,
@@ -24704,7 +24704,7 @@
     ],
     "_FuchsiaGymKogaTM06NoRoomText": [
       40,
-      16707
+      16736
     ],
     "_FuchsiaGymRocker1AfterBattleText": [
       40,
@@ -25220,7 +25220,7 @@
     ],
     "_IsConfusedText": [
       34,
-      22910
+      23374
     ],
     "_IsEvolvingText": [
       37,
@@ -25228,7 +25228,7 @@
     ],
     "_IsFrozenText": [
       34,
-      22816
+      23287
     ],
     "_IsItOKToTossItemText": [
       42,
@@ -25236,7 +25236,7 @@
     ],
     "_IsUnaffectedText": [
       37,
-      18683
+      18883
     ],
     "_ItemUseBallText00": [
       41,
@@ -25276,7 +25276,7 @@
     ],
     "_ItemUseNoEffectText": [
       41,
-      27369
+      27924
     ],
     "_ItemUseNotTimeText": [
       41,
@@ -25488,7 +25488,7 @@
     ],
     "_LinkCableHelpText2": [
       34,
-      20519
+      20806
     ],
     "_LinkCableInfoText1": [
       34,
@@ -25740,7 +25740,7 @@
     ],
     "_MtMoon1FCooltrainerF1EndBattleText": [
       32,
-      18296
+      18485
     ],
     "_MtMoon1FCooltrainerF2AfterBattleText": [
       32,
@@ -25816,7 +25816,7 @@
     ],
     "_MtMoonB1FUnusedText": [
       32,
-      18780
+      18991
     ],
     "_MtMoonB2FDomeFossilYouWantText": [
       32,
@@ -25828,7 +25828,7 @@
     ],
     "_MtMoonB2FReceivedFossilText": [
       32,
-      18837
+      19032
     ],
     "_MtMoonB2FRocket1AfterBattleText": [
       32,
@@ -25884,7 +25884,7 @@
     ],
     "_MtMoonB2FSuperNerdThenThisIsMineText": [
       32,
-      19091
+      19299
     ],
     "_MtMoonB2FSuperNerdTheresAPokemonLabText": [
       32,
@@ -25896,7 +25896,7 @@
     ],
     "_MtMoonB2FYouHaveNoRoomText": [
       32,
-      18856
+      19050
     ],
     "_MtMoonB2fSuperNerdEachTakeOneText": [
       32,
@@ -25908,7 +25908,7 @@
     ],
     "_MtMoonPokecenterClipboardText": [
       34,
-      27226
+      27855
     ],
     "_MtMoonPokecenterGentlemanText": [
       34,
@@ -26000,7 +26000,7 @@
     ],
     "_Museum1FScientist2YouDontHaveSpaceText": [
       37,
-      26569
+      27381
     ],
     "_Museum1FScientist3Text": [
       37,
@@ -26224,15 +26224,15 @@
     ],
     "_OaksAideComeBackText": [
       32,
-      17038
+      17015
     ],
     "_OaksAideGotItemText": [
       32,
-      17113
+      17196
     ],
     "_OaksAideHereYouGoText": [
       32,
-      17110
+      17136
     ],
     "_OaksAideHiText": [
       32,
@@ -26244,7 +26244,7 @@
     ],
     "_OaksAideUhOhText": [
       32,
-      16939
+      16862
     ],
     "_OaksLabGirlText": [
       37,
@@ -26300,7 +26300,7 @@
     ],
     "_OaksLabOak2Text": [
       37,
-      21096
+      21410
     ],
     "_OaksLabOakBePatientText": [
       37,
@@ -26500,7 +26500,7 @@
     ],
     "_PalletTownRivalsHouseSignText": [
       41,
-      17345
+      17458
     ],
     "_PalletTownSignText": [
       41,
@@ -26824,11 +26824,11 @@
     ],
     "_PokemonBooksText": [
       34,
-      21953
+      22352
     ],
     "_PokemonCenterFarewellText": [
       40,
-      26896
+      27072
     ],
     "_PokemonCenterWelcomeText": [
       40,
@@ -26840,7 +26840,7 @@
     ],
     "_PokemonFanClubBagFullText": [
       38,
-      26931
+      26979
     ],
     "_PokemonFanClubChairFinalText": [
       38,
@@ -26916,11 +26916,11 @@
     ],
     "_PokemonMansion1FScientistEndBattleText": [
       40,
-      18389
+      18424
     ],
     "_PokemonMansion1FSwitchNotPressedText": [
       40,
-      18484
+      18531
     ],
     "_PokemonMansion1FSwitchPressedText": [
       40,
@@ -26928,7 +26928,7 @@
     ],
     "_PokemonMansion1FSwitchText": [
       40,
-      18442
+      18473
     ],
     "_PokemonMansion2FDiary1Text": [
       33,
@@ -26952,7 +26952,7 @@
     ],
     "_PokemonMansion2FSwitchNotPressedText": [
       33,
-      21489
+      21769
     ],
     "_PokemonMansion2FSwitchPressedText": [
       33,
@@ -26960,7 +26960,7 @@
     ],
     "_PokemonMansion2FSwitchText": [
       33,
-      21447
+      21711
     ],
     "_PokemonMansion3FDiaryText": [
       33,
@@ -26988,7 +26988,7 @@
     ],
     "_PokemonMansion3FSuperNerdEndBattleText": [
       33,
-      21532
+      21810
     ],
     "_PokemonMansionB1FBurglarAfterBattleText": [
       33,
@@ -27000,7 +27000,7 @@
     ],
     "_PokemonMansionB1FBurglarEndBattleText": [
       33,
-      21751
+      22034
     ],
     "_PokemonMansionB1FDiaryText": [
       33,
@@ -27144,7 +27144,7 @@
     ],
     "_PokemonTower5FChanneler2AfterBattleText": [
       38,
-      22979
+      23132
     ],
     "_PokemonTower5FChanneler2BattleText": [
       38,
@@ -27156,7 +27156,7 @@
     ],
     "_PokemonTower5FChanneler3AfterBattleText": [
       38,
-      23052
+      23195
     ],
     "_PokemonTower5FChanneler3BattleText": [
       38,
@@ -27256,7 +27256,7 @@
     ],
     "_PokemonTower7FRocket1EndBattleText": [
       38,
-      23894
+      24050
     ],
     "_PokemonTower7FRocket2AfterBattleText": [
       38,
@@ -27504,7 +27504,7 @@
     ],
     "_RockTunnel1FHiker3EndBattleText": [
       35,
-      17497
+      17524
     ],
     "_RockTunnel1FSignText": [
       35,
@@ -27544,7 +27544,7 @@
     ],
     "_RockTunnelB1FCooltrainerF2EndBattleText": [
       33,
-      27711
+      28189
     ],
     "_RockTunnelB1FHiker1AfterBattleText": [
       33,
@@ -27700,7 +27700,7 @@
     ],
     "_RocketHideoutB1FRocket5EndBattleText": [
       32,
-      24362
+      24944
     ],
     "_RocketHideoutB2FRocketAfterBattleText": [
       32,
@@ -27776,11 +27776,11 @@
     ],
     "_RocketHideoutElevatorAppearsToNeedKeyText": [
       32,
-      25656
+      26374
     ],
     "_RoseText": [
       37,
-      18347
+      18544
     ],
     "_Route10CooltrainerF1AfterBattleText": [
       35,
@@ -27864,7 +27864,7 @@
     ],
     "_Route11DiglettsCaveSignText": [
       36,
-      16527
+      16536
     ],
     "_Route11Gambler1AfterBattleText": [
       35,
@@ -28092,7 +28092,7 @@
     ],
     "_Route12Gate2FBrunetteGirlTM39NoRoomText": [
       35,
-      18748
+      18771
     ],
     "_Route12Gate2FBrunetteGirlYouCanHaveThisText": [
       35,
@@ -28116,11 +28116,11 @@
     ],
     "_Route12SnorlaxText": [
       36,
-      16542
+      16552
     ],
     "_Route12SnorlaxWokeUpText": [
       36,
-      16575
+      16592
     ],
     "_Route12SportFishingSignText": [
       36,
@@ -28208,7 +28208,7 @@
     ],
     "_Route13CooltrainerF1EndBattleText": [
       36,
-      17510
+      17623
     ],
     "_Route13CooltrainerF2AfterBattleText": [
       36,
@@ -28352,7 +28352,7 @@
     ],
     "_Route14CooltrainerM1EndBattleText": [
       36,
-      18495
+      18638
     ],
     "_Route14CooltrainerM2AfterBattleText": [
       36,
@@ -28412,7 +28412,7 @@
     ],
     "_Route14CooltrainerM6EndBattleText": [
       36,
-      19033
+      19186
     ],
     "_Route14SignText": [
       36,
@@ -28476,7 +28476,7 @@
     ],
     "_Route15CooltrainerF1EndBattleText": [
       36,
-      19566
+      19714
     ],
     "_Route15CooltrainerF2AfterBattleText": [
       36,
@@ -28636,7 +28636,7 @@
     ],
     "_Route16FlyHouseBrunetteGirlHM02NoRoomText": [
       35,
-      20158
+      20189
     ],
     "_Route16FlyHouseBrunetteGirlReceivedHM02Text": [
       35,
@@ -28692,11 +28692,11 @@
     ],
     "_Route16SnorlaxWokeUpText": [
       36,
-      21160
+      21348
     ],
     "_Route16Text7": [
       36,
-      21127
+      21308
     ],
     "_Route16biker4BattleText": [
       36,
@@ -28724,7 +28724,7 @@
     ],
     "_Route17Biker1EndBattleText": [
       36,
-      21365
+      21558
     ],
     "_Route17Biker2AfterBattleText": [
       36,
@@ -28976,11 +28976,11 @@
     ],
     "_Route19Swimmer4AfterBattleText": [
       36,
-      23198
+      23570
     ],
     "_Route19Swimmer4BattleText": [
       36,
-      23151
+      23520
     ],
     "_Route19Swimmer4EndBattleText": [
       36,
@@ -29360,7 +29360,7 @@
     ],
     "_Route24CooltrainerF1BattleText": [
       37,
-      16557
+      16609
     ],
     "_Route24CooltrainerF1EndBattleText": [
       37,
@@ -29372,7 +29372,7 @@
     ],
     "_Route24CooltrainerF2BattleText": [
       37,
-      16691
+      16800
     ],
     "_Route24CooltrainerF2EndBattleText": [
       37,
@@ -29436,7 +29436,7 @@
     ],
     "_Route24Youngster1BattleText": [
       37,
-      16653
+      16705
     ],
     "_Route24Youngster1EndBattleText": [
       37,
@@ -29448,7 +29448,7 @@
     ],
     "_Route24Youngster2BattleText": [
       37,
-      16844
+      16975
     ],
     "_Route24Youngster2EndBattleText": [
       37,
@@ -29568,7 +29568,7 @@
     ],
     "_Route2DiglettsCaveSignText": [
       35,
-      22378
+      22407
     ],
     "_Route2GateOaksAideFlashExplanationText": [
       34,
@@ -29716,7 +29716,7 @@
     ],
     "_Route5UndergroundPathSignText": [
       35,
-      23559
+      23655
     ],
     "_Route6CooltrainerAfterBattleText": [
       35,
@@ -29764,7 +29764,7 @@
     ],
     "_Route6UndergroundPathSignText": [
       35,
-      24137
+      24251
     ],
     "_Route6Youngster1AfterBattleText": [
       35,
@@ -29792,7 +29792,7 @@
     ],
     "_Route7UndergroundPathSignText": [
       35,
-      24186
+      24294
     ],
     "_Route8CooltrainerF1AfterBattleText": [
       35,
@@ -29904,7 +29904,7 @@
     ],
     "_Route8UndergroundSignText": [
       35,
-      25186
+      25320
     ],
     "_Route9CooltrainerF1AfterBattleText": [
       35,
@@ -30076,7 +30076,7 @@
     ],
     "_SSAnne1FRoomsWigglytuffText": [
       32,
-      21719
+      22156
     ],
     "_SSAnne1FRoomsYoungsterAfterBattleText": [
       32,
@@ -30212,7 +30212,7 @@
     ],
     "_SSAnneB1FRoomsMachokeText": [
       32,
-      23210
+      23668
     ],
     "_SSAnneB1FRoomsSailor1AfterBattleText": [
       32,
@@ -30256,11 +30256,11 @@
     ],
     "_SSAnneB1FRoomsSailor4BattleText": [
       32,
-      23539
+      24028
     ],
     "_SSAnneB1FRoomsSailor4EndBattleText": [
       32,
-      23570
+      24069
     ],
     "_SSAnneB1FRoomsSailor5AfterBattleText": [
       32,
@@ -30308,7 +30308,7 @@
     ],
     "_SSAnneBowSailor3EndBattleText": [
       32,
-      20622
+      20956
     ],
     "_SSAnneBowSuperNerdText": [
       32,
@@ -30316,7 +30316,7 @@
     ],
     "_SSAnneCaptainsRoomCaptainHM01NoRoomText": [
       32,
-      21597
+      22022
     ],
     "_SSAnneCaptainsRoomCaptainIFeelMuchBetterText": [
       32,
@@ -30328,11 +30328,11 @@
     ],
     "_SSAnneCaptainsRoomCaptainReceivedHM01Text": [
       32,
-      21517
+      21935
     ],
     "_SSAnneCaptainsRoomRubCaptainsBackText": [
       32,
-      21213
+      21605
     ],
     "_SSAnneCaptainsRoomSeasickBookText": [
       32,
@@ -30556,7 +30556,7 @@
     ],
     "_SaffronCityFightingDojoSignText": [
       41,
-      26022
+      26511
     ],
     "_SaffronCityGentlemanText": [
       41,
@@ -30692,7 +30692,7 @@
     ],
     "_SaffronGymChanneler2EndBattleText": [
       40,
-      24721
+      24894
     ],
     "_SaffronGymChanneler3AfterBattleText": [
       40,
@@ -30772,7 +30772,7 @@
     ],
     "_SaffronGymYoungster3EndBattleText": [
       40,
-      25060
+      25235
     ],
     "_SaffronGymYoungster4AfterBattleText": [
       40,
@@ -30784,7 +30784,7 @@
     ],
     "_SaffronGymYoungster4EndBattleText": [
       40,
-      25290
+      25477
     ],
     "_SaffronMartCooltrainerFText": [
       40,
@@ -30964,7 +30964,7 @@
     ],
     "_SilphCo11FSilphPresidentNoRoomText": [
       33,
-      20499
+      20721
     ],
     "_SilphCo11FSilphPresidentReceivedMasterBallText": [
       33,
@@ -31028,7 +31028,7 @@
     ],
     "_SilphCo2FSilphWorkerFReceivedTM36Text": [
       32,
-      25786
+      26491
     ],
     "_SilphCo2FSilphWorkerFTM36ExplanationText": [
       32,
@@ -31048,7 +31048,7 @@
     ],
     "_SilphCo3FRocketEndBattleText": [
       32,
-      26394
+      27211
     ],
     "_SilphCo3FScientistAfterBattleText": [
       32,
@@ -31060,7 +31060,7 @@
     ],
     "_SilphCo3FScientistEndBattleText": [
       32,
-      26501
+      27348
     ],
     "_SilphCo3FSilphWorkerMWhatShouldIDoText": [
       32,
@@ -31080,7 +31080,7 @@
     ],
     "_SilphCo4FRocket1EndBattleText": [
       32,
-      26699
+      27580
     ],
     "_SilphCo4FRocket2AfterBattleText": [
       32,
@@ -31188,7 +31188,7 @@
     ],
     "_SilphCo6FRocket1BattleText": [
       33,
-      17158
+      17261
     ],
     "_SilphCo6FRocket1EndBattleText": [
       33,
@@ -31296,7 +31296,7 @@
     ],
     "_SilphCo7FRocket2BattleText": [
       33,
-      18366
+      18550
     ],
     "_SilphCo7FRocket2EndBattleText": [
       33,
@@ -31384,7 +31384,7 @@
     ],
     "_SilphCo8FRocket2BattleText": [
       33,
-      19377
+      19572
     ],
     "_SilphCo8FRocket2EndBattleText": [
       33,
@@ -31428,7 +31428,7 @@
     ],
     "_SilphCo9FRocket2BattleText": [
       33,
-      19763
+      19959
     ],
     "_SilphCo9FRocket2EndBattleText": [
       33,
@@ -31580,15 +31580,15 @@
     ],
     "_Thanks1Text": [
       42,
-      16725
+      16699
     ],
     "_Thanks2Text": [
       42,
-      16905
+      16870
     ],
     "_Thanks3Text": [
       42,
-      17084
+      17035
     ],
     "_ThrashingAboutText": [
       34,
@@ -31640,7 +31640,7 @@
     ],
     "_TradeCenterOpponentText": [
       37,
-      19201
+      19393
     ],
     "_TradeForText": [
       34,
@@ -31716,15 +31716,15 @@
     ],
     "_TurnedOnPC1Text": [
       34,
-      24318
+      24845
     ],
     "_TurnedOnPC2Text": [
       34,
-      24489
+      25028
     ],
     "_UnaffectedText": [
       34,
-      23204
+      23658
     ],
     "_UndergroundPathRoute6GirlText": [
       35,
@@ -31904,7 +31904,7 @@
     ],
     "_VermilionDockUnusedText": [
       39,
-      17678
+      17761
     ],
     "_VermilionGymGentlemanAfterBattleText": [
       39,
@@ -31944,7 +31944,7 @@
     ],
     "_VermilionGymLTSurgeTM24NoRoomText": [
       39,
-      16688
+      16694
     ],
     "_VermilionGymLTSurgeThunderBadgeInfoText": [
       39,
@@ -31972,7 +31972,7 @@
     ],
     "_VermilionGymSuperNerdEndBattleText": [
       39,
-      16964
+      16979
     ],
     "_VermilionGymTrashFailText": [
       34,
@@ -32016,7 +32016,7 @@
     ],
     "_VermilionOldRodHouseFishingGuruNoRoomText": [
       39,
-      17996
+      18078
     ],
     "_VermilionOldRodHouseFishingGuruTakeThisText": [
       39,
@@ -32112,7 +32112,7 @@
     ],
     "_VictoryRoad2FSuperNerd1EndBattleText": [
       35,
-      20751
+      20778
     ],
     "_VictoryRoad2FSuperNerd2AfterBattleText": [
       35,
@@ -32440,7 +32440,7 @@
     ],
     "_ViridianGymGiovanniTM27NoRoomText": [
       37,
-      24836
+      25492
     ],
     "_ViridianGymGuidePostBattleText": [
       37,
@@ -32472,7 +32472,7 @@
     ],
     "_ViridianGymHiker2EndBattleText": [
       37,
-      25221
+      25907
     ],
     "_ViridianGymHiker3AfterBattleText": [
       37,
@@ -32560,7 +32560,7 @@
     ],
     "_ViridianSchoolBlackboardText2": [
       34,
-      20814
+      21086
     ],
     "_ViridianSchoolHouseBrunetteGirlText": [
       37,
@@ -32592,7 +32592,7 @@
     ],
     "_VitaminNoEffectText": [
       41,
-      26782
+      27299
     ],
     "_VitaminStatRoseText": [
       41,
@@ -32801,6 +32801,42 @@
     "_ZubatDexEntry": [
       43,
       24717
+    ],
+    "_LoreleiEndBattleText": [
+      33,
+      26804
+    ],
+    "_PokemonCenterPCDepositText": [
+      34,
+      25086
+    ],
+    "_PokemonCenterPCTossText": [
+      34,
+      25323
+    ],
+    "_PokemonCenterPCWithdrawText": [
+      34,
+      25207
+    ],
+    "_Route24M3BattleText": [
+      37,
+      16513
+    ],
+    "_SafariZoneCenterRestHouseText": [
+      33,
+      22836
+    ],
+    "_SafariZoneEastRestHouseText": [
+      33,
+      22276
+    ],
+    "_SafariZoneNorthRestHouseText": [
+      33,
+      22377
+    ],
+    "_SafariZoneWestRestHouseText": [
+      33,
+      22597
     ]
   },
   "text": {
