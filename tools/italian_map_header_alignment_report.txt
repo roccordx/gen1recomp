@@ -1,0 +1,40 @@
+Italian map header segment alignment
+======================================================================
+
+USA headers             : 222
+Raw unique anchors      : 139
+Monotonic anchors       : 139
+Rejected anchors        : 0
+Assigned                : 222
+
+STATUS
+----------------------------------------------------------------------
+CONFIRMED    : 139
+HIGH         : 83
+MEDIUM       : 0
+AMBIGUOUS    : 0
+UNMATCHED    : 0
+
+SEGMENTS
+----------------------------------------------------------------------
+001 BluesHouse_h -> VermilionTradeHouse_h count=2 status=HIGH best=0.33 second=INF margin=INF
+002 SilphCo4F_h -> SilphCo6F_h count=3 status=HIGH best=0.50 second=INF margin=INF
+003 MrFujisHouse_h -> VermilionPidgeyHouse_h count=4 status=HIGH best=0.34 second=INF margin=INF
+004 CeladonMansionRoofHouse_h -> UndergroundPathRoute8_h count=11 status=HIGH best=0.00 second=INF margin=INF
+005 DiglettsCaveRoute11_h -> BillsHouse_h count=4 status=HIGH best=0.05 second=INF margin=INF
+006 CeladonMart5F_h -> CeladonDiner_h count=3 status=HIGH best=0.48 second=INF margin=INF
+007 CeladonHotel_h -> Route15Gate2F_h count=9 status=HIGH best=0.00 second=INF margin=INF
+008 Route16Gate2F_h -> SafariZoneSecretHouse_h count=7 status=HIGH best=0.25 second=INF margin=INF
+009 VictoryRoad2F_h -> VictoryRoad2F_h count=1 status=HIGH best=0.08 second=INF margin=INF
+010 SilphCo7F_h -> PokemonMansionB1F_h count=4 status=HIGH best=0.18 second=INF margin=INF
+011 CeruleanMart_h -> SilphCo9F_h count=19 status=HIGH best=5.94 second=INF margin=INF
+012 PewterMart_h -> FuchsiaPokecenter_h count=5 status=HIGH best=0.33 second=INF margin=INF
+013 SafariZoneGate_h -> FuchsiaGym_h count=2 status=HIGH best=0.40 second=INF margin=INF
+014 CinnabarGym_h -> CinnabarGym_h count=1 status=HIGH best=0.07 second=INF margin=INF
+015 CinnabarLabTradeRoom_h -> CopycatsHouse1F_h count=6 status=HIGH best=0.00 second=INF margin=INF
+016 LoreleisRoom_h -> BrunosRoom_h count=2 status=HIGH best=0.00 second=INF margin=INF
+
+REJECTED ANCHORS
+----------------------------------------------------------------------
+
+ADDRESS COLLISIONS : 0

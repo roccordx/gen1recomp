@@ -1,0 +1,1781 @@
+Italian Map Header Locator
+================================================================================
+
+USA map headers: 222
+
+CeladonCity_h
+  USA       : 06:4000
+  Signature : tileset=00 height=12 width=19
+  Best ITA  : 06:4000
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+PalletTown_h
+  USA       : 06:42A1
+  Signature : tileset=00 height=09 width=0A
+  Best ITA  : 06:42A1
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+ViridianCity_h
+  USA       : 06:4357
+  Signature : tileset=00 height=12 width=14
+  Best ITA  : 06:4357
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PewterCity_h
+  USA       : 06:4554
+  Signature : tileset=00 height=12 width=14
+  Best ITA  : 06:4554
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanCity_h
+  USA       : 06:474E
+  Signature : tileset=00 height=12 width=14
+  Best ITA  : 06:474E
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+VermilionCity_h
+  USA       : 06:4998
+  Signature : tileset=00 height=12 width=14
+  Best ITA  : 06:4998
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+FuchsiaCity_h
+  USA       : 06:4BA7
+  Signature : tileset=00 height=12 width=14
+  Best ITA  : 06:4BA7
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+BluesHouse_h
+  USA       : 06:5B2F
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+VermilionTradeHouse_h
+  USA       : 06:5C06
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+IndigoPlateauLobby_h
+  USA       : 06:5C4F
+  Signature : tileset=02 height=06 width=08
+  Best ITA  : 06:5C54
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+SilphCo4F_h
+  USA       : 06:5CFF
+  Signature : tileset=16 height=09 width=0F
+  Best ITA  : 06:5D04
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SilphCo5F_h
+  USA       : 06:5F2B
+  Signature : tileset=16 height=09 width=0F
+  Best ITA  : 06:5D04
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SilphCo6F_h
+  USA       : 06:619D
+  Signature : tileset=16 height=09 width=0D
+  Best ITA  : 06:61A2
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CinnabarIsland_h
+  USA       : 07:4000
+  Signature : tileset=00 height=09 width=0A
+  Best ITA  : 07:4000
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route1_h
+  USA       : 07:40C3
+  Signature : tileset=00 height=12 width=0A
+  Best ITA  : 07:40C3
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+OaksLab_h
+  USA       : 07:4B02
+  Signature : tileset=05 height=06 width=05
+  Best ITA  : 07:4B02
+  Candidates: 22
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+ViridianMart_h
+  USA       : 07:5462
+  Signature : tileset=02 height=04 width=04
+  Best ITA  : 07:5462
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+ViridianSchoolHouse_h
+  USA       : 07:5540
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 07:5540
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+ViridianNicknameHouse_h
+  USA       : 07:557D
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 07:557D
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PewterNidoranHouse_h
+  USA       : 07:55E7
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 07:55E7
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PewterSpeechHouse_h
+  USA       : 07:563C
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 07:563C
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanTrashedHouse_h
+  USA       : 07:5679
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 07:5679
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanTradeHouse_h
+  USA       : 07:56EA
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 07:56EA
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+BikeShop_h
+  USA       : 07:5730
+  Signature : tileset=15 height=04 width=04
+  Best ITA  : 07:5730
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+MrFujisHouse_h
+  USA       : 07:589C
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+LavenderCuboneHouse_h
+  USA       : 07:59A2
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+NameRatersHouse_h
+  USA       : 07:5A06
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+VermilionPidgeyHouse_h
+  USA       : 07:5AF0
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+VermilionDock_h
+  USA       : 07:5B46
+  Signature : tileset=0E height=06 width=0E
+  Best ITA  : 07:5B47
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMansionRoofHouse_h
+  USA       : 07:5D2E
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+FuchsiaMart_h
+  USA       : 07:5D7C
+  Signature : tileset=02 height=04 width=04
+  Best ITA  : 07:5462
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SaffronPidgeyHouse_h
+  USA       : 07:5DD1
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+MrPsychicsHouse_h
+  USA       : 07:5E30
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+DiglettsCaveRoute2_h
+  USA       : 07:5EA4
+  Signature : tileset=11 height=04 width=04
+  Best ITA  : 07:5EA5
+  Candidates: 9
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route2TradeHouse_h
+  USA       : 07:5EE1
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route5Gate_h
+  USA       : 07:5F27
+  Signature : tileset=0C height=03 width=04
+  Best ITA  : 07:5F28
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route6Gate_h
+  USA       : 07:6031
+  Signature : tileset=0C height=03 width=04
+  Best ITA  : 07:5F28
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route7Gate_h
+  USA       : 07:60F4
+  Signature : tileset=0C height=04 width=03
+  Best ITA  : 07:60F5
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route8Gate_h
+  USA       : 07:61BB
+  Signature : tileset=0C height=04 width=03
+  Best ITA  : 07:60F5
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+UndergroundPathRoute8_h
+  USA       : 07:627D
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 07:627E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PowerPlant_h
+  USA       : 07:62BA
+  Signature : tileset=16 height=12 width=14
+  Best ITA  : 07:62BB
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+DiglettsCaveRoute11_h
+  USA       : 07:65AE
+  Signature : tileset=11 height=04 width=04
+  Best ITA  : 07:5EA5
+  Candidates: 9
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route16FlyHouse_h
+  USA       : 07:65EC
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route22Gate_h
+  USA       : 07:6677
+  Signature : tileset=0C height=04 width=05
+  Best ITA  : 07:6678
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+BillsHouse_h
+  USA       : 07:675E
+  Signature : tileset=10 height=04 width=04
+  Best ITA  : 07:675F
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+LavenderTown_h
+  USA       : 11:4000
+  Signature : tileset=00 height=09 width=0A
+  Best ITA  : 11:4000
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+ViridianPokecenter_h
+  USA       : 11:4251
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 11:4251
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonMansion1F_h
+  USA       : 11:42A3
+  Signature : tileset=16 height=0E width=0F
+  Best ITA  : 11:42A3
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+RockTunnel1F_h
+  USA       : 11:44D0
+  Signature : tileset=11 height=12 width=14
+  Best ITA  : 11:44D0
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SeafoamIslands1F_h
+  USA       : 11:47DD
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:47DD
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SSAnne3F_h
+  USA       : 11:4926
+  Signature : tileset=0D height=03 width=0A
+  Best ITA  : 11:4926
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+VictoryRoad3F_h
+  USA       : 11:4974
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:4974
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+RocketHideoutB1F_h
+  USA       : 11:4BBE
+  Signature : tileset=16 height=0E width=0F
+  Best ITA  : 11:4BBE
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+RocketHideoutB2F_h
+  USA       : 11:4E1B
+  Signature : tileset=16 height=0E width=0F
+  Best ITA  : 11:4E1B
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+RocketHideoutB3F_h
+  USA       : 11:5219
+  Signature : tileset=16 height=0E width=0F
+  Best ITA  : 11:5219
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+RocketHideoutB4F_h
+  USA       : 11:5451
+  Signature : tileset=16 height=0C width=0F
+  Best ITA  : 11:5451
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+RocketHideoutElevator_h
+  USA       : 11:5704
+  Signature : tileset=12 height=04 width=03
+  Best ITA  : 11:5704
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+SilphCoElevator_h
+  USA       : 11:57B4
+  Signature : tileset=12 height=02 width=02
+  Best ITA  : 11:57B4
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+SafariZoneEast_h
+  USA       : 11:585F
+  Signature : tileset=03 height=0D width=0F
+  Best ITA  : 11:585F
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SafariZoneNorth_h
+  USA       : 11:599F
+  Signature : tileset=03 height=12 width=14
+  Best ITA  : 11:599F
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+SafariZoneCenter_h
+  USA       : 11:5BA6
+  Signature : tileset=03 height=0D width=0F
+  Best ITA  : 11:5BA6
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SafariZoneCenterRestHouse_h
+  USA       : 11:5CE1
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 11:5CE1
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SafariZoneWestRestHouse_h
+  USA       : 11:5D1E
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 11:5D1E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SafariZoneEastRestHouse_h
+  USA       : 11:5D69
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 11:5D69
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SafariZoneNorthRestHouse_h
+  USA       : 11:5DB4
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 11:5DB4
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanCave2F_h
+  USA       : 11:5DFF
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:5DFF
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanCaveB1F_h
+  USA       : 11:5EE4
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:5EE4
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+RockTunnelB1F_h
+  USA       : 11:5FDF
+  Signature : tileset=11 height=12 width=14
+  Best ITA  : 11:5FDF
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SeafoamIslandsB1F_h
+  USA       : 11:6309
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:6309
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SeafoamIslandsB2F_h
+  USA       : 11:6445
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:6445
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SeafoamIslandsB3F_h
+  USA       : 11:6581
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:6581
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SeafoamIslandsB4F_h
+  USA       : 11:678D
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:678D
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route7_h
+  USA       : 12:4000
+  Signature : tileset=00 height=09 width=0A
+  Best ITA  : 12:4000
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+RedsHouse1F_h
+  USA       : 12:415C
+  Signature : tileset=01 height=04 width=04
+  Best ITA  : 12:415C
+  Candidates: 8
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMart3F_h
+  USA       : 12:4219
+  Signature : tileset=12 height=04 width=0A
+  Best ITA  : 12:4219
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMart4F_h
+  USA       : 12:434A
+  Signature : tileset=12 height=04 width=0A
+  Best ITA  : 12:434A
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMartRoof_h
+  USA       : 12:43C9
+  Signature : tileset=12 height=04 width=0A
+  Best ITA  : 12:43C9
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMartElevator_h
+  USA       : 12:45F4
+  Signature : tileset=12 height=02 width=02
+  Best ITA  : 12:45F4
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+CeladonMansion1F_h
+  USA       : 12:4688
+  Signature : tileset=13 height=06 width=04
+  Best ITA  : 12:4688
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMansion2F_h
+  USA       : 12:472E
+  Signature : tileset=13 height=06 width=04
+  Best ITA  : 12:472E
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMansion3F_h
+  USA       : 12:4784
+  Signature : tileset=13 height=06 width=04
+  Best ITA  : 12:4784
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMansionRoof_h
+  USA       : 12:485F
+  Signature : tileset=13 height=06 width=04
+  Best ITA  : 12:485F
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonPokecenter_h
+  USA       : 12:48AC
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 12:48AC
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonGym_h
+  USA       : 12:48FE
+  Signature : tileset=07 height=09 width=05
+  Best ITA  : 12:48FE
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+GameCorner_h
+  USA       : 12:4BB1
+  Signature : tileset=12 height=09 width=0A
+  Best ITA  : 12:4BB0
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+CeladonMart5F_h
+  USA       : 12:505D
+  Signature : tileset=12 height=04 width=0A
+  Best ITA  : 12:4219
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+GameCornerPrizeRoom_h
+  USA       : 12:50E4
+  Signature : tileset=12 height=04 width=05
+  Best ITA  : 12:50E6
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+CeladonDiner_h
+  USA       : 12:5145
+  Signature : tileset=12 height=04 width=05
+  Best ITA  : 12:50E6
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+CeladonChiefHouse_h
+  USA       : 12:5202
+  Signature : tileset=13 height=04 width=04
+  Best ITA  : 12:5204
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+CeladonHotel_h
+  USA       : 12:525D
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 11:4251
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+MtMoonPokecenter_h
+  USA       : 12:52C3
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 11:4251
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+RockTunnelPokecenter_h
+  USA       : 12:53AE
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 11:4251
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route11Gate1F_h
+  USA       : 12:5400
+  Signature : tileset=0C height=05 width=04
+  Best ITA  : 12:5402
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route11Gate2F_h
+  USA       : 12:5448
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 07:627E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route12Gate1F_h
+  USA       : 12:54F8
+  Signature : tileset=0C height=04 width=05
+  Best ITA  : 07:6678
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route12Gate2F_h
+  USA       : 12:5554
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 07:627E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route15Gate1F_h
+  USA       : 12:55F6
+  Signature : tileset=0C height=05 width=04
+  Best ITA  : 12:5402
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route15Gate2F_h
+  USA       : 12:563E
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 07:627E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route16Gate1F_h
+  USA       : 12:56B2
+  Signature : tileset=0C height=07 width=04
+  Best ITA  : 12:56B4
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+Route16Gate2F_h
+  USA       : 12:57FF
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 07:627E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route18Gate1F_h
+  USA       : 12:586A
+  Signature : tileset=0C height=05 width=04
+  Best ITA  : 12:5402
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route18Gate2F_h
+  USA       : 12:5969
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 07:627E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+MtMoon1F_h
+  USA       : 12:59BC
+  Signature : tileset=11 height=12 width=14
+  Best ITA  : 11:44D0
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+MtMoonB2F_h
+  USA       : 12:5CFF
+  Signature : tileset=11 height=12 width=14
+  Best ITA  : 11:44D0
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SafariZoneWest_h
+  USA       : 12:61A9
+  Signature : tileset=03 height=0D width=0F
+  Best ITA  : 11:585F
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SafariZoneSecretHouse_h
+  USA       : 12:630B
+  Signature : tileset=14 height=04 width=04
+  Best ITA  : 12:630D
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+TradeCenter_h
+  USA       : 13:7D04
+  Signature : tileset=15 height=04 width=05
+  Best ITA  : 13:7D04
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+Colosseum_h
+  USA       : 13:7D71
+  Signature : tileset=15 height=04 width=05
+  Best ITA  : 13:7D71
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+Route22_h
+  USA       : 14:4000
+  Signature : tileset=00 height=09 width=14
+  Best ITA  : 14:4000
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route20_h
+  USA       : 14:40F1
+  Signature : tileset=00 height=09 width=32
+  Best ITA  : 14:40F1
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+Route23_h
+  USA       : 14:433F
+  Signature : tileset=17 height=48 width=0A
+  Best ITA  : 14:433F
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+Route24_h
+  USA       : 14:4682
+  Signature : tileset=00 height=12 width=0A
+  Best ITA  : 14:4682
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route25_h
+  USA       : 14:479B
+  Signature : tileset=00 height=09 width=1E
+  Best ITA  : 14:479B
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+IndigoPlateau_h
+  USA       : 14:491E
+  Signature : tileset=17 height=09 width=0A
+  Best ITA  : 14:491E
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+SaffronCity_h
+  USA       : 14:49A4
+  Signature : tileset=00 height=12 width=14
+  Best ITA  : 14:49A4
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+VictoryRoad2F_h
+  USA       : 14:5791
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:47DD
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+MtMoonB1F_h
+  USA       : 14:5A36
+  Signature : tileset=11 height=0E width=0E
+  Best ITA  : 14:5A35
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+SilphCo7F_h
+  USA       : 14:5B55
+  Signature : tileset=16 height=09 width=0D
+  Best ITA  : 06:61A2
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonMansion2F_h
+  USA       : 14:5FCC
+  Signature : tileset=16 height=0E width=0F
+  Best ITA  : 11:42A3
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonMansion3F_h
+  USA       : 14:61E2
+  Signature : tileset=16 height=09 width=0F
+  Best ITA  : 06:5D04
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonMansionB1F_h
+  USA       : 14:63AD
+  Signature : tileset=16 height=0E width=0F
+  Best ITA  : 11:42A3
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route2_h
+  USA       : 15:4000
+  Signature : tileset=00 height=24 width=0A
+  Best ITA  : 15:4000
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route3_h
+  USA       : 15:41E6
+  Signature : tileset=00 height=09 width=23
+  Best ITA  : 15:41E6
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+Route4_h
+  USA       : 15:4390
+  Signature : tileset=00 height=09 width=2D
+  Best ITA  : 15:4390
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+Route5_h
+  USA       : 15:4581
+  Signature : tileset=00 height=12 width=0A
+  Best ITA  : 15:4581
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route9_h
+  USA       : 15:4686
+  Signature : tileset=00 height=09 width=1E
+  Best ITA  : 15:4686
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route13_h
+  USA       : 15:480C
+  Signature : tileset=00 height=09 width=1E
+  Best ITA  : 15:480C
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route14_h
+  USA       : 15:4999
+  Signature : tileset=00 height=1B width=0A
+  Best ITA  : 15:4999
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+Route17_h
+  USA       : 15:4B20
+  Signature : tileset=00 height=48 width=0A
+  Best ITA  : 15:4B20
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+Route19_h
+  USA       : 15:4E78
+  Signature : tileset=00 height=1B width=0A
+  Best ITA  : 15:4E78
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+Route21_h
+  USA       : 15:4FFF
+  Signature : tileset=00 height=2D width=0A
+  Best ITA  : 15:4FFF
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+VermilionOldRodHouse_h
+  USA       : 15:6064
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 15:6064
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMart2F_h
+  USA       : 15:60E9
+  Signature : tileset=12 height=04 width=0A
+  Best ITA  : 15:60E9
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+FuchsiaGoodRodHouse_h
+  USA       : 15:6170
+  Signature : tileset=0D height=04 width=04
+  Best ITA  : 15:6170
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Daycare_h
+  USA       : 15:6243
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 15:6243
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route12SuperRodHouse_h
+  USA       : 15:6473
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 15:6473
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SilphCo8F_h
+  USA       : 15:64F8
+  Signature : tileset=16 height=09 width=0D
+  Best ITA  : 15:64F8
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route6_h
+  USA       : 16:4000
+  Signature : tileset=00 height=12 width=0A
+  Best ITA  : 16:4000
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route8_h
+  USA       : 16:412D
+  Signature : tileset=00 height=09 width=1E
+  Best ITA  : 16:412D
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route10_h
+  USA       : 16:42D4
+  Signature : tileset=00 height=24 width=0A
+  Best ITA  : 16:42D4
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route11_h
+  USA       : 16:44BE
+  Signature : tileset=00 height=09 width=1E
+  Best ITA  : 16:44BE
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route12_h
+  USA       : 16:466D
+  Signature : tileset=00 height=36 width=0A
+  Best ITA  : 16:466D
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+Route15_h
+  USA       : 16:492C
+  Signature : tileset=00 height=09 width=1E
+  Best ITA  : 16:492C
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Route16_h
+  USA       : 16:4ADA
+  Signature : tileset=00 height=09 width=14
+  Best ITA  : 16:4ADA
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route18_h
+  USA       : 16:4C38
+  Signature : tileset=00 height=09 width=19
+  Best ITA  : 16:4C38
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+PokemonFanClub_h
+  USA       : 16:5B64
+  Signature : tileset=10 height=04 width=04
+  Best ITA  : 16:5B64
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+SilphCo2F_h
+  USA       : 16:5CE5
+  Signature : tileset=16 height=09 width=0F
+  Best ITA  : 16:5CE5
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SilphCo3F_h
+  USA       : 16:5F4F
+  Signature : tileset=16 height=09 width=0F
+  Best ITA  : 16:5F4F
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SilphCo10F_h
+  USA       : 16:612D
+  Signature : tileset=16 height=09 width=08
+  Best ITA  : 16:612D
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+LancesRoom_h
+  USA       : 16:62A2
+  Signature : tileset=05 height=0D width=0D
+  Best ITA  : 16:62A2
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+HallOfFame_h
+  USA       : 16:6492
+  Signature : tileset=07 height=04 width=05
+  Best ITA  : 16:6492
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+RedsHouse2F_h
+  USA       : 17:40A4
+  Signature : tileset=04 height=04 width=04
+  Best ITA  : 17:40A4
+  Candidates: 232
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Museum1F_h
+  USA       : 17:40EB
+  Signature : tileset=0A height=04 width=0A
+  Best ITA  : 17:40EB
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+Museum2F_h
+  USA       : 17:430B
+  Signature : tileset=0A height=04 width=07
+  Best ITA  : 17:430B
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+PewterGym_h
+  USA       : 17:437B
+  Signature : tileset=07 height=07 width=05
+  Best ITA  : 17:437B
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PewterPokecenter_h
+  USA       : 17:457B
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 17:457B
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanPokecenter_h
+  USA       : 17:4639
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 17:4639
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanGym_h
+  USA       : 17:46A7
+  Signature : tileset=07 height=07 width=05
+  Best ITA  : 17:46A7
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanMart_h
+  USA       : 17:4889
+  Signature : tileset=02 height=04 width=04
+  Best ITA  : 07:5462
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+LavenderPokecenter_h
+  USA       : 17:48CE
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 11:4251
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+LavenderMart_h
+  USA       : 17:4920
+  Signature : tileset=02 height=04 width=04
+  Best ITA  : 07:5462
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+VermilionPokecenter_h
+  USA       : 17:4983
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 11:4251
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+VermilionMart_h
+  USA       : 17:49D5
+  Signature : tileset=02 height=04 width=04
+  Best ITA  : 07:5462
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+VermilionGym_h
+  USA       : 17:4A1A
+  Signature : tileset=07 height=09 width=05
+  Best ITA  : 12:48FE
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CopycatsHouse2F_h
+  USA       : 17:4C65
+  Signature : tileset=04 height=04 width=04
+  Best ITA  : 14:45AC
+  Candidates: 232
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+FightingDojo_h
+  USA       : 17:4D51
+  Signature : tileset=05 height=06 width=05
+  Best ITA  : 07:4B02
+  Candidates: 22
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SaffronGym_h
+  USA       : 17:5001
+  Signature : tileset=16 height=09 width=0A
+  Best ITA  : 17:4FFC
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SaffronMart_h
+  USA       : 17:53FD
+  Signature : tileset=02 height=04 width=04
+  Best ITA  : 07:5462
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SilphCo1F_h
+  USA       : 17:5442
+  Signature : tileset=16 height=09 width=0F
+  Best ITA  : 06:5D04
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SaffronPokecenter_h
+  USA       : 17:5529
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 11:4251
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+ViridianForestNorthGate_h
+  USA       : 17:557B
+  Signature : tileset=09 height=04 width=05
+  Best ITA  : 17:5577
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+Route2Gate_h
+  USA       : 17:55C8
+  Signature : tileset=0C height=04 width=05
+  Best ITA  : 07:6678
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+ViridianForestSouthGate_h
+  USA       : 17:5650
+  Signature : tileset=09 height=04 width=05
+  Best ITA  : 17:5577
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+UndergroundPathRoute5_h
+  USA       : 17:569D
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 07:627E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+UndergroundPathRoute6_h
+  USA       : 17:56E3
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 07:627E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+UndergroundPathRoute7_h
+  USA       : 17:5720
+  Signature : tileset=0C height=04 width=04
+  Best ITA  : 07:627E
+  Candidates: 15
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SilphCo9F_h
+  USA       : 17:57AF
+  Signature : tileset=16 height=09 width=0D
+  Best ITA  : 06:61A2
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+VictoryRoad1F_h
+  USA       : 17:59FE
+  Signature : tileset=11 height=09 width=0A
+  Best ITA  : 17:59FA
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonTower1F_h
+  USA       : 18:4420
+  Signature : tileset=0F height=09 width=0A
+  Best ITA  : 18:4420
+  Candidates: 9
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonTower2F_h
+  USA       : 18:44E6
+  Signature : tileset=0F height=09 width=0A
+  Best ITA  : 18:44E6
+  Candidates: 9
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonTower3F_h
+  USA       : 18:46C0
+  Signature : tileset=0F height=09 width=0A
+  Best ITA  : 18:46C0
+  Candidates: 9
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonTower4F_h
+  USA       : 18:47EA
+  Signature : tileset=0F height=09 width=0A
+  Best ITA  : 18:47EA
+  Candidates: 9
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonTower5F_h
+  USA       : 18:4926
+  Signature : tileset=0F height=09 width=0A
+  Best ITA  : 18:4926
+  Candidates: 9
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonTower6F_h
+  USA       : 18:4AE3
+  Signature : tileset=0F height=09 width=0A
+  Best ITA  : 18:4AE3
+  Candidates: 9
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+PokemonTower7F_h
+  USA       : 18:4CF9
+  Signature : tileset=0F height=09 width=0A
+  Best ITA  : 18:4CF9
+  Candidates: 9
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeladonMart1F_h
+  USA       : 18:4F7A
+  Signature : tileset=12 height=04 width=0A
+  Best ITA  : 18:4F7A
+  Candidates: 6
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+ViridianForest_h
+  USA       : 18:5101
+  Signature : tileset=03 height=18 width=11
+  Best ITA  : 18:5101
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+SSAnne1F_h
+  USA       : 18:5259
+  Signature : tileset=0D height=09 width=14
+  Best ITA  : 18:5259
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+SSAnne2F_h
+  USA       : 18:5393
+  Signature : tileset=0D height=09 width=14
+  Best ITA  : 18:5393
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
+SSAnneB1F_h
+  USA       : 18:5622
+  Signature : tileset=0D height=04 width=0F
+  Best ITA  : 18:5622
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+SSAnneBow_h
+  USA       : 18:56A2
+  Signature : tileset=0D height=07 width=0A
+  Best ITA  : 18:56A2
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+SSAnneKitchen_h
+  USA       : 18:57A7
+  Signature : tileset=0D height=08 width=07
+  Best ITA  : 18:57A7
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+SSAnneCaptainsRoom_h
+  USA       : 18:5889
+  Signature : tileset=0D height=04 width=03
+  Best ITA  : 18:5889
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+SSAnne1FRooms_h
+  USA       : 18:596A
+  Signature : tileset=0D height=08 width=0C
+  Best ITA  : 18:596A
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SSAnne2FRooms_h
+  USA       : 18:5B3F
+  Signature : tileset=0D height=08 width=0C
+  Best ITA  : 18:5B3F
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SSAnneB1FRooms_h
+  USA       : 18:5D49
+  Signature : tileset=0D height=08 width=0C
+  Best ITA  : 18:5D49
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+UndergroundPathNorthSouth_h
+  USA       : 18:5F1A
+  Signature : tileset=0B height=18 width=04
+  Best ITA  : 18:5F1A
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+UndergroundPathWestEast_h
+  USA       : 18:5F3E
+  Signature : tileset=0B height=04 width=19
+  Best ITA  : 18:5F3E
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+DiglettsCave_h
+  USA       : 18:5F62
+  Signature : tileset=11 height=12 width=14
+  Best ITA  : 18:5F62
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+SilphCo11F_h
+  USA       : 18:60EE
+  Signature : tileset=10 height=09 width=09
+  Best ITA  : 18:60EE
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+ViridianGym_h
+  USA       : 1D:4897
+  Signature : tileset=07 height=09 width=0A
+  Best ITA  : 1D:4912
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+PewterMart_h
+  USA       : 1D:4CA1
+  Signature : tileset=02 height=04 width=04
+  Best ITA  : 07:5462
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanCave1F_h
+  USA       : 1D:4D00
+  Signature : tileset=11 height=09 width=0F
+  Best ITA  : 11:47DD
+  Candidates: 10
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CeruleanBadgeHouse_h
+  USA       : 1D:4DFD
+  Signature : tileset=0D height=04 width=04
+  Best ITA  : 15:6170
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+FuchsiaBillsGrandpasHouse_h
+  USA       : 1D:500C
+  Signature : tileset=08 height=04 width=04
+  Best ITA  : 06:5B34
+  Candidates: 21
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+FuchsiaPokecenter_h
+  USA       : 1D:5057
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 11:4251
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+WardensHouse_h
+  USA       : 1D:50A9
+  Signature : tileset=14 height=04 width=05
+  Best ITA  : 1D:5123
+  Candidates: 2
+  Score     : 5
+  Confidence: MEDIUM
+
+SafariZoneGate_h
+  USA       : 1D:51C1
+  Signature : tileset=0C height=03 width=04
+  Best ITA  : 07:5F28
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+FuchsiaGym_h
+  USA       : 1D:5431
+  Signature : tileset=07 height=09 width=05
+  Best ITA  : 12:48FE
+  Candidates: 4
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+FuchsiaMeetingRoom_h
+  USA       : 1D:56D7
+  Signature : tileset=14 height=04 width=07
+  Best ITA  : 1D:574F
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+CinnabarGym_h
+  USA       : 1D:573E
+  Signature : tileset=16 height=09 width=0A
+  Best ITA  : 17:4FFC
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CinnabarLab_h
+  USA       : 1D:5B80
+  Signature : tileset=14 height=04 width=09
+  Best ITA  : 1D:5BF7
+  Candidates: 1
+  Score     : 5
+  Confidence: HIGH
+
+CinnabarLabTradeRoom_h
+  USA       : 1D:5C15
+  Signature : tileset=14 height=04 width=04
+  Best ITA  : 12:630D
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CinnabarLabMetronomeRoom_h
+  USA       : 1D:5C7B
+  Signature : tileset=14 height=04 width=04
+  Best ITA  : 12:630D
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CinnabarLabFossilRoom_h
+  USA       : 1D:5D25
+  Signature : tileset=14 height=04 width=04
+  Best ITA  : 12:630D
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CinnabarPokecenter_h
+  USA       : 1D:5E20
+  Signature : tileset=06 height=04 width=07
+  Best ITA  : 11:4251
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CinnabarMart_h
+  USA       : 1D:5E72
+  Signature : tileset=02 height=04 width=04
+  Best ITA  : 07:5462
+  Candidates: 16
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+CopycatsHouse1F_h
+  USA       : 1D:5EB7
+  Signature : tileset=01 height=04 width=04
+  Best ITA  : 12:415C
+  Candidates: 8
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+ChampionsRoom_h
+  USA       : 1D:5F11
+  Signature : tileset=07 height=04 width=04
+  Best ITA  : 1D:5F88
+  Candidates: 12
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+LoreleisRoom_h
+  USA       : 1D:616F
+  Signature : tileset=07 height=06 width=05
+  Best ITA  : 1D:61E6
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+BrunosRoom_h
+  USA       : 1D:62CA
+  Signature : tileset=07 height=06 width=05
+  Best ITA  : 1D:61E6
+  Candidates: 5
+  Score     : 5
+  Confidence: AMBIGUOUS
+
+AgathasRoom_h
+  USA       : 1D:6421
+  Signature : tileset=0F height=06 width=05
+  Best ITA  : 1D:6498
+  Candidates: 3
+  Score     : 5
+  Confidence: MEDIUM
+
