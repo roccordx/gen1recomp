@@ -1114,16 +1114,47 @@ function RomExtractor:dexEntry(index, species)
   local kind, consumed = self.rom:readString(
     pointerTable.bank, address, self.manifest.charmap, 0x50, 32)
   address = address + consumed
+
+  local textLabel = self.manifest.dexEntryLabels[species]
+
+  if self.manifest.dexEntryFormat == "metric" then
+    local height = self.rom:byte(pointerTable.bank, address)
+    local weight = self.rom:word(pointerTable.bank, address + 1)
+    address = address + 3
+
+    if self.rom:byte(pointerTable.bank, address) ~= 0x17 then
+      return {
+        kind = kind,
+        text = textLabel or "",
+      }
+    end
+
+    local textAddress = self.rom:word(pointerTable.bank, address + 1)
+    local textBank = self.rom:byte(pointerTable.bank, address + 3)
+    textLabel = textLabel
+      or ("_DexEntry_%02X_%04X"):format(textBank, textAddress)
+
+    return {
+      kind = kind,
+      heightM = height / 10,
+      weightKg = weight / 10,
+      text = textLabel,
+    }
+  end
+
   local heightFt = self.rom:byte(pointerTable.bank, address)
   local heightIn = self.rom:byte(pointerTable.bank, address + 1)
   local weight = self.rom:word(pointerTable.bank, address + 2)
   address = address + 4
+
   assert(self.rom:byte(pointerTable.bank, address) == 0x17,
     "dex entry " .. index .. " has no TX_FAR command")
+
   local textAddress = self.rom:word(pointerTable.bank, address + 1)
   local textBank = self.rom:byte(pointerTable.bank, address + 3)
-  local textLabel = self.manifest.dexEntryLabels[species]
+  textLabel = textLabel
     or ("_DexEntry_%02X_%04X"):format(textBank, textAddress)
+
   return {
     kind = kind, heightFt = heightFt, heightIn = heightIn,
     weight = weight, text = textLabel,

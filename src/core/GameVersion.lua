@@ -144,6 +144,16 @@ GameVersion.VERSIONS = {
     generation = 3, engine = "game3", cartShape = "gba", cartShell = "#26a24e",
     cartLabel = "assets/labels/leafgreen.png",
   },
+  red_ita = {
+    id = "red_ita",
+    label = "Red IT",
+    displayName = "Pokemon Red Italiano",
+    launcherName = "Red Italiano",
+    sha1 = "65b97cf8f2f1cff711a6d08c6c894c8ce65ce522",
+    manifest = "tools/rom_variants/red_ita_manifest.json",
+    cachePrefix = "red_ita/",
+    saveSuffix = "_red_ita",
+  },
 }
 
 local NO_FIXES = {}
