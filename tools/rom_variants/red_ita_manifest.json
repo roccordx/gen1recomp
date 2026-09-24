@@ -3832,6 +3832,7 @@
       "WATER": 21
     }
   },
+  "dexEntryFormat": "metric",
   "dexEntryLabels": {
     "ABRA": "_AbraDexEntry",
     "AERODACTYL": "_AerodactylDexEntry",
