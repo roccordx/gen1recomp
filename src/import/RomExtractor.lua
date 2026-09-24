@@ -105,6 +105,11 @@ function RomExtractor:writeCompressedPic(label, relative)
   local symbol = self:symbol(label)
   local compressed = self.rom:bytes(
     symbol.bank, symbol.address, 0x8000 - symbol.address)
+
+  print(("PIC DEBUG: label=%s bank=%02X address=%04X first=%02X")
+    :format(label, symbol.bank, symbol.address,
+      self.rom:byte(symbol.bank, symbol.address)))
+
   local raw, width = Rom.decompressPic(compressed)
   local image = ImageWriter.matteColor0(
     ImageWriter.decode2bpp(raw, width * 8, width * 8))
