@@ -1144,7 +1144,7 @@ function RomExtractor:dexEntry(index, species)
       heightM = height / 10,
       weightKg = weight / 10,
       text = textLabel,
-    }
+    }, textBank, textAddress
   end
 
   local heightFt = self.rom:byte(pointerTable.bank, address)
@@ -1163,7 +1163,7 @@ function RomExtractor:dexEntry(index, species)
   return {
     kind = kind, heightFt = heightFt, heightIn = heightIn,
     weight = weight, text = textLabel,
-  }
+  }, textBank, textAddress
 end
 
 function RomExtractor:extractPokemon()
@@ -1545,10 +1545,30 @@ function RomExtractor:extractText()
   local metadata = self.manifest.text
   local texts = {}
   for index, label in ipairs(metadata.labels) do
+    if index <= 40 or tostring(label):find("Known", 1, true) then
+      print(("LABEL DEBUG: index=%d type=%s label=%s")
+        :format(index, type(label), tostring(label)))
+    end
     texts[label] = self:decodeTextCommands(
       self:symbol(label), metadata.dynamic[label] or {})
     self:tick("Dialogue", index, #metadata.labels)
   end
+
+  -- Localized Pok?dex descriptions may not have reliable static symbols.
+  -- Resolve their actual TX_FAR pointers from the species entry table.
+  for index, species in ipairs(self.manifest.constants.speciesOrder) do
+    local label = self.manifest.dexEntryLabels[species]
+    if label and (texts[label] == nil
+        or self.manifest.dexEntryFormat == "metric") then
+      local _, textBank, textAddress = self:dexEntry(index, species)
+      assert(textBank and textAddress,
+        species .. ": missing Pok?dex TX_FAR pointer")
+      texts[label] = self:decodeTextCommands({
+        name = label, bank = textBank, address = textAddress,
+      }, {})
+    end
+  end
+
   local trainerHeaders = {}
   for mapLabel, headers in pairs(metadata.trainerHeaders) do
     local converted = {}

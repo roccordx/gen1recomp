@@ -13,6 +13,7 @@ import copy
 import json
 import os
 import re
+from types import SimpleNamespace
 import shutil
 import sys
 from collections import deque
@@ -1346,30 +1347,53 @@ def _decode_evos_moves(rom, symbols, manifest, index):
     return evolutions, learnset
 
 
-def _dex_entry(rom, symbols, manifest, index, species):
+def _dex_entry(
+        rom, symbols, manifest, index, species, with_text_pointer=False):
     table = _symbol(symbols, "PokedexEntryPointers")
     address = rom.word(table.bank, table.address + index * 2)
     kind, consumed = read_string(
         rom, table.bank, address, manifest["charmap"], max_length=32)
     address += consumed
-    height_ft, height_in = rom.bytes(table.bank, address, 2)
-    weight = rom.word(table.bank, address + 2)
-    address += 4
+
+    metric = manifest.get("dexEntryFormat") == "metric"
+    if metric:
+        height = rom.byte(table.bank, address)
+        weight = rom.word(table.bank, address + 1)
+        address += 3
+    else:
+        height_ft, height_in = rom.bytes(table.bank, address, 2)
+        weight = rom.word(table.bank, address + 2)
+        address += 4
+
     if rom.byte(table.bank, address) != 0x17:
         raise ValueError(
             f"dex entry {index + 1} has no TX_FAR command")
+
     text_address = rom.word(table.bank, address + 1)
     text_bank = rom.byte(table.bank, address + 3)
     text_label = manifest["dexEntryLabels"].get(species)
     if text_label is None:
         text_label = f"_DexEntry_{text_bank:02X}_{text_address:04X}"
-    return {
-        "kind": kind,
-        "heightFt": height_ft,
-        "heightIn": height_in,
-        "weight": weight,
-        "text": text_label,
-    }
+
+    if metric:
+        result = {
+            "kind": kind,
+            "heightM": height / 10,
+            "weightKg": weight / 10,
+            "text": text_label,
+        }
+    else:
+        result = {
+            "kind": kind,
+            "heightFt": height_ft,
+            "heightIn": height_in,
+            "weight": weight,
+            "text": text_label,
+        }
+
+    if with_text_pointer:
+        return result, (text_bank, text_address)
+    return result
 
 
 def extract_pokemon(rom, symbols, manifest, out_dir, assets_dir):
@@ -1750,9 +1774,45 @@ def extract_text(rom, symbols, manifest, out_dir):
         for map_label, headers in metadata["trainerHeaders"].items()
     }
     texts = {}
+    failed_labels = []
+
     for label in metadata["labels"]:
+        try:
+            texts[label] = _decode_text_commands(
+                rom, _symbol(symbols, label), charmap,
+                dynamic.get(label, []))
+        except ValueError as exc:
+            failed_labels.append((label, str(exc)))
+
+    if failed_labels:
+        print(
+            f"warning: {len(failed_labels)} testi statici non decodificati;",
+            file=sys.stderr,
+        )
+        for label, error in failed_labels[:20]:
+            print(f"  {label}: {error}", file=sys.stderr)
+        if len(failed_labels) > 20:
+            print(
+                f"  ... altri {len(failed_labels) - 20} errori",
+                file=sys.stderr,
+            )
+
+    # Recover localized Pok?dex descriptions from their actual TX_FAR pointers.
+    for index, species in enumerate(manifest["constants"]["speciesOrder"]):
+        label = manifest.get("dexEntryLabels", {}).get(species)
+        if not label:
+            continue
+        if label in texts and manifest.get("dexEntryFormat") != "metric":
+            continue
+
+        _, pointer = _dex_entry(
+            rom, symbols, manifest, index, species,
+            with_text_pointer=True)
+        text_bank, text_address = pointer
+        text_symbol = SimpleNamespace(
+            name=label, bank=text_bank, address=text_address)
         texts[label] = _decode_text_commands(
-            rom, _symbol(symbols, label), charmap, dynamic.get(label, []))
+            rom, text_symbol, charmap, [])
 
     util.write_lua(
         os.path.join(out_dir, "text.lua"), texts,

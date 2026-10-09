@@ -18,6 +18,16 @@ function RomManifest.decode(version)
   if not manifest then
     error("ROM import metadata is invalid: " .. tostring(decodeError))
   end
+  print("MANIFEST DEBUG: version=" .. tostring(version))
+  print("MANIFEST DEBUG: labels=" .. tostring(#(manifest.text.labels or {})))
+  for i, label in ipairs(manifest.text.labels or {}) do
+    if tostring(label):find("AlreadyKnown", 1, true) then
+      print("MANIFEST DEBUG: FOUND AlreadyKnown at index=" .. tostring(i) ..
+        " label=" .. tostring(label))
+    end
+  end
+  print("MANIFEST DEBUG: romSha1=" .. tostring(manifest.romSha1))
+
   assert(GameVersion.acceptsSha1(version, manifest.romSha1),
     "ROM import metadata version mismatch")
   return manifest
