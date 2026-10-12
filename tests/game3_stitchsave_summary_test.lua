@@ -69,6 +69,12 @@ do
     "and a cured mon shows only the poison")
 end
 
+if not require("tests.game3_cache").mount() then
+  print("[skip] tests 4-9 read ROM map section names: " .. tostring(require("tests.game3_cache").reason))
+  print(string.format("[test] %d passed, %d failed", passed, failed))
+  os.exit(failed > 0 and 1 or 0)
+end
+
 print("[test] 4. The met location comes from the map section, not a PALLET TOWN default")
 do
   -- pokefirered/src/pokemon_summary_screen.c:2632 GetMapNameGeneric_(mapNameStr, metLocation)
@@ -200,11 +206,11 @@ do
     dex = { seen = {}, owned = {} }, flags = {}, vars = {},
   }
   local fixed = Schema.fromSaveTable(secretSave)
-  eq(fixed.party[1].otSecretId, rolled.secretId,
-    "a stale per-boot secret id on an own mon is repaired")
+  eq(fixed.party[1].otSecretId, ((rolled.secretId or 0) + 1) % 0x10000,
+    "a same-name same-TID mon with a different secret id keeps it on load")
   local ownLine = memoLine(fixed.party[1], fixed)
-  check(ownLine:find("a trade", 1, true) == nil,
-    "so it stops reading as a trade (" .. ownLine:gsub("\n", " ") .. ")")
+  check(ownLine:find("Apparently", 1, true) ~= nil,
+    "so it still reads as another trainer's mon (" .. ownLine:gsub("\n", " ") .. ")")
   eq(fixed.party[2].otSecretId, 4242, "a foreign mon keeps its own secret half")
 end
 

@@ -6,6 +6,7 @@ local FrlgFont = require("src.ui.game3.frlg_font")
 local Strings = require("src.core.Strings")
 local RomText = require("src.core.game3.rom_text")
 local Model = require("src.core.game3.slot_machine")
+local CacheBlob = require("src.import.CacheBlob")
 
 local SlotMachineUi = {}
 
@@ -64,9 +65,7 @@ SlotMachineUi.LINE_FLASH_PERIOD = 8
 SlotMachineUi.ROW_Y = { [0] = 68, [1] = 92, [2] = 116 }
 
 -- pokefirered/include/constants/songs.h:275
-SlotMachineUi.MUS_SLOTS_JACKPOT = 268
--- pokefirered/include/constants/songs.h:276
-SlotMachineUi.MUS_SLOTS_WIN = 269
+require("src.core.game3.song_fields")(SlotMachineUi)
 
 -- pokefirered/src/slot_machine.c:2287
 SlotMachineUi.HELP_SLIDE_STEP = 16
@@ -121,12 +120,12 @@ local function read_bytes(rel)
     if okR and type(d) == "string" and #d > 0 then return d end
   end
   if love and love.filesystem and love.filesystem.read then
-    local okR, d = pcall(love.filesystem.read, rel)
+    local okR, d = pcall(CacheBlob.readFs, rel)
     if okR and type(d) == "string" and #d > 0 then return d end
   end
   local f = io.open(rel, "rb")
   if f then
-    local d = f:read("*a")
+    local d = CacheBlob.decode(rel, f:read("*a"))
     f:close()
     if d and #d > 0 then return d end
   end
@@ -299,7 +298,7 @@ function SlotMachineUi.show(opts)
     SlotMachineUi.MSG_WIDTH, SlotMachineUi.MSG_HEIGHT)
   SlotMachineUi._yesNoTpl = Window.template(SlotMachineUi.YESNO_LEFT, SlotMachineUi.YESNO_TOP, 6, 4)
   SlotMachineUi._amounts = { credit = -1, payout = -1, bet = -1 }
-  Stack.push("slot_machine", SlotMachineUi, { hideBelow = true })
+  Stack.push("slot_machine", SlotMachineUi, { hideBelow = true, fullscreen = true })
   return SlotMachineUi.state
 end
 
@@ -914,8 +913,8 @@ function SlotMachineUi.draw()
   if SlotMachineUi._yesNo then
     local tpl = SlotMachineUi._yesNoTpl
     Window.stdFrame(tpl)
-    Window.printPx(Strings("YES"), (SlotMachineUi.YESNO_LEFT + 1) * 8, SlotMachineUi.YESNO_TOP * 8 + 2)
-    Window.printPx(Strings("NO"), (SlotMachineUi.YESNO_LEFT + 1) * 8, SlotMachineUi.YESNO_TOP * 8 + 16)
+    Window.printPx(RomText.plain("gText_Yes"), (SlotMachineUi.YESNO_LEFT + 1) * 8, SlotMachineUi.YESNO_TOP * 8 + 2)
+    Window.printPx(RomText.plain("gText_No"), (SlotMachineUi.YESNO_LEFT + 1) * 8, SlotMachineUi.YESNO_TOP * 8 + 16)
     Window.cursorPx(SlotMachineUi.YESNO_LEFT * 8 + 2,
       SlotMachineUi.YESNO_TOP * 8 + 2 + (SlotMachineUi._yesNo - 1) * 14)
   end

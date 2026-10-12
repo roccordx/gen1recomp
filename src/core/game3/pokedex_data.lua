@@ -4,7 +4,8 @@
 local Extract = require("src.import.gba.extract_island1")
 local Dex = require("src.core.game3.dex")
 local Pokemon = require("src.core.game3.pokemon")
-local Strings = require("src.core.Strings")
+local RomText = require("src.core.game3.rom_text")
+local CacheBlob = require("src.import.CacheBlob")
 
 local PokedexData = {}
 
@@ -40,7 +41,7 @@ local function read_bytes(rel)
   for _, p in ipairs(candidates) do
     local f = io.open(p, "rb")
     if f then
-      local d = f:read("*a")
+      local d = CacheBlob.decode(p, f:read("*a"))
       f:close()
       if d and #d > 0 then return d end
     end
@@ -121,7 +122,8 @@ function PokedexData._buildSpeciesWildAreas()
   local encounters = load_lua(cache_root() .. "/encounters.lua")
     or load_lua("data/generated/gba/encounters.lua")
     or load_lua("data/generated/encounters.lua")
-  local mapGroups = load_lua("src/import/gba/map_groups_firered.lua")
+  local family = require("src.import.gba.family").active()
+  local mapGroups = family:groups()
   local mapsecToArea = PokedexData._areaData and PokedexData._areaData.mapsecToArea or {}
   local markers = PokedexData._areaData and PokedexData._areaData.markers or {}
   local MapSectionsExtract = package.loaded["src.import.gba.map_sections_extract"]
@@ -143,7 +145,7 @@ function PokedexData._buildSpeciesWildAreas()
         local gTable = mapGroups.groups[gIdx] or mapGroups.groups[gIdx + 1]
         local pretName = gTable and gTable.maps and (gTable.maps[mIdx + 1] or gTable.maps[mIdx])
         local secIdStr = nil
-        if MapSectionsExtract and MapSectionsExtract.getInfo then
+        if family.aliases and MapSectionsExtract and MapSectionsExtract.getInfo then
           local info = MapSectionsExtract.getInfo(nil, pretName)
           secIdStr = info and info.id
         end
@@ -184,25 +186,9 @@ end
 function PokedexData.getEntry(speciesId)
   PokedexData.init()
   local sp = tonumber(speciesId) or 1
-  local raw = PokedexData._entries and PokedexData._entries[sp]
-
-  if not raw then
-    local name = (Pokemon.name and Pokemon.name(sp)) or "POKéMON"
-    return {
-      category = "UNKNOWN",
-      categoryName = Strings("UNKNOWN POKéMON"),
-      heightDm = 0,
-      weightHg = 0,
-      heightFormatted = "--'--\"",
-      weightFormatted = Strings("---.- lbs."),
-      description = Strings("This is a newly discovered POKéMON. It is\ncurrently under investigation."),
-      description2 = Strings("This is a newly discovered POKéMON. It is\ncurrently under investigation."),
-      pokemonScale = 256,
-      pokemonOffset = 0,
-      trainerScale = 256,
-      trainerOffset = 0,
-    }
-  end
+  -- src/data/pokemon/pokedex_entries.h:3 NATIONAL_DEX_NONE
+  local raw = PokedexData._entries[sp] or assert(PokedexData._entries[0],
+    "pokemon/pokedex/entries.lua has no NATIONAL_DEX_NONE entry")
 
   local dm = raw.height or 0
   local inchesTenths = math.floor(10000 * dm / 254)
@@ -220,10 +206,12 @@ function PokedexData.getEntry(speciesId)
   end
   local wholeLbs = math.floor(lbsHund / 100)
   local fracLbs = math.floor((lbsHund % 100) / 10)
-  local weightFormatted = Strings("%4d.%d lbs.", wholeLbs, fracLbs)
+  -- src/pokedex_screen.c:2846
+  local weightFormatted = string.format("%4d.%d ", wholeLbs, fracLbs) .. RomText.plain("gText_Lbs")
 
-  local cat = raw.category or "POKéMON"
-  local categoryName = cat:find("POKéMON") and cat or Strings("%s POKéMON", cat)
+  local cat = raw.category
+  -- src/pokedex_screen.c:2703
+  local categoryName = cat .. RomText.plain("gText_PokedexPokemon")
 
   return {
     category = cat,
@@ -353,6 +341,17 @@ function PokedexData.getAreaMarker(dexAreaKey)
 end
 
 function PokedexData.isNationalUnlocked(session, dex)
+  local P = require("src.core.game3.profile").forSession(session)
+  if (P.family or "frlg") ~= "frlg" then
+    local Runtime = package.loaded["src.core.game3.runtime"]
+    local Space = package.loaded["src.core.game3.scripting.space"]
+    local cur = session or (Runtime and Runtime.getSession and Runtime.getSession())
+    local store = (cur and cur.store) or (Space and Space.store) or cur
+    return Dex.nationalEnabled({
+      version = P.id, dex = dex or (cur and cur.dex),
+      flags = store and store.flags, vars = store and store.vars,
+    })
+  end
   if dex and (dex.nationalUnlocked or dex.isNationalUnlocked) then
     return true
   end

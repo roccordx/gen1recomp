@@ -2,7 +2,7 @@
 set -u
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ALL_VERSIONS="red blue yellow gold silver crystal firered leafgreen"
+ALL_VERSIONS="red blue yellow gold silver crystal firered leafgreen ruby sapphire emerald"
 
 help_text() {
   cat <<EOF
@@ -19,6 +19,7 @@ Imports a ROM into a POKEPORT_IDENTITY save dir through the real importer
 
 ROM lookup: --rom, then tools/reimport.local (gitignored, version=path lines),
 then POKEPORT_ROM_DIR (No-Intro style names, see docs/architecture.md).
+The import window stays off screen (POKEPORT_BACKGROUND=0 shows it).
 EOF
 }
 
@@ -72,6 +73,9 @@ rom_pattern() {
     crystal) echo "Pokemon - Crystal Version*.gbc" ;;
     firered) echo "Pokemon - Fire*Red Version*.gba" ;;
     leafgreen) echo "Pokemon - Leaf*Green Version*.gba" ;;
+    emerald) echo "Pokemon - Emerald Version*.gba" ;;
+    ruby) echo "Pokemon - Ruby Version*.gba" ;;
+    sapphire) echo "Pokemon - Sapphire Version*.gba" ;;
   esac
 }
 
@@ -133,6 +137,7 @@ for version in $VERSIONS; do
   start=$(date +%s)
   (cd "$ROOT" && env POKEPORT_IDENTITY="$ident" POKEPORT_VERSION="$version" \
     POKEPORT_IMPORT_ONLY=1 POKEPORT_IMPORT_ROM="$rom" POKEPORT_FORCE_IMPORT=1 \
+    POKEPORT_BACKGROUND="${POKEPORT_BACKGROUND:-1}" \
     perl -e "alarm $TIMEOUT; exec @ARGV" python3 "$ROOT/tools/pty_run.py" love . >"$log" 2>&1)
   code=$?
   secs=$(( $(date +%s) - start ))

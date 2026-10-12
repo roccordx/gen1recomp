@@ -73,6 +73,10 @@ local function newGame(money, ballCount)
       constants = {},
     },
     save = { money = money, inventory = {}, bagOrder = {} },
+    input = {
+      wasPressed = function() return false end,
+      isDown = function() return false end,
+    },
   }
   if ballCount then
     game.save.inventory.POKE_BALL = ballCount
@@ -93,9 +97,18 @@ local function newGame(money, ballCount)
   return game, events, stack
 end
 
+local function drain(game)
+  for _ = 1, 600 do
+    local top = game.stack:top()
+    if not (top and top.stay and not top.stayShown) then return end
+    top:update(1 / 60)
+  end
+end
+
 local function buyOne(game, stack)
   local menu = ShopMenu.new(game, { "POKE_BALL" }, function() end)
   menu.items[1].onSelect()
+  drain(game)
   local list = stack[#stack]
   list.onChoose({ value = "POKE_BALL" })
   local qty = stack[#stack]
@@ -106,18 +119,38 @@ local function buyOne(game, stack)
   return menu, list, qty
 end
 
+require("src.core.GameVersion").set("red")
+
+local function fill(game, n)
+  for i = 1, n do
+    local id = "FILLER_" .. i
+    game.save.inventory[id] = 1
+    game.save.bagOrder[#game.save.bagOrder + 1] = id
+  end
+end
+
 do
   local game = newGame(3000, 99)
+  eq(Bag.add(game.save, "POKE_BALL", 1, game.data), true,
+     "AddItemToInventory puts a 100th POKe BALL in a new slot")
+  eq(game.save.inventory.POKE_BALL, 100, "the total is 100")
+  eq(Bag.slots(game.save, game.data), 2, "split over two slots")
+end
+
+do
+  local game = newGame(3000, 99)
+  fill(game, 19)
   eq(Bag.add(game.save, "POKE_BALL", 1, game.data), false,
-     "AddItemToInventory refuses a 100th POKe BALL")
+     "a full bag refuses the overflow slot")
   eq(game.save.inventory.POKE_BALL, 99, "and adds nothing")
 end
 
 for _, case in ipairs({
-  { name = "bag full", money = 3000, count = 99, text = BAG_FULL },
+  { name = "bag full", money = 3000, count = 99, fill = 19, text = BAG_FULL },
   { name = "not enough money", money = 100, count = nil, text = NO_MONEY },
 }) do
   local game, events, stack = newGame(case.money, case.count)
+  fill(game, case.fill or 0)
   local menu, list, qty = buyOne(game, stack)
   local box = stack[#stack]
   if check(getmetatable(box) == TextBox, case.name .. ": a text box is pushed") then
@@ -137,6 +170,7 @@ for _, case in ipairs({
 
   game.stack:pop()
   box.onDone()
+  drain(game)
   eq(stack[#stack], nil, case.name .. ": A closes the list")
   eq(menu.footer, ANYTHING, case.name .. ": the mart menu asks again")
   eq(game.save.money, case.money, case.name .. ": money is still untouched")
@@ -151,6 +185,7 @@ do
   game.save.bagOrder = { "BICYCLE" }
   local menu = ShopMenu.new(game, { "POKE_BALL" }, function() end)
   menu.items[2].onSelect()
+  drain(game)
   local list = stack[#stack]
   list.onChoose({ value = "BICYCLE" })
   local box = stack[#stack]
@@ -158,6 +193,7 @@ do
   eq(stack[#stack - 1], list, "unsellable: the sell list is still under it")
   game.stack:pop()
   box.onDone()
+  drain(game)
   eq(stack[#stack], nil, "unsellable: A closes the sell list")
   eq(menu.footer, ANYTHING, "unsellable: the mart menu asks again")
 end
@@ -172,6 +208,7 @@ do
   check(getmetatable(box) == TextBox, "empty bag: only a text box is pushed")
   game.stack:pop()
   box.onDone()
+  drain(game)
   eq(menu.footer, ANYTHING, "empty bag: the mart menu asks again")
 end
 

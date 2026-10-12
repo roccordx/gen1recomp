@@ -4,6 +4,7 @@
 local Display = require("src.core.game3.display")
 local Extract = require("src.import.gba.extract_island1")
 local SummaryChromeExtract = require("src.import.gba.summary_chrome_extract")
+local CacheBlob = require("src.import.CacheBlob")
 
 local SummaryChrome = {}
 
@@ -56,10 +57,10 @@ local function read_bytes(rel)
     if type(d) == "string" and #d > 0 then return d end
   end
   if love and love.filesystem and love.filesystem.read then
-    local d = love.filesystem.read(rel)
+    local d = CacheBlob.readFs(rel)
     if type(d) == "string" and #d > 0 then return d end
     local alt = "data/generated/gba/" .. (rel:gsub("^data/generated/gba/", ""))
-    d = love.filesystem.read(alt)
+    d = CacheBlob.readFs(alt)
     if type(d) == "string" and #d > 0 then return d end
   end
   local candidates = {
@@ -69,7 +70,7 @@ local function read_bytes(rel)
   for _, p in ipairs(candidates) do
     local f = io.open(p, "rb")
     if f then
-      local d = f:read("*a")
+      local d = CacheBlob.decode(p, f:read("*a"))
       f:close()
       if d and #d > 0 then return d end
     end
@@ -137,23 +138,43 @@ function SummaryChrome.manifest()
   return SummaryChrome._manifest
 end
 
-function SummaryChrome.pageImage(pageIndex)
-  if SummaryChrome._pages[pageIndex] then return SummaryChrome._pages[pageIndex] end
-  local filenames = {
-    [0] = "page_info.rgba",
-    [1] = "page_skills.rgba",
-    [2] = "page_moves.rgba",
-    [3] = "page_moves_info.rgba",
-    [4] = "page_egg.rgba",
-  }
-  local fn = filenames[pageIndex] or "page_info.rgba"
-  local raw = read_bytes(summary_root() .. "/" .. fn)
-  if raw then
-    local img = rgba_to_image(raw, 240, 160)
-    SummaryChrome._pages[pageIndex] = img
-    return img
-  end
-  return nil
+local function cached_image(name, w, h)
+  local key = name
+  if SummaryChrome._pages[key] ~= nil then return SummaryChrome._pages[key] or nil end
+  local raw = read_bytes(summary_root() .. "/" .. name .. ".rgba")
+  local img = raw and rgba_to_image(raw, w, h)
+  SummaryChrome._pages[key] = img or false
+  return img
+end
+
+local function variant(name, shiny)
+  return shiny and (name .. "_shiny") or name
+end
+
+-- pokefirered/src/pokemon_summary_screen.c:1862
+function SummaryChrome.drawBg3(kind, shiny)
+  local img = cached_image(variant("bg3_" .. kind, shiny), 240, 160)
+  if not (img and love and love.graphics) then return false end
+  love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.draw(img, 0, 0)
+  return true
+end
+
+-- pokefirered/src/pokemon_summary_screen.c:3276
+function SummaryChrome.drawProgress(kind, shiny)
+  local img = cached_image(variant("progress_" .. kind, shiny and kind ~= "egg"), 48, 16)
+  if not (img and love and love.graphics) then return false end
+  love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.draw(img, 104, 0)
+  return true
+end
+
+function SummaryChrome.drawLayer(kind, xOffset, shiny)
+  local img = cached_image(variant("layer_" .. kind, shiny and kind ~= "egg"), 240, 160)
+  if not (img and love and love.graphics) then return false end
+  love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.draw(img, xOffset or 0, 0)
+  return true
 end
 
 function SummaryChrome.hpBarImage(color)
@@ -239,17 +260,6 @@ local function get_quad(key, x, y, w, h, sw, sh)
   return SummaryChrome._quads[key]
 end
 
---- Draw the background texture for a page with horizontal offset for slide animations.
-function SummaryChrome.drawPageBg(pageIndex, xOffset)
-  xOffset = xOffset or 0
-  local img = SummaryChrome.pageImage(pageIndex)
-  if img and love and love.graphics then
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(img, xOffset, 0)
-    return true
-  end
-  return false
-end
 
 --- Pret UpdateHpBarObjs: 9 sprites at (x + i*8, y).
 --- anim 9=HP label, 10=left cap, 0..8=fill (0 empty..8 full), 11=right cap.
@@ -439,7 +449,8 @@ function SummaryChrome.drawShinyStar(x, y)
   if not (love and love.graphics) then return end
   local img = SummaryChrome.shinyStarImage()
   if not img then return end
-  local q = get_quad("shiny_star", 0, 0, 8, 8, 8, 16)
+  -- pokefirered/src/pokemon_summary_screen.c:610
+  local q = get_quad("shiny_star", 0, 8, 8, 8, 8, 16)
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.draw(img, q, x, y)
 end
@@ -451,6 +462,17 @@ function SummaryChrome.drawPokerus(x, y)
   if not img then return end
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.draw(img, x, y)
+end
+
+-- pokefirered/src/mon_markings.c:558
+function SummaryChrome.drawMarkings(markings, x, y)
+  markings = tonumber(markings) or 0
+  if markings <= 0 or markings > 15 then return end
+  local img = cached_image("markings", 32, 128)
+  if not (img and love and love.graphics) then return end
+  local q = get_quad("markings_" .. markings, 0, markings * 8, 32, 8, 32, 128)
+  love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.draw(img, q, x, y)
 end
 
 return SummaryChrome

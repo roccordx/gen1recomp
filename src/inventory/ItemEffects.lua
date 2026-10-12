@@ -93,14 +93,11 @@ function ItemEffects.healsHP(id)
       or id == "REVIVE" or id == "MAX_REVIVE"
 end
 
--- .useRareCandy prints over the still-drawn party menu
--- (engine/items/item_effects.asm:1392-1418); .useVitamin ends at
--- RemoveUsedItem the same way (engine/items/item_effects.asm:1315-1322);
--- stones keep the menu on screen (engine/items/item_effects.asm:772-793,
+-- engine/items/item_effects.asm:1223-1237, :1392-1418, :1315-1322, :772-793
 -- engine/pokemon/evos_moves.asm:120-128
--- (engine/items/item_effects.asm:2022-2039)
+-- engine/items/item_effects.asm:2022-2039
 function ItemEffects.keepsPartyMenuOpen(id)
-  return ItemEffects.healsHP(id) or id == "RARE_CANDY"
+  return ItemEffects.isBattleMedicine(id) or id == "RARE_CANDY"
       or VITAMINS[id] ~= nil or ItemEffects.isStone(id)
       or id == "ELIXER" or id == "MAX_ELIXER"
       or id == "ETHER" or id == "MAX_ETHER" or id == "PP_UP"
@@ -327,7 +324,7 @@ function ItemEffects.use(data, save, itemId, target, battle, moveIndex, ow)
       local stat = X_ITEMS[itemId]
       local cur = b.stages[stat] or 0
       -- ItemUseXStat: PrintItemUseTextAndRemoveItem, then StatModifierUpEffect
-      if cur >= 6 then
+      if cur >= 6 or require("src.battle.Damage").statAtCap(battle, b, stat) then
         return "consumed", { used }, {
           useJingle = true,
           afterMessages = { romText(data, "_NothingHappenedText",
@@ -450,7 +447,9 @@ function ItemEffects.use(data, save, itemId, target, battle, moveIndex, ow)
       target.status = nil
       cureActiveToxic(battle, target)
     end
-    require("src.core.Sound").play(data, "Heal_HP")
+    local Sound = require("src.core.Sound")
+    if battle then Sound.stopLoop("Low_Health_Alarm") end
+    Sound.play(data, "Heal_HP")
     return "consumed", msgs, { healedFrom = before }
   end
 
@@ -621,6 +620,11 @@ function ItemEffects.use(data, save, itemId, target, battle, moveIndex, ow)
     -- on that carry -- surfing refuses the rod with the same OAK text as
     -- the mid-battle case above, no rod-specific message (#533)
     if ow and ow.player and ow.player.surfing then
+      return "failed", { notTime(data, save) }
+    end
+    -- FishingInit's `ret c` -> ItemUseNotTime -> ItemUseFailed, so a rod
+    -- away from water leaves the bag up (item_effects.asm:1893-1901)
+    if ow and ow.facingIsShoreOrWater and not ow:facingIsShoreOrWater() then
       return "failed", { notTime(data, save) }
     end
     return "fish", itemId

@@ -44,20 +44,32 @@ function U.shot(game, path)
   if dir and dir ~= "" then
     os.execute('mkdir -p "' .. dir .. '" 2>/dev/null')
   end
+  os.remove(path)
   game.capturePath = path
   -- love.draw consumes capturePath once per rendered frame, but fast runs
   -- (POKEPORT_SPEED) step the driver many times per render; spin until the
   -- capture lands so later actions can't outrun it
-  for _ = 1, 120 do
+  for _ = 1, 4000 do
     if not game.capturePath then break end
     frame = frame + 1
     coroutine.yield()
   end
-  U.wait(1)
-  local f = io.open(path, "rb")
-  if f then f:close() return true end
+  for _ = 1, 4000 do
+    local f = io.open(path, "rb")
+    if f then f:close() return true end
+    frame = frame + 1
+    coroutine.yield()
+  end
   U.log("FAIL screenshot did not reach disk:", path)
   return false
+end
+
+function U.still(game, path)
+  local update = rawget(game, "update")
+  game.update = function() end
+  local ok = U.shot(game, path)
+  game.update = update
+  return ok
 end
 
 -- skip the intro movie + title into a fresh overworld game
@@ -77,12 +89,15 @@ function U.newGame(game)
   -- Oak speech: mash through text + naming (presets pick first = RED).
   -- The closing shrink-away beat (~103 frames) is not skippable, like
   -- the DelayFrames chain it ports, so leave headroom.
-  for _ = 1, 400 do
+  local reached = false
+  for _ = 1, 2000 do
     U.tap(game, "a")
     U.wait(2)
-    if game.overworld and game.stack:top() == game.overworld then break end
+    if game.overworld and game.stack:top() == game.overworld then reached = true break end
   end
+  if not reached then print("FAIL newGame never reached the overworld") end
   U.wait(10)
+  return reached
 end
 
 -- jump straight into the overworld at a position, bypassing the intro

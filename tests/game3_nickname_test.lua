@@ -2,6 +2,7 @@
 -- ChangePokemonNickname special: open naming after TO_BLACK, apply nick, clear fade.
 
 package.path = "./?.lua;./?/init.lua;" .. package.path
+require("tests.game3_cache").mountOrSkip("game3_nickname_test")
 
 local failed = 0
 local function check(cond, msg)
@@ -36,7 +37,18 @@ package.loaded["src.ui.game3.stack"] = {
 
 -- Force re-require naming with stubs
 package.loaded["src.ui.game3.naming"] = nil
+local romTextReal = package.loaded["src.core.game3.rom_text"]
+local ROM_TEXT = { gText_PkmnsNickname = "'s nickname?" }
+local function romTextKey(n, i, j) return j and (n .. "[" .. i .. "][" .. j .. "]") or (n .. "[" .. i .. "]") end
+local function romTextPlain(key, ctx) return ((ROM_TEXT[key] or key):gsub("{PLAYER}", ctx and ctx.playerName or "")) end
+package.loaded["src.core.game3.rom_text"] = {
+  plain = romTextPlain, box = romTextPlain, ascii = romTextPlain, has = function() return true end,
+  key = romTextKey, at = function(n, i, j, ctx) return romTextPlain(romTextKey(n, i, j), ctx) end,
+  count = function() return 0 end, list = function() return {} end,
+  lazy = function(map) return setmetatable({}, { __index = function(_, k) return map[k] end }) end,
+}
 Naming = require("src.ui.game3.naming")
+package.loaded["src.core.game3.rom_text"] = romTextReal
 
 local mon = { species = 1, nickname = "", name = "BULBASAUR" }
 package.loaded["src.core.game3.runtime"] = {
@@ -341,6 +353,27 @@ do
   Pokemon.install, Pokemon.name = saved.install, saved.name
   Pokemon._names, Pokemon._installWarned = saved.names, saved.warned
   package.loaded["src.core.game3.runtime"] = rt
+end
+
+do
+  print("[test] Emerald {STR_VAR_1}'s nickname? title prints the species once")
+  local TextIR = require("src.core.game3.scripting.text_ir")
+  local savedRT = package.loaded["src.core.game3.rom_text"]
+  local savedNaming = package.loaded["src.ui.game3.naming"]
+  local savedProvider = TextIR._provider
+  package.loaded["src.core.game3.rom_text"] = {
+    plain = function(_, ctx) return TextIR.toPlain(TextIR.fromAscii("{STR_VAR_1}'s nickname?"), ctx or {}) end,
+  }
+  package.loaded["src.ui.game3.naming"] = nil
+  local EmNaming = require("src.ui.game3.naming")
+  TextIR.setContextProvider(function(kind)
+    if kind == "stringVars" then return { "MUDKIP" } end
+  end)
+  local title = EmNaming.monTitle("MUDKIP")
+  check(title == "MUDKIP's nickname?", "title is " .. title)
+  TextIR.setContextProvider(savedProvider)
+  package.loaded["src.core.game3.rom_text"] = savedRT
+  package.loaded["src.ui.game3.naming"] = savedNaming
 end
 
 if failed == 0 then

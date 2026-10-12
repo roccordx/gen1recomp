@@ -1,6 +1,7 @@
 #!/usr/bin/env luajit
 
 package.path = "./?.lua;./?/init.lua;" .. package.path
+require("tests.game3_cache").stubSpeciesNames()
 
 package.loaded["src.core.game3.audio"] = setmetatable({}, {
   __index = function() return function() end end,
@@ -76,7 +77,7 @@ do
     flags = {}, vars = {},
   }
   local loaded = Schema.fromSaveTable(old)
-  eq(loaded.secretId, nil, "no secretId in, no secretId out")
+  eq(loaded.secretId, 4242, "no secretId in, the owned mon's secret id is recovered at load")
   eq(loaded.safari, nil, "no safari block")
   eq(loaded.mail, nil, "no mail pool")
   eq(#loaded.party, 1, "the party is not quarantined")

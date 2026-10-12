@@ -3,6 +3,7 @@ local CachePaths = require("src.core.game3.cache_paths")
 local PokemonExtract = require("src.import.gba.pokemon_extract")
 local Versions = require("src.import.gba.versions")
 local ModRuntime = require("src.mods.Runtime")
+local CacheBlob = require("src.import.CacheBlob")
 local Strings = require("src.core.Strings")
 
 local Pokemon = {}
@@ -57,7 +58,7 @@ local function resolve_cache(cache)
       end
       local f = io.open(rel, "rb") or io.open("data/generated/gba/" .. rel, "rb")
       if f then
-        local data = f:read("*a")
+        local data = CacheBlob.decode(rel, f:read("*a"))
         f:close()
         return data
       end
@@ -177,7 +178,7 @@ function Pokemon.install(cache)
   if Pokemon._names then
     log("species pack ready (" .. tostring(Pokemon._manifest and Pokemon._manifest.numSpecies) .. ")")
   else
-    log("species pack missing — re-import FireRed ROM")
+    log("species pack missing: re-import FireRed ROM")
   end
   Pokemon._runReloadHooks()
 end
@@ -251,8 +252,8 @@ function Pokemon.name(species)
   if not species or species < 1 then return "?????" end
   if not Pokemon._names then Pokemon.install(Pokemon._cache) end
   local n = Pokemon._names and Pokemon._names[species]
-  if n and n ~= "" and n ~= "??????????" then return n end
-  return Strings("POKéMON %03d", species)
+  if n and n ~= "" then return n end
+  error("no ROM species name for species " .. species, 2)
 end
 
 function Pokemon.keyName(species)
@@ -331,8 +332,8 @@ function Pokemon.abilityName(abilityId)
   if not abilityId or abilityId < 1 then return "-------" end
   if not Pokemon._abilityNames then Pokemon.install(Pokemon._cache) end
   local n = Pokemon._abilityNames and Pokemon._abilityNames[abilityId]
-  if n and n ~= "" then return n end
-  return Strings("ABILITY %d", abilityId)
+  if n and n ~= "" then return Strings(n) end
+  error("no ROM ability name for ability " .. abilityId, 2)
 end
 
 function Pokemon.speciesMeta(species)
@@ -348,7 +349,7 @@ function Pokemon.expYield(species)
   return (meta and tonumber(meta.expYield)) or 0
 end
 
---- ROM BaseStats.growthRate — pret GROWTH_* index into gExperienceTables.
+--- ROM BaseStats.growthRate: pret GROWTH_* index into gExperienceTables.
 function Pokemon.growthRate(species)
   local meta = Pokemon.speciesMeta(species)
   return (meta and tonumber(meta.growthRate) or 0) % 6
@@ -468,8 +469,9 @@ function Pokemon.calcStats(species, level, ivs, evs, personality)
 end
 
 --- Fill battle/display stats on an opaque mon (mutates and returns mon).
-function Pokemon.applyStats(mon)
+function Pokemon.applyStats(mon, session)
   if type(mon) ~= "table" then return mon end
+  local oldMaxHp = tonumber(mon.maxHp or mon.maxhp) or 0
   local species = tonumber(mon.species or mon.speciesId) or 1
   local level = tonumber(mon.level) or 5
   local ivs = mon.ivs or {}
@@ -477,6 +479,8 @@ function Pokemon.applyStats(mon)
   local personality = mon.personality or 0
   local st = Pokemon.calcStats(species, level, ivs, evs, personality)
   mon.maxHp = st.maxHp
+  local Enigma = require("src.core.game3.rs.enigma")
+  if Enigma.matches(session) then Enigma.recordStatCalculation(oldMaxHp, st.maxHp) end
   if mon.hp == nil or mon.hp < 0 or mon.hp > st.maxHp then
     mon.hp = st.maxHp
   end
@@ -650,10 +654,99 @@ function Pokemon.checkPartyHasHadPokerus(party, selection)
   return retVal
 end
 
--- pokefirered/src/pokemon.c:5612, :5676, :5682 (all stubbed in FRLG)
-function Pokemon.randomlyGivePartyPokerus(_) end
-function Pokemon.updatePartyPokerusTime(_) end
-function Pokemon.partySpreadPokerus(_) end
+local function pokerus_live(session)
+  local Profile = require("src.core.game3.profile")
+  return require(Profile.forSession(session).saveRules).POKERUS == true
+end
+
+local function has_species(mon)
+  return type(mon) == "table" and (tonumber(mon.species or mon.speciesId) or 0) ~= 0
+end
+
+-- pokeemerald/src/pokemon.c:6078
+function Pokemon.randomlyGivePartyPokerus(party, session)
+  if type(party) ~= "table" or not pokerus_live(session) then return end
+  local bit = require("bit")
+  local Rng = require("src.core.game3.rng")
+  local rnd = Rng.Random()
+  if rnd ~= 0x4000 and rnd ~= 0x8000 and rnd ~= 0xC000 then return end
+  local any = false
+  for i = 1, 6 do
+    if has_species(party[i]) and not Pokemon.isEgg(party[i]) then any = true end
+  end
+  if not any then return end
+  local idx
+  repeat
+    idx = Rng.Random() % 6
+  until has_species(party[idx + 1]) and not Pokemon.isEgg(party[idx + 1])
+  if Pokemon.checkPartyHasHadPokerus(party, bit.lshift(1, idx)) ~= 0 then return end
+  local r
+  repeat
+    r = Rng.Random() % 256
+  until bit.band(r, 7) ~= 0
+  if bit.band(r, 0xF0) ~= 0 then r = bit.band(r, 7) end
+  r = bit.band(bit.bor(r, bit.lshift(r, 4)), 0xFF)
+  r = bit.band(r, 0xF3)
+  party[idx + 1].pokerus = (r + 1) % 256
+end
+
+-- pokeemerald/src/pokemon.c:6170
+function Pokemon.updatePartyPokerusTime(days, session)
+  if not pokerus_live(session) then return end
+  local bit = require("bit")
+  days = tonumber(days) or 0
+  local party = type(session) == "table" and session.party or {}
+  for i = 1, 6 do
+    local mon = party[i]
+    if has_species(mon) then
+      local p = tonumber(mon.pokerus) or 0
+      if bit.band(p, 0xF) ~= 0 then
+        if bit.band(p, 0xF) < days or days > 4 then
+          p = bit.band(p, 0xF0)
+        else
+          p = p - days
+        end
+        if p == 0 then p = 0x10 end
+        mon.pokerus = p
+      end
+    end
+  end
+end
+
+-- pokeemerald/src/pokemon.c:6194
+function Pokemon.partySpreadPokerus(party, session)
+  if type(party) ~= "table" or not pokerus_live(session) then return end
+  local bit = require("bit")
+  local Rng = require("src.core.game3.rng")
+  if Rng.Random() % 3 ~= 0 then return end
+  local i = 0
+  while i < 6 do
+    local mon = party[i + 1]
+    if has_species(mon) then
+      local cur = tonumber(mon.pokerus) or 0
+      if cur ~= 0 and bit.band(cur, 0xF) ~= 0 then
+        local prev = party[i]
+        if i ~= 0 and type(prev) == "table" and bit.band(tonumber(prev.pokerus) or 0, 0xF0) == 0 then
+          prev.pokerus = cur
+        end
+        local nxt = party[i + 2]
+        if i ~= 5 and type(nxt) == "table" and bit.band(tonumber(nxt.pokerus) or 0, 0xF0) == 0 then
+          nxt.pokerus = cur
+          i = i + 1
+        end
+      end
+    end
+    i = i + 1
+  end
+end
+
+function Pokemon.regional(species, version)
+  return require("src.core.game3.dex").regionalNumber(species, version)
+end
+
+function Pokemon.regionalCount(version)
+  return require("src.core.game3.dex").regionalMax(version)
+end
 
 -- pokefirered/src/pokemon.c:5512 MonGainEVs
 function Pokemon.gainEVs(mon, defeatedSpecies)
@@ -700,6 +793,7 @@ end
 local function player_identity(player)
   player = player or {}
   local id = player.trainerId or player.id or player.playerId
+  local sid = player.secretId
   local name = player.name or player.playerName or player.otName
   if id == nil or name == nil then
     local Runtime = package.loaded["src.core.game3.runtime"]
@@ -708,17 +802,18 @@ local function player_identity(player)
     end)
     if ok and sess then
       id = id or sess.trainerId or sess.id or sess.playerId
+      sid = sid or sess.secretId
       name = name or sess.name or sess.playerName
     end
   end
-  return tonumber(id), name
+  return require("src.core.TrainerIdentity").packed(id, sid), name
 end
 
 -- pokefirered/src/pokemon.c:5974 IsOtherTrainer
 function Pokemon.isOtherTrainer(otId, otName, player)
   local playerId, playerName = player_identity(player)
   if playerId == nil then return false end
-  if tonumber(otId) ~= playerId then return true end
+  if require("src.core.TrainerIdentity").packed(otId) ~= playerId then return true end
   local mine = tostring(playerName or "")
   local theirs = tostring(otName or "")
   for i = 1, #theirs do
@@ -727,10 +822,43 @@ function Pokemon.isOtherTrainer(otId, otName, player)
   return false
 end
 
+-- pokefirered/src/new_game.c:56
+function Pokemon.playerSecretId(session)
+  if type(session) ~= "table" then return 0 end
+  local Identity = require("src.core.TrainerIdentity")
+  local sec = Identity.u16(session.secretId) or Identity.u16(session.otSecretId)
+  local tid = Identity.u16(session.trainerId or session.id or session.playerId)
+  local name = session.name or session.playerName
+  local function scan(list)
+    for _, m in pairs(type(list) == "table" and list or {}) do
+      local otName = type(m) == "table" and (m.otName or m.ot)
+      if type(m) == "table" and Identity.u16(m.otId) == tid
+          and not (type(name) == "string" and type(otName) == "string" and otName ~= name) then
+        local packed = Identity.packed(m.otId, m.otSecretId)
+        if packed and (Identity.u16(m.otSecretId) or packed >= 65536) then
+          return math.floor(packed / 65536)
+        end
+      end
+    end
+  end
+  if sec == nil and tid then
+    sec = scan(session.party)
+    local storage = session.storage
+    for _, box in pairs((sec == nil) and type(storage) == "table" and type(storage.boxes) == "table"
+        and storage.boxes or {}) do
+      sec = sec or scan(type(box) == "table" and box.mons or nil)
+    end
+  end
+  sec = sec or 0
+  session.secretId = sec
+  return sec
+end
+
 -- pokefirered/src/pokemon.c:5965 IsTradedMon
 function Pokemon.isTradedMon(mon, player)
   if type(mon) ~= "table" or mon.otId == nil then return false end
-  return Pokemon.isOtherTrainer(mon.otId, mon.otName or mon.ot, player)
+  local id = require("src.core.TrainerIdentity").packed(mon.otId, mon.otSecretId)
+  return Pokemon.isOtherTrainer(id, mon.otName or mon.ot, player)
 end
 
 local function friendship_bonuses(mon, friendship, ctx)
@@ -895,7 +1023,11 @@ function Pokemon.moveName(moveId)
   if not Pokemon._moveNames then Pokemon.install(Pokemon._cache) end
   local n = Pokemon._moveNames and Pokemon._moveNames[num]
   if n and n ~= "" then return n end
-  return Strings("MOVE %d", num)
+  local okB, BuiltinMoves = pcall(require, "src.core.game3.battle.builtin_moves")
+  if okB and BuiltinMoves and BuiltinMoves[num] and BuiltinMoves[num].name then
+    return BuiltinMoves[num].name
+  end
+  return "MOVE " .. tostring(num)
 end
 
 function Pokemon.learnset(species)
@@ -944,7 +1076,14 @@ function Pokemon.battleMove(moveId)
   moveId = tonumber(moveId)
   if not moveId then return nil end
   if not Pokemon._battleMoves then Pokemon.install(Pokemon._cache) end
-  return Pokemon._battleMoves and Pokemon._battleMoves[moveId]
+  if Pokemon._battleMoves and Pokemon._battleMoves[moveId] then
+    return Pokemon._battleMoves[moveId]
+  end
+  local okB, BuiltinMoves = pcall(require, "src.core.game3.battle.builtin_moves")
+  if okB and BuiltinMoves and BuiltinMoves[moveId] then
+    return BuiltinMoves[moveId]
+  end
+  return nil
 end
 
 function Pokemon.movePp(moveId)
@@ -995,10 +1134,6 @@ function Pokemon.movesAtLevel(species, level)
       break
     end
     giveMove(mv)
-  end
-
-  if #moves == 0 then
-    giveMove(33) -- fallback to Tackle if learnset empty
   end
 
   return moves, pp, maxPp
@@ -1169,7 +1304,7 @@ end
 -- (pokefirered/src/pokemon.c:3020).  The stored nickname is only a placeholder
 -- -- the cart's daycare writes タマゴ (daycare.c:1100), this engine "EGG".
 local function eggName(mon)
-  if Pokemon.isEgg(mon) then return Strings("EGG") end
+  if Pokemon.isEgg(mon) then return require("src.core.game3.rom_text").plain("gText_EggNickname") end
 end
 
 function Pokemon.displayMonName(mon)
@@ -1214,6 +1349,12 @@ function Pokemon.swapMoves(mon, slotA, slotB)
     local ppA = mon.pp[slotA]
     mon.pp[slotA] = mon.pp[slotB]
     mon.pp[slotB] = ppA
+  end
+
+  if type(mon.maxPp) == "table" then
+    local maxA = mon.maxPp[slotA]
+    mon.maxPp[slotA] = mon.maxPp[slotB]
+    mon.maxPp[slotB] = maxA
   end
 
   -- 4. If parallel array mon.ppBonuses / mon.ppBonus / mon.ppUp exists
@@ -1292,8 +1433,9 @@ function Pokemon.isShiny(mon)
   if not mon then return false end
   if mon.isShiny ~= nil then return not not mon.isShiny end
   local p = (tonumber(mon.personality) or 0) % 4294967296
-  local tid = (tonumber(mon.otId or mon.trainerId) or 0) % 65536
-  local sid = (tonumber(mon.otSecretId) or 0) % 65536
+  local full = (tonumber(mon.otId or mon.trainerId) or 0) % 4294967296
+  local tid = full % 65536
+  local sid = (tonumber(mon.otSecretId) or math.floor(full / 65536)) % 65536
   local value = bit.bxor(bit.bxor(tid, sid), bit.bxor(math.floor(p / 65536), p % 65536))
   return value < 8
 end
@@ -1303,12 +1445,12 @@ function Pokemon.monPicSpecies(mon)
   return Pokemon.picSpecies(Pokemon.speciesOf(mon), mon and mon.personality)
 end
 
-function Pokemon.monFrontPic(mon, form)
-  return Pokemon.frontPic(Pokemon.monPicSpecies(mon), form, Pokemon.isShiny(mon), mon and mon.personality)
+function Pokemon.monFrontPic(mon, form, kind)
+  return Pokemon.frontPic(Pokemon.monPicSpecies(mon), form, Pokemon.isShiny(mon), mon and mon.personality, kind)
 end
 
-function Pokemon.monBackPic(mon, form)
-  return Pokemon.backPic(Pokemon.monPicSpecies(mon), form, Pokemon.isShiny(mon))
+function Pokemon.monBackPic(mon, form, kind)
+  return Pokemon.backPic(Pokemon.monPicSpecies(mon), form, Pokemon.isShiny(mon), kind)
 end
 
 -- pokefirered/src/pokemon_icon.c:1116
@@ -1316,10 +1458,51 @@ function Pokemon.monIcon(mon)
   return Pokemon.icon(Pokemon.monPicSpecies(mon))
 end
 
+Pokemon.SPECIES_DEOXYS = 410
+local dontHandleDeoxys = false
+
+-- pokefirered/src/decompress.c:108, src/pokemon_icon.c:1108
+function Pokemon.deoxysFormSuffix(species)
+  if dontHandleDeoxys or tonumber(species) ~= Pokemon.SPECIES_DEOXYS then return "" end
+  if Versions.MON_PIC_DUPLICATE_DEOXYS ~= true then return "" end
+  return "_handled"
+end
+
+local function without_deoxys_form(fn, ...)
+  local prev = dontHandleDeoxys
+  dontHandleDeoxys = true
+  local ok, a, b, c = pcall(fn, ...)
+  dontHandleDeoxys = prev
+  if not ok then error(a, 0) end
+  return a, b, c
+end
+
+-- pokefirered/src/decompress.c:327
+function Pokemon.frontPicDontHandleDeoxys(species, form, shiny, personality, kind)
+  return without_deoxys_form(Pokemon.frontPic, species, form, shiny, personality, kind)
+end
+
+function Pokemon.backPicDontHandleDeoxys(species, form, shiny, kind)
+  return without_deoxys_form(Pokemon.backPic, species, form, shiny, kind)
+end
+
+function Pokemon.monFrontPicDontHandleDeoxys(mon, form, kind)
+  return without_deoxys_form(Pokemon.monFrontPic, mon, form, kind)
+end
+
+-- pokefirered/src/trainer_card.c:1434
+function Pokemon.iconDontHandleDeoxys(species)
+  return without_deoxys_form(Pokemon.icon, species)
+end
+
+function Pokemon.monIconDontHandleDeoxys(mon)
+  return without_deoxys_form(Pokemon.monIcon, mon)
+end
+
 local function read_rgba(species)
   local cache = resolve_cache(Pokemon._cache)
   local root = (CachePaths.CACHE_ROOT or "data/generated/gba") .. "/pokemon"
-  local rel = root .. "/icons/" .. species .. ".rgba"
+  local rel = root .. "/icons/" .. species .. Pokemon.deoxysFormSuffix(species) .. ".rgba"
   local d = cache:read(rel)
   if type(d) == "string" and #d > 0 then return d end
   return nil
@@ -1352,7 +1535,9 @@ end
 function Pokemon.icon(species)
   species = tonumber(species)
   if not species or species < 1 then return nil end
-  if Pokemon._icons[species] then return Pokemon._icons[species] end
+  local iconKey = species .. Pokemon.deoxysFormSuffix(species)
+  if iconKey == tostring(species) then iconKey = species end
+  if Pokemon._icons[iconKey] then return Pokemon._icons[iconKey] end
   local w = (Pokemon._manifest and Pokemon._manifest.iconW) or Versions.MON_ICON_W or 32
   local h = (Pokemon._manifest and Pokemon._manifest.iconH) or Versions.MON_ICON_H or 32
   local rgba = read_rgba(species)
@@ -1366,7 +1551,7 @@ function Pokemon.icon(species)
     quads[f] = love.graphics.newQuad(0, f * h, w, h, w, actualH)
   end
   local entry = { image = image, w = w, h = h, sheetH = actualH, frames = frames, quads = quads }
-  Pokemon._icons[species] = entry
+  Pokemon._icons[iconKey] = entry
   return entry
 end
 
@@ -1385,18 +1570,47 @@ local function form_of(species, form)
   return form
 end
 
-local function pic_rel(kind, species, form)
+local function pic_rel(kind, species, form, suffix)
   local root = (CachePaths.CACHE_ROOT or "data/generated/gba") .. "/pokemon/" .. kind .. "/"
   if form > 0 then return root .. species .. "_" .. form .. ".rgba" end
-  return root .. species .. ".rgba"
+  return root .. species .. (suffix or "") .. ".rgba"
 end
 
-local function pic_entry(store, key, rgba)
+Pokemon.PIC_CAP = 48
+Pokemon.SPINDA_CAP = 8
+
+local picTick = 0
+
+local function pic_touch(entry)
+  picTick = picTick + 1
+  entry.used = picTick
+  return entry
+end
+
+local function pic_evict(store, cap)
+  local n, oldKey, oldUse = 0, nil, nil
+  for k, v in pairs(store) do
+    if type(v) == "table" and v.lru then
+      n = n + 1
+      if oldUse == nil or (v.used or 0) < oldUse then oldKey, oldUse = k, v.used or 0 end
+    end
+  end
+  if n >= cap and oldKey ~= nil then store[oldKey] = nil end
+end
+
+local function pic_entry(store, key, rgba, cap)
   local image = image_from_rgba(rgba, 64, 64)
   if not image then return nil end
-  local entry = { image = image, w = 64, h = 64 }
+  pic_evict(store, cap or Pokemon.PIC_CAP)
+  local entry = pic_touch({ image = image, w = 64, h = 64, lru = true })
   store[key] = entry
   return entry
+end
+
+function Pokemon.picCacheSize(store)
+  local n = 0
+  for _, v in pairs(store or {}) do if type(v) == "table" and v.lru then n = n + 1 end end
+  return n
 end
 
 -- pokefirered/src/data/pokemon_graphics/shiny_palette_table.h:415
@@ -1405,13 +1619,24 @@ local function pic(store, kind, species, form, shiny)
   if not species or species < 1 then return nil end
   form = form_of(species, form)
   if shiny and species ~= Pokemon.SPECIES_EGG then kind = kind .. "_shiny" end
-  local key = form > 0 and (species .. "_" .. form) or species
+  local suffix = Pokemon.deoxysFormSuffix(species)
+  local key = form > 0 and (species .. "_" .. form) or (suffix ~= "" and species .. suffix) or species
   if kind:find("_shiny", 1, true) then key = "shiny:" .. key end
-  if store[key] then return store[key] end
-  return pic_entry(store, key, read_pic(pic_rel(kind, species, form)))
+  local hit = store[key]
+  if hit then return pic_touch(hit) end
+  -- false marks a pic file known to be missing, so draw loops that probe
+  -- backPic then frontPic every frame do not re-read the filesystem.
+  if hit == false then return nil end
+  local rgba = read_pic(pic_rel(kind, species, form, suffix))
+  if not rgba then
+    store[key] = false
+    return nil
+  end
+  return pic_entry(store, key, rgba)
 end
 
-local SPECIES_SPINDA = 308
+Pokemon.SPECIES_SPINDA = 308
+local SPECIES_SPINDA = Pokemon.SPECIES_SPINDA
 local SPINDA_ROOT = "/pokemon/spinda/"
 
 local function spinda_file(name)
@@ -1502,8 +1727,8 @@ local function spinda_pic(personality, shiny)
   local p = (tonumber(personality) or 0) % 4294967296
   local key = (shiny and "spinda_shiny:" or "spinda:") .. p
   Pokemon._spindaPics = Pokemon._spindaPics or {}
-  if Pokemon._spindaPics[key] then return Pokemon._spindaPics[key] end
-  return pic_entry(Pokemon._spindaPics, key, spinda_rgba(p, shiny))
+  if Pokemon._spindaPics[key] then return pic_touch(Pokemon._spindaPics[key]) end
+  return pic_entry(Pokemon._spindaPics, key, spinda_rgba(p, shiny), Pokemon.SPINDA_CAP)
 end
 
 -- pokefirered/src/battle_gfx_sfx_util.c:354
@@ -1513,11 +1738,11 @@ function Pokemon.frontPic(species, form, shiny, personality)
 end
 
 -- pokefirered/src/pokedex_screen.c:2212
-function Pokemon.dexFrontPic(species, personality)
+function Pokemon.dexFrontPic(species, personality, kind)
   local p = (tonumber(personality) or 0) % 4294967296
   -- include/constants/pokemon.h:185
   local shiny = Pokemon.isShiny({ personality = p, otId = 8, otSecretId = 0 })
-  return Pokemon.frontPic(Pokemon.picSpecies(species, p), 0, shiny, p)
+  return Pokemon.frontPic(Pokemon.picSpecies(species, p), 0, shiny, p, kind or "dex")
 end
 
 -- pokefirered/src/pokedex_screen.c:3058
@@ -1602,6 +1827,18 @@ function Pokemon.displayName(mon)
   if mon.name and mon.name ~= "" then return tostring(mon.name) end
   if type(mon.species) == "string" then return mon.species end
   return "?????"
+end
+
+-- pokefirered/src/trade.c:2391
+-- pokefirered/src/pokemon.c:1809
+function Pokemon.savedName(mon)
+  if type(mon) ~= "table" then return nil end
+  local nick = mon.nickname
+  if type(nick) == "string" and nick ~= "" then return nick end
+  if Pokemon.isEgg(mon) then return nil end
+  local name = mon.name
+  if type(name) == "string" and name ~= "" then return name end
+  return nil
 end
 
 return Pokemon

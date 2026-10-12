@@ -1,5 +1,6 @@
 #!/usr/bin/env luajit
 package.path = "./?.lua;./?/init.lua;" .. package.path
+require("tests.game3_cache").stubSpeciesNames()
 
 local failed = 0
 local function check(cond, msg)
@@ -87,7 +88,8 @@ check(complete, "every natives_*.lua on disk is in the known-name fallback roste
 local bound = true
 for _, base in ipairs(Natives.KNOWN_MODULES or {}) do
   local okMod, mod = pcall(require, "src.core.game3.scripting." .. base)
-  if okMod and type(mod) == "table" then
+  local allowed = require("src.core.game3.capabilities").nativeAllowed(nil, base)
+  if okMod and type(mod) == "table" and allowed then
     for id in pairs(mod.HANDLERS or {}) do
       if Natives.ALLOW["special:" .. id] == nil then
         bound = false

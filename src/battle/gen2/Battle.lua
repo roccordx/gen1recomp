@@ -26,6 +26,7 @@ local Happiness = require("src.core.gen2.Happiness")
 local Pokerus = require("src.core.gen2.Pokerus")
 local Roamers = require("src.core.gen2.Roamers")
 local Prize = require("src.battle.gen2.Prize")
+local Mail = require("src.core.gen2.Mail")
 -- The mod event/hook buses.  Every name raised from this file is the SAME name
 -- src/battle/BattleState.lua raises on Gen 1, carrying the same payload keys
 -- with the same meaning -- a mod written against Red's battle reads Gold's
@@ -503,6 +504,13 @@ function Battle:monName(mon)
   return mon.nickname or mon.name or mon.species or "?"
 end
 
+-- home/text.asm:330-345
+function Battle:battlerName(mon)
+  local name = self:monName(mon)
+  if mon and mon == self.enemy then return Strings("Enemy %s", name) end
+  return name
+end
+
 -- ../pokecrystal/data/text/battle.asm:240-246
 function Battle.sentOutText(trainerName, monName)
   return Strings("%s\nsent out\v%s!", trainerName, monName)
@@ -696,6 +704,7 @@ function Battle:smartAiState()
     -- curse volatiles are modelled.
     playerTrapped = ((playerState.wrapCount or 0) > 0) or nil,
     playerCursed = playerState.cursed or nil,
+    playerNightmare = playerState.nightmare or nil,
     knownEffects = known,
     enemyMoveIds = ids,
 
@@ -976,7 +985,7 @@ local function clearBide(state)
 end
 
 local function checkTurn(self, mon, moveId)
-  local name = self:monName(mon)
+  local name = self:battlerName(mon)
   -- SUBSTATUS_RECHARGE, and it is checked BEFORE status: CheckPlayerTurn reads
   -- it first, clears it, prints MustRechargeText and jumps to EndTurn, so a mon
   -- that is both recharging and asleep spends this turn recharging.
@@ -1036,7 +1045,7 @@ local function checkTurn(self, mon, moveId)
     self:emit({ kind = "message",
       text = Strings("%s\nis in love with", name) })
     self:emit({ kind = "message",
-      text = Strings("is in love with\n%s!", self:monName(partner)) })
+      text = Strings("is in love with\n%s!", self:battlerName(partner)) })
     if rand(self.random, 256) >= 128 then
       -- data/text/battle.asm:490
       self:emit({ kind = "message",
@@ -1268,7 +1277,7 @@ function Battle:hitOnce(attacker, defender, def, opts)
     -- immune hit into MoveDelay and no animation at all.
     self:markMissed()
     self:emit({ kind = "message",
-      text = Strings("It doesn't affect %s...", self:monName(defender)) })
+      text = Strings("It doesn't affect\n%s!", self:battlerName(defender)) })
     return 0, info
   end
   -- BattleCommand_FalseSwipe (engine/battle/move_effects/false_swipe.asm):
@@ -1303,11 +1312,11 @@ function Battle:dealDamage(attacker, defender, damage, opts)
     state.substitute = state.substitute - absorbed
     self:emit({ kind = "message",
       text = Strings("The SUBSTITUTE took damage for %s!",
-        self:monName(defender)) })
+        self:battlerName(defender)) })
     if state.substitute <= 0 then
       state.substitute = nil
       self:emit({ kind = "message",
-        text = Strings("%s's SUBSTITUTE broke!", self:monName(defender)) })
+        text = Strings("%s's SUBSTITUTE broke!", self:battlerName(defender)) })
     end
     return absorbed
   end
@@ -1360,13 +1369,13 @@ function Battle:dealDamage(attacker, defender, damage, opts)
   end
   if endured then
     self:emit({ kind = "message",
-      text = Strings("%s endured the hit!", self:monName(defender)) })
+      text = Strings("%s endured the hit!", self:battlerName(defender)) })
   elseif hungOn then
     -- HungOnText, named after the item the way the cart pipes it through
     -- wStringBuffer1.
     local def = self:itemDef(defender.item)
     self:emit({ kind = "message",
-      text = Strings("%s hung on with %s!", self:monName(defender),
+      text = Strings("%s hung on with %s!", self:battlerName(defender),
         (def and def.name) or "FOCUS BAND") })
   end
   -- SUBSTATUS_RAGE: being hit while raging raises the rager's Attack.
@@ -1424,7 +1433,7 @@ end
 function Battle:changeStage(target, stat, stages)
   local applied = Effects.applyStage(self.stages[self:sideOf(target)], stat,
     stages)
-  local name = self:monName(target)
+  local name = self:battlerName(target)
   if not applied then
     -- WontRiseAnymoreText / WontDropAnymoreText (data/text/battle.asm:718-732).
     local label = Strings(Effects.STAT_NAMES[stat] or stat)
@@ -1471,7 +1480,7 @@ end
 function Battle:useMove(attacker, defender, moveId)
   local move = self:findMove(attacker, moveId)
   local def = self:moveDef(moveId)
-  local name = self:monName(attacker)
+  local name = self:battlerName(attacker)
   local state = self:volatile(attacker)
   -- wAttackMissed is per-move: BattleTurn's ResetTurn clears it before the
   -- effect list runs, so nothing a previous move set can reach this one.
@@ -1717,7 +1726,17 @@ function Battle:useMove(attacker, defender, moveId)
     if def.effect == "EFFECT_SELFDESTRUCT" then self:selfdestructUser(attacker) end
     self:markMissed()
     self:emit({ kind = "message",
-      text = Strings("%s protected itself!", self:monName(defender)) })
+      text = Strings("%s protected itself!", self:battlerName(defender)) })
+    return
+  end
+
+  -- data/moves/effects.asm:953
+  local effectRecord = Battle.moveEffectRecordFor(self.data, def.effect)
+  local handler = effectRecord and effectRecord.run
+  if handler and (def.effect == "EFFECT_SKETCH" or def.effect == "EFFECT_NIGHTMARE"
+      or def.effect == "EFFECT_PSYCH_UP" or def.effect == "EFFECT_MIST"
+      or def.effect == "EFFECT_FOCUS_ENERGY") then
+    handler(self, attacker, defender, def, moveId, true)
     return
   end
 
@@ -1754,8 +1773,6 @@ function Battle:useMove(attacker, defender, moveId)
   -- or falls through to the ordinary damage path.  Through the merged
   -- `move_effects` record, so a mod's own primary effect is dispatched here
   -- the way BattleState:performMove dispatches one on Gen 1.
-  local effectRecord = Battle.moveEffectRecordFor(self.data, def.effect)
-  local handler = effectRecord and effectRecord.run
   if handler then
     handler(self, attacker, defender, def, moveId, sureHit)
     return
@@ -1859,7 +1876,7 @@ function Battle:useMove(attacker, defender, moveId)
     if Damage.typeMultiplier(def.type, defenderTypes, matchups) == 0 then
       self:markMissed()
       self:emit({ kind = "message",
-        text = Strings("It doesn't affect %s...", self:monName(defender)) })
+        text = Strings("It doesn't affect\n%s!", self:battlerName(defender)) })
       return
     end
     self:dealDamage(attacker, defender, fixed, { move = def, moveId = moveId })
@@ -1971,7 +1988,7 @@ function Battle:useMove(attacker, defender, moveId)
     elseif Effects.DRAIN[def.effect] and dealt > 0 then
       self:heal(attacker, Effects.drainAmount(dealt))
       self:emit({ kind = "message",
-        text = Strings("%s's energy was drained!", self:monName(defender)) })
+        text = Strings("%s's energy was drained!", self:battlerName(defender)) })
     end
 
     -- BattleCommand_RechargeNextTurn (effect_commands.asm:5899): HYPER BEAM
@@ -2031,9 +2048,14 @@ function Battle:useMove(attacker, defender, moveId)
         target.wrapMoveId = moveId
         local trapText = Battle.TRAP_TEXT[moveId]
         self:emit({ kind = "message",
-          text = trapText and trapText(self:monName(defender), name)
-            or Strings("%s was trapped!", self:monName(defender)) })
+          text = trapText and trapText(self:battlerName(defender), name)
+            or Strings("%s was trapped!", self:battlerName(defender)) })
       end
+    end
+
+    -- data/moves/effects.asm:1446
+    if def.effect == "EFFECT_THIEF" and dealt > 0 then
+      self:thief(attacker, defender, def)
     end
   end
 
@@ -2087,7 +2109,7 @@ function Battle:useMove(attacker, defender, moveId)
     if self:statusRefusedByType(defender, def.type, status) then
       self:markMissed()
       self:emit({ kind = "message",
-        text = Strings("It doesn't affect %s...", self:monName(defender)) })
+        text = Strings("It doesn't affect\n%s!", self:battlerName(defender)) })
     elseif Battle.AI_FAIL_STATUSES[status]
         and self:aiRandomFail(attacker, defender) then
       self:markMissed()
@@ -2108,6 +2130,31 @@ function Battle:useMove(attacker, defender, moveId)
       end
     end
   end
+end
+
+-- engine/battle/effect_commands.asm:1851-1874
+function Battle:effectChanceFailed(def, defender)
+  if (self:volatile(defender).substitute or 0) > 0 then return true end
+  local chance = def.effectChanceRaw
+    or math.floor((def.effectChance or 0) * 255 / 100)
+  return rand(self.random, 256) >= chance
+end
+
+-- engine/battle/move_effects/thief.asm:1
+function Battle:thief(attacker, defender, def)
+  local failed = self:effectChanceFailed(def, defender)
+  if attacker.item then return end
+  local item = defender.item
+  if not item then return end
+  if Mail.isMail(item) then return end
+  if failed then return end
+  if attacker == self.player and self.linkBattle and self.wild then return end
+  defender.item = nil
+  attacker.item = item
+  local itemDef = self:itemDef(item)
+  -- data/text/battle.asm:946
+  self:emit({ kind = "message", text = Strings("%s\nstole %s\vfrom its foe!",
+    self:battlerName(attacker), (itemDef and itemDef.name) or item) })
 end
 
 --------------------------------------------------------------------------
@@ -2133,6 +2180,83 @@ Battle.MOVE_EFFECTS = {}
 local function fail(self)
   self:markMissed()
   self:emit({ kind = "message", text = Strings("But it failed!") })
+end
+
+-- engine/battle/move_effects/sketch.asm:1
+Battle.MOVE_EFFECTS.EFFECT_SKETCH = function(self, attacker, defender)
+  self:volatile(attacker).lastMove = nil
+  local target = self:volatile(defender)
+  local last = target.lastMove
+  local copied = last and self:moveDef(last)
+  if self.linkBattle then
+    self:markMissed()
+    self:emit({ kind = "message", text = Strings("But nothing\nhappened.") })
+    return
+  end
+  local slot
+  for i = #(attacker.moves or {}), 1, -1 do
+    if attacker.moves[i].id == "SKETCH" then slot = slot or i end
+    if attacker.moves[i].id == last then copied = nil end
+  end
+  if (target.substitute or 0) > 0 or target.transformed or not copied
+      or last == "STRUGGLE" or not slot then
+    self:markMissed()
+    self:emit({ kind = "message",
+      text = Strings("It didn't affect\n%s!", self:battlerName(defender)) })
+    return
+  end
+  local pp = copied.pp
+  local partyMoves = Mon.partyMoves(attacker)
+  attacker.moves[slot] = { id = last, pp = pp, maxPp = pp, ppUps = 0 }
+  if partyMoves ~= attacker.moves then
+    partyMoves[slot] = { id = last, pp = pp, maxPp = pp, ppUps = 0 }
+  end
+  self:emit({ kind = "message",
+    text = Strings("%s\nSKETCHED\v%s!", self:battlerName(attacker), copied.name or last) })
+end
+
+-- engine/battle/move_effects/nightmare.asm:1
+Battle.MOVE_EFFECTS.EFFECT_NIGHTMARE = function(self, attacker, defender)
+  local target = self:volatile(defender)
+  if target.vanished or (target.substitute or 0) > 0
+      or defender.status ~= "sleep" or target.nightmare then return fail(self) end
+  target.nightmare = true
+  self:emit({ kind = "message",
+    text = Strings("%s\nstarted to have a\vNIGHTMARE!", self:battlerName(defender)) })
+end
+
+-- ../pokecrystal/engine/battle/move_effects/psych_up.asm:1
+Battle.MOVE_EFFECTS.EFFECT_PSYCH_UP = function(self, attacker, defender)
+  local own, target = self.stages[self:sideOf(attacker)], self.stages[self:sideOf(defender)]
+  local changed = false
+  for _, key in ipairs(Battle.LINK_STAGES) do
+    if (target[key] or 0) ~= 0 then changed = true end
+  end
+  if not changed then return fail(self) end
+  for _, key in ipairs(Battle.LINK_STAGES) do own[key] = target[key] or 0 end
+  self:emit({ kind = "message",
+    text = Strings("%s\ncopied the stat\fchanges of\n%s!",
+      self:battlerName(attacker), self:battlerName(defender)) })
+end
+
+-- engine/battle/move_effects/mist.asm:1
+Battle.MOVE_EFFECTS.EFFECT_MIST = function(self, attacker)
+  local state = self:volatile(attacker)
+  if state.mist then return fail(self) end
+  state.mist = true
+  self:emit({ kind = "message",
+    text = Strings("%s's\nshrouded in MIST!", self:battlerName(attacker)) })
+end
+
+-- engine/battle/move_effects/focus_energy.asm:1
+-- ../pokecrystal/data/text/battle.asm:785
+Battle.MOVE_EFFECTS.EFFECT_FOCUS_ENERGY = function(self, attacker)
+  local state = self:volatile(attacker)
+  if state.focusEnergy then return fail(self) end
+  state.focusEnergy = true
+  self:emit({ kind = "text-pause" })
+  self:emit({ kind = "message",
+    text = Strings("%s's\ngetting pumped!", self:battlerName(attacker)) })
 end
 
 -- BattleCommand_Splash (engine/battle/move_effects/splash.asm): the whole
@@ -2192,7 +2316,7 @@ Battle.MOVE_EFFECTS.EFFECT_ENCORE = function(self, attacker, defender)
   target.encore = last
   target.encoreTurns = Effects.encoreTurns(self.random)
   self:emit({ kind = "message",
-    text = Strings("%s got an ENCORE!", self:monName(defender)) })
+    text = Strings("%s got an ENCORE!", self:battlerName(defender)) })
 end
 
 -- BattleCommand_Disable: one of the target's moves, for 2-9 turns.  It fails
@@ -2212,7 +2336,7 @@ Battle.MOVE_EFFECTS.EFFECT_DISABLE = function(self, attacker, defender)
   local moveDef = self:moveDef(last)
   local moveName = (moveDef and moveDef.name) or last or "?"
   self:emit({ kind = "message",
-    text = Strings("%s's %s was disabled!", self:monName(defender),
+    text = Strings("%s's %s was disabled!", self:battlerName(defender),
       moveName) })
 end
 
@@ -2226,12 +2350,12 @@ Battle.MOVE_EFFECTS.EFFECT_LOCK_ON = function(self, attacker, defender)
     -- animation is AnimateCurrentMove on the success arm only.
     self:markMissed()
     self:emit({ kind = "message",
-      text = Strings("It doesn't affect %s...", self:monName(defender)) })
+      text = Strings("It doesn't affect\n%s!", self:battlerName(defender)) })
     return
   end
   target.lockOn = true
   self:emit({ kind = "message",
-    text = Strings("%s took aim!", self:monName(attacker)) })
+    text = Strings("%s took aim!", self:battlerName(attacker)) })
 end
 
 -- engine/battle/move_effects/foresight.asm
@@ -2245,8 +2369,8 @@ Battle.MOVE_EFFECTS.EFFECT_FORESIGHT = function(self, attacker, defender,
   if target.vanished or target.identified then return fail(self) end
   target.identified = true
   self:emit({ kind = "message",
-    text = Strings("%s identified %s!", self:monName(attacker),
-      self:monName(defender)) })
+    text = Strings("%s identified %s!", self:battlerName(attacker),
+      self:battlerName(defender)) })
 end
 
 -- BattleCommand_CheckHit's .LockOn: the flag is read AND cleared by the next
@@ -2322,7 +2446,7 @@ function Battle:changeStageAgainstMist(attacker, target, stat, stages)
   if target ~= attacker and (stages or 0) < 0
       and self:volatile(target).mist then
     self:emit({ kind = "message",
-      text = Strings("%s's protected by MIST.", self:monName(target)) })
+      text = Strings("%s's protected by MIST.", self:battlerName(target)) })
     return false
   end
   return self:changeStage(target, stat, stages)
@@ -2361,7 +2485,7 @@ local function protectLike(field, text)
     state.protectCount = (state.protectCount or 0) + 1
     state[field] = true
     self:emit({ kind = "message",
-      text = Strings(text, self:monName(attacker)) })
+      text = Strings(text, self:battlerName(attacker)) })
   end
 end
 
@@ -2380,19 +2504,19 @@ Battle.MOVE_EFFECTS.EFFECT_BIDE = function(self, attacker, defender, def, moveId
     -- engine/battle/core.asm:574-576
     state.bideMove = moveId
     self:emit({ kind = "message",
-      text = Strings("%s is storing energy!", self:monName(attacker)) })
+      text = Strings("%s is storing energy!", self:battlerName(attacker)) })
     return
   end
   state.bideTurns = state.bideTurns - 1
   if state.bideTurns > 0 then
     self:emit({ kind = "message",
-      text = Strings("%s is storing energy!", self:monName(attacker)) })
+      text = Strings("%s is storing energy!", self:battlerName(attacker)) })
     return
   end
   local damage = Effects.bideDamage(state.bideStored)
   state.bideTurns, state.bideStored, state.bideMove = nil, nil, nil
   self:emit({ kind = "message",
-    text = Strings("%s unleashed energy!", self:monName(attacker)) })
+    text = Strings("%s unleashed energy!", self:battlerName(attacker)) })
   if damage <= 0 then return fail(self) end
   self:dealDamage(attacker, defender, damage, { move = def, moveId = moveId })
 end
@@ -2407,7 +2531,7 @@ Battle.MOVE_EFFECTS.EFFECT_TRANSFORM = function(self, attacker, defender)
     return fail(self)
   end
   state.transformed = true
-  local attackerName = self:monName(attacker)
+  local attackerName = self:battlerName(attacker)
   -- The cart copies the target into BATTLE ram (wBattleMon / wEnemyMon) and
   -- leaves the struct the mon was loaded FROM alone, so every route out of the
   -- battle -- SwitchOutMon reloading the party slot, and PokeBallEffect
@@ -2524,7 +2648,7 @@ Battle.MOVE_EFFECTS.EFFECT_FUTURE_SIGHT = function(self, attacker, defender, def
   state.futureSightDamage = math.max(1, damage)
   state.futureSightSide = self:sideOf(defender)
   self:emit({ kind = "message",
-    text = Strings("%s foresaw an attack!", self:monName(attacker)) })
+    text = Strings("%s foresaw an attack!", self:battlerName(attacker)) })
 end
 
 -- BattleCommand_OHKO: fails outright against a higher-level target, and the
@@ -2539,7 +2663,7 @@ Battle.MOVE_EFFECTS.EFFECT_OHKO = function(self, attacker, defender, def, _,
     -- so the level refusal plays MoveDelay and nothing else.
     self:markMissed()
     self:emit({ kind = "message",
-      text = Strings("It doesn't affect %s...", self:monName(defender)) })
+      text = Strings("It doesn't affect\n%s!", self:battlerName(defender)) })
     return
   end
   -- BattleCommand_OHKO ends on `call BattleCommand_CheckHit`, so a lock-on
@@ -2550,7 +2674,7 @@ Battle.MOVE_EFFECTS.EFFECT_OHKO = function(self, attacker, defender, def, _,
   if not hit then
     self:markMissed()
     self:emit({ kind = "message",
-      text = Strings("%s's attack missed!", self:monName(attacker)) })
+      text = Strings("%s's attack missed!", self:battlerName(attacker)) })
     return
   end
   self:dealDamage(attacker, defender, defender.hp or 1,
@@ -2610,7 +2734,7 @@ Battle.MOVE_EFFECTS.EFFECT_HEAL = function(self, attacker, _, _, moveId)
   if (attacker.hp or 0) >= maxHp then
     self:markMissed()
     self:emit({ kind = "message",
-      text = Strings("%s's HP is full!", self:monName(attacker)) })
+      text = Strings("%s's HP is full!", self:battlerName(attacker)) })
     return
   end
   if moveId == "REST" then
@@ -2624,14 +2748,14 @@ Battle.MOVE_EFFECTS.EFFECT_HEAL = function(self, attacker, _, _, moveId)
       and Strings.source("%s fell asleep and became healthy!")
       or Strings.source("%s went to sleep!")
     self:emit({ kind = "status", side = self:sideOf(attacker),
-      status = "sleep", text = Strings(source, self:monName(attacker)) })
+      status = "sleep", text = Strings(source, self:battlerName(attacker)) })
     self:heal(attacker, maxHp)
   else
     self:heal(attacker, math.max(1, math.floor(maxHp / 2)))
   end
   -- effect_commands.asm:6058, RegainedHealthText.
   self:emit({ kind = "message",
-    text = Strings("%s regained health!", self:monName(attacker)) })
+    text = Strings("%s regained health!", self:battlerName(attacker)) })
 end
 
 -- BattleCommand_TimeBasedHealContinue (effect_commands.asm:6374) answers the
@@ -2643,7 +2767,7 @@ for effect, wants in pairs(Effects.SUN_HEAL) do
     if (attacker.hp or 0) >= maxHp then
       self:markMissed()
       self:emit({ kind = "message",
-        text = Strings("%s's HP is full!", self:monName(attacker)) })
+        text = Strings("%s's HP is full!", self:battlerName(attacker)) })
       return
     end
     -- effect_commands.asm:6396-6417, the time of day and the weather (#1751).
@@ -2651,7 +2775,7 @@ for effect, wants in pairs(Effects.SUN_HEAL) do
       self.timeOfDay)
     self:heal(attacker, math.max(1, math.floor(maxHp * fraction)))
     self:emit({ kind = "message",
-      text = Strings("%s regained health!", self:monName(attacker)) })
+      text = Strings("%s regained health!", self:battlerName(attacker)) })
   end
 end
 
@@ -2675,7 +2799,7 @@ Battle.MOVE_EFFECTS.EFFECT_BATON_PASS = function(self, attacker)
   -- leaves the field with is an empty one, the same as any other switch out.
   self:clearVolatile(attacker)
   self:emit({ kind = "baton-pass", side = side, index = target,
-    text = Strings("%s passed the baton!", self:monName(attacker)) })
+    text = Strings("%s passed the baton!", self:battlerName(attacker)) })
   if side == "player" then
     self.playerIndex = target
     self.player = party[target]
@@ -2720,7 +2844,7 @@ Battle.MOVE_EFFECTS.EFFECT_LIGHT_SCREEN = function(self, attacker)
   if (side.lightScreen or 0) > 0 then return fail(self) end
   side.lightScreen = Battle.SCREEN_TURNS
   self:emit({ kind = "message",
-    text = Strings("%s's SPCL.DEF rose!", self:monName(attacker)) })
+    text = Strings("%s's SPCL.DEF rose!", self:battlerName(attacker)) })
 end
 
 Battle.MOVE_EFFECTS.EFFECT_REFLECT = function(self, attacker)
@@ -2728,7 +2852,7 @@ Battle.MOVE_EFFECTS.EFFECT_REFLECT = function(self, attacker)
   if (side.reflect or 0) > 0 then return fail(self) end
   side.reflect = Battle.SCREEN_TURNS
   self:emit({ kind = "message",
-    text = Strings("%s's DEFENSE rose!", self:monName(attacker)) })
+    text = Strings("%s's DEFENSE rose!", self:battlerName(attacker)) })
 end
 
 -- engine/battle/move_effects/safeguard.asm:1
@@ -2737,7 +2861,7 @@ Battle.MOVE_EFFECTS.EFFECT_SAFEGUARD = function(self, attacker)
   if (side.safeguard or 0) > 0 then return fail(self) end
   side.safeguard = Battle.SCREEN_TURNS
   self:emit({ kind = "message",
-    text = Strings("%s's covered by a veil!", self:monName(attacker)) })
+    text = Strings("%s's covered by a veil!", self:battlerName(attacker)) })
 end
 
 -- BattleCommand_Curse (engine/battle/move_effects/curse.asm): two moves in
@@ -2752,7 +2876,7 @@ Battle.MOVE_EFFECTS.EFFECT_CURSE = function(self, attacker, defender)
       or attacker.types or {}) do
     if type_ == "GHOST" then ghost = true end
   end
-  local name = self:monName(attacker)
+  local name = self:battlerName(attacker)
   if not ghost then
     local stages = self.stages[self:sideOf(attacker)]
     if (stages.attack or 0) >= Effects.MAX_STAGE
@@ -2787,7 +2911,7 @@ Battle.MOVE_EFFECTS.EFFECT_CURSE = function(self, attacker, defender)
     hp = attacker.hp, anim = false })
   self:emit({ kind = "message",
     text = Strings("%s cut its own HP and put a CURSE on %s!", name,
-      self:monName(defender)) })
+      self:battlerName(defender)) })
 end
 
 -- engine/battle/move_effects/belly_drum.asm:1, data/moves/effects.asm:1835
@@ -2804,7 +2928,7 @@ Battle.MOVE_EFFECTS.EFFECT_BELLY_DRUM = function(self, attacker)
   stages.attack = Effects.MAX_STAGE
   -- data/text/battle.asm:1049
   self:emit({ kind = "message",
-    text = Strings("%s\ncut its HP and", self:monName(attacker)) })
+    text = Strings("%s\ncut its HP and", self:battlerName(attacker)) })
   self:emit({ kind = "message", text = Strings("maximized ATTACK!") })
 end
 
@@ -2823,7 +2947,7 @@ Battle.MOVE_EFFECTS.EFFECT_LEECH_SEED = function(self, attacker, defender,
       and not self:accuracyRoll(def, attacker, defender) then
     self:markMissed()
     self:emit({ kind = "message",
-      text = Strings("%s evaded the attack!", self:monName(defender)) })
+      text = Strings("%s evaded the attack!", self:battlerName(defender)) })
     return
   end
   for _, type_ in ipairs((self:speciesDef(defender) or {}).types
@@ -2831,7 +2955,7 @@ Battle.MOVE_EFFECTS.EFFECT_LEECH_SEED = function(self, attacker, defender,
     if type_ == "GRASS" then
       self:markMissed()
       self:emit({ kind = "message",
-        text = Strings("It doesn't affect %s...", self:monName(defender)) })
+        text = Strings("It doesn't affect\n%s!", self:battlerName(defender)) })
       return
     end
   end
@@ -2839,12 +2963,12 @@ Battle.MOVE_EFFECTS.EFFECT_LEECH_SEED = function(self, attacker, defender,
   if (target.substitute or 0) > 0 or target.leechSeed then
     self:markMissed()
     self:emit({ kind = "message",
-      text = Strings("%s evaded the attack!", self:monName(defender)) })
+      text = Strings("%s evaded the attack!", self:battlerName(defender)) })
     return
   end
   target.leechSeed = true
   self:emit({ kind = "message",
-    text = Strings("%s was seeded!", self:monName(defender)) })
+    text = Strings("%s was seeded!", self:battlerName(defender)) })
 end
 
 -- BattleCommand_Spite (engine/battle/move_effects/spite.asm): 2-5 PP off the
@@ -2866,7 +2990,7 @@ Battle.MOVE_EFFECTS.EFFECT_SPITE = function(self, attacker, defender, def, _,
   local function didntAffect()
     self:markMissed()
     self:emit({ kind = "message",
-      text = Strings("It didn't affect %s!", self:monName(defender)) })
+      text = Strings("It didn't affect %s!", self:battlerName(defender)) })
   end
   if not sureHit
       and not self:accuracyRoll(def, attacker, defender) then
@@ -2882,7 +3006,7 @@ Battle.MOVE_EFFECTS.EFFECT_SPITE = function(self, attacker, defender, def, _,
   entry.pp = entry.pp - loss
   local moveName = (self:moveDef(last) or {}).name or last
   self:emit({ kind = "message",
-    text = Strings("%s's %s was reduced by %d!", self:monName(defender),
+    text = Strings("%s's %s was reduced by %d!", self:battlerName(defender),
       moveName, loss) })
 end
 
@@ -2899,7 +3023,7 @@ Battle.MOVE_EFFECTS.EFFECT_MEAN_LOOK = function(self, attacker, defender)
   end
   self:volatile(attacker).trapsTarget = true
   self:emit({ kind = "message",
-    text = Strings("%s can't escape now!", self:monName(defender)) })
+    text = Strings("%s can't escape now!", self:battlerName(defender)) })
 end
 
 -- engine/battle/move_effects/attract.asm:1, CheckOppositeGender :24
@@ -2919,7 +3043,7 @@ Battle.MOVE_EFFECTS.EFFECT_ATTRACT = function(self, attacker, defender,
   target.attract = true
   -- data/text/battle.asm:1001
   self:emit({ kind = "message",
-    text = Strings("%s\nfell in love!", self:monName(defender)) })
+    text = Strings("%s\nfell in love!", self:battlerName(defender)) })
 end
 
 -- BattleCommand_ForceSwitch (effect_commands.asm:4913).  Fails outright for
@@ -2961,7 +3085,7 @@ Battle.MOVE_EFFECTS.EFFECT_FORCE_SWITCH = function(self, attacker, defender,
       and Strings.source("%s fled in fear!")
       or Strings.source("%s was blown away!")
     self:emit({ kind = "run", side = self:sideOf(defender),
-      text = Strings(source, self:monName(defender)) })
+      text = Strings(source, self:battlerName(defender)) })
     return
   end
 
@@ -2997,7 +3121,7 @@ Battle.MOVE_EFFECTS.EFFECT_FORCE_SWITCH = function(self, attacker, defender,
   self:emit({ kind = "send", side = self:sideOf(incoming), mon = incoming,
     hp = incoming.hp or 0, status = incoming.status or false,
     level = incoming.level, experience = incoming.experience,
-    text = Strings("%s was dragged out!", self:monName(incoming)) })
+    text = Strings("%s was dragged out!", self:battlerName(incoming)) })
   self:breakTrapsOnSend(incoming)
   self:spikesDamage(incoming)
   -- wForcedSwitch: the round ends here, skipping the between-turn effects.
@@ -3030,7 +3154,7 @@ Battle.MOVE_EFFECTS.EFFECT_TELEPORT = function(self, attacker, defender)
   self.outcome = "fled"
   self.forcedSwitch = true
   self:emit({ kind = "run", side = self:sideOf(attacker),
-    text = Strings("%s fled from battle!", self:monName(attacker)) })
+    text = Strings("%s fled from battle!", self:battlerName(attacker)) })
 end
 
 -- -------------------------------------------------------- the move effects
@@ -3195,6 +3319,7 @@ Battle.STATUSES = {
       if mon.statusTurns <= 0 then
         mon.status = nil
         mon.statusTurns = nil
+        battle:volatile(mon).nightmare = nil
         -- engine/battle/effect_commands.asm:175-181
         battle:emit({ kind = "status", side = battle:sideOf(mon), status = nil,
           text = Strings("%s woke up!", name) })
@@ -3419,7 +3544,7 @@ function Battle:applyStatus(mon, status, source)
   if source and self:sideOf(source) ~= self:sideOf(mon)
       and self:safeguarded(mon) then
     self:emit({ kind = "message",
-      text = Strings("%s is protected by SAFEGUARD!", self:monName(mon)) })
+      text = Strings("%s is protected by SAFEGUARD!", self:battlerName(mon)) })
     return false
   end
   -- One major status at a time.
@@ -3437,9 +3562,9 @@ function Battle:applyStatus(mon, status, source)
   local text
   if template and vanilla
       and (not record or record.inflictText == vanilla.inflictText) then
-    text = Strings(template, self:monName(mon))
+    text = Strings(template, self:battlerName(mon))
   else
-    text = Strings("%s%s", self:monName(mon),
+    text = Strings("%s%s", self:battlerName(mon),
       Strings((record and record.inflictText) or " is afflicted!"))
   end
   self:emit({ kind = "status", side = self:sideOf(mon), status = status,
@@ -3471,7 +3596,7 @@ function Battle:applyConfusion(mon, turns, source)
   if source and self:sideOf(source) ~= self:sideOf(mon)
       and self:safeguarded(mon) then
     self:emit({ kind = "message",
-      text = Strings("%s is protected by SAFEGUARD!", self:monName(mon)) })
+      text = Strings("%s is protected by SAFEGUARD!", self:battlerName(mon)) })
     return false
   end
   local state = self:volatile(mon)
@@ -3480,7 +3605,7 @@ function Battle:applyConfusion(mon, turns, source)
   if held == "HELD_PREVENT_CONFUSE" then return false end
   if state.confuseCount then
     self:emit({ kind = "message",
-      text = Strings("%s's already confused!", self:monName(mon)) })
+      text = Strings("%s's already confused!", self:battlerName(mon)) })
     return false
   end
   state.confuseCount = turns or (rand(self.random, 4) + 2)
@@ -3489,8 +3614,8 @@ function Battle:applyConfusion(mon, turns, source)
   local vanilla = Battle.STATUSES.confuse
   self:emit({ kind = "message",
     text = (not record or record.inflictText == vanilla.inflictText)
-      and Strings(template, self:monName(mon))
-      or Strings("%s%s", self:monName(mon),
+      and Strings(template, self:battlerName(mon))
+      or Strings("%s%s", self:battlerName(mon),
         Strings((record and record.inflictText) or " became confused!")) })
   return true
 end
@@ -3510,7 +3635,7 @@ function Battle:tickStatus(mon)
   local residual = record and record.residual
   if not residual then return end
   local maxHp = mon.maxHp or (mon.stats and mon.stats.hp) or 1
-  local name = self:monName(mon)
+  local name = self:battlerName(mon)
   local damage, text = residual(self, mon, maxHp)
   if not damage or damage <= 0 then return end
   mon.hp = math.max(0, mon.hp - damage)
@@ -3527,28 +3652,72 @@ function Battle:tickStatus(mon)
 end
 
 -- Faint bookkeeping and experience.  Returns true when the battle ended.
-function Battle:resolveFaints()
+function Battle:announceEnemyFaint()
+  self.enemyFaintAnnounced = self.enemy
+  self:emit({ kind = "faint", side = "enemy",
+    text = Strings("Enemy %s fainted!", self:monName(self.enemy)) })
+  Runtime.emit("battle.fainted", { battle = self, battler = self.enemy,
+    side = self:sideRecord(self.enemy) })
+end
+
+function Battle:announcePlayerFaint()
+  if self.faintAnnounced == self.player then return end
+  self.faintAnnounced = self.player
+  self:emit({ kind = "faint", side = "player",
+    text = Strings("%s fainted!", self:monName(self.player)) })
+  Runtime.emit("battle.fainted", { battle = self, battler = self.player,
+    side = self:sideRecord(self.player) })
+  self:faintHappiness(self.player)
+end
+
+-- engine/battle/core.asm:2915-3008
+function Battle:lostBattle()
+  self:emit({ kind = "message",
+    text = Strings("You have no more POKéMON!") })
+  -- engine/battle/core.asm:2972-2982
+  if self.linkBattle and not Battle.firstHealthy(self.enemyParty) then
+    self:endBattle("draw")
+    return true
+  end
+  -- engine/battle/core.asm:2923-2925, :2943-2952
+  if self.battleType == Battle.BATTLETYPE_CANLOSE or self.inBattleTowerBattle then
+    self:printWinLossText("lose")
+  end
+  self:endBattle("lose")
+  return true
+end
+
+function Battle:resolveFaints(playerFirst)
   -- engine/battle/core.asm:2551-2556, :7116-7130, :3033-3037
   if (self.player.hp or 0) <= 0 and self.participantsCleared ~= self.player then
     self.participantsCleared = self.player
     if self.playerIndex then self.participants[self.playerIndex] = nil end
   end
 
-  if (self.enemy.hp or 0) <= 0 then
-    if self.linkBattle and self.enemyFaintAnnounced == self.enemy then
+  local playerDown = (self.player.hp or 0) <= 0
+  local enemyDown = (self.enemy.hp or 0) <= 0
+  local enemyPending = self.enemyFaintAnnounced ~= self.enemy
+
+  -- engine/battle/core.asm:2607-2619, :2007-2019
+  if playerDown and enemyDown and not Battle.firstHealthy(self.party) then
+    if playerFirst then self:announcePlayerFaint() end
+    if enemyPending then self:announceEnemyFaint() end
+    self:announcePlayerFaint()
+    return self:lostBattle()
+  end
+
+  -- engine/battle/core.asm:884-887, :2607-2612
+  if playerDown and enemyDown and playerFirst then self:announcePlayerFaint() end
+
+  if enemyDown and not enemyPending then
+    if self.linkBattle then
       self.faintInterrupt = true
       return false
     end
-    self.enemyFaintAnnounced = self.enemy
-    local template = self.wild
-      and Strings.source("Wild %s fainted!")
-      or Strings.source("%s fainted!")
-    self:emit({ kind = "faint", side = "enemy",
-      text = Strings(template, self:monName(self.enemy)) })
-    -- battle.fainted, the payload BattleState:onFaint emits on Gen 1.
-    -- `battler` is the mon itself here: Gen 2's engine has no battler wrapper.
-    Runtime.emit("battle.fainted", { battle = self, battler = self.enemy,
-      side = self:sideRecord(self.enemy) })
+  elseif enemyDown then
+    self:announceEnemyFaint()
+    -- engine/battle/core.asm:2008-2012
+    if playerDown then self:announcePlayerFaint() end
     self:awardExperience(self.enemy)
     local nextIndex = Battle.firstHealthy(self.enemyParty)
     if not nextIndex then
@@ -3574,88 +3743,29 @@ function Battle:resolveFaints()
       self.faintInterrupt = true
       return false
     end
-    local previous = self.enemy
-    self:clearVolatile(self.enemy)
-    self.enemyIndex = nextIndex
-    self.enemy = self.enemyParty[nextIndex]
-    -- ResetEnemyBattleVars (engine/battle/core.asm:3016) and NewEnemyMonStatus
-    -- clear the move selection and the substatus bytes for the mon coming IN,
-    -- so a replacement never inherits anything from its last stint.
-    self:clearVolatile(self.enemy)
-    self.stages.enemy = Battle.newStages()
-    -- `replacement` marks HandleEnemySwitch's send, the only one EnemySwitch
-    -- can offer a shift on (engine/battle/core.asm:2241-2278).
-    self:emit({ kind = "send", side = "enemy", mon = self.enemy,
-      replacement = true,
-      hp = self.enemy.hp or 0, status = self.enemy.status or false,
-      level = self.enemy.level, experience = self.enemy.experience,
-      text = Battle.sentOutText(self.trainer and self.trainer.name or "Foe",
-        self:monName(self.enemy)) })
-    Runtime.emit("battle.battler_switched", {
-      battle = self, side = self:sideRecord(self.enemy), battler = self.enemy,
-      previous = previous,
-    })
-    self:breakTrapsOnSend(self.enemy)
-    -- core.asm runs SpikesDamage on every send-out; the faint replacement
-    -- is not exempt.
-    self:spikesDamage(self.enemy)
-    -- Battle_PlayerFirst reaches HandleEnemyMonFaint with `jp`, not `call`
-    -- (engine/battle/core.asm:872), so the round's attack phase is over: the
-    -- mon that just walked in never answers, and the move that was queued for
-    -- the one it replaced is never spent.  Battle:takeTurn reads this.
-    self.faintInterrupt = true
-    return false
+    -- engine/battle/core.asm:2048-2064, :2643-2654
+    if playerDown then
+      self.pendingEnemySwitch = true
+      self.pendingEnemyIndex = nextIndex
+    else
+      -- engine/battle/core.asm:2066-2071
+      self:forcedReplacement("enemy", nextIndex)
+      -- engine/battle/core.asm:887, :903
+      self.faintInterrupt = true
+      return false
+    end
   end
 
-  if (self.player.hp or 0) <= 0 then
-    -- Announce a faint ONCE.
-    --
-    -- This branch is the only one that returns without changing whose turn it
-    -- is: it emits `choose-switch` and waits for the caller to pick, so the
-    -- caller calls back in with the same mon still at 0 HP and the whole branch
-    -- ran again.  The visible symptom was "TYPHLOSION fainted!" three times in
-    -- a row, but the real damage is one line lower -- `faintHappiness` was
-    -- charged once per re-entry, so a single faint cost two or three times the
-    -- happiness the cart takes (engine/battle/core.asm, HandlePlayerMonFaint
-    -- runs its happiness arm once).
-    --
-    -- Keyed on the mon itself, so the next one in announces normally.
-    if self.faintAnnounced ~= self.player then
-      self.faintAnnounced = self.player
-      self:emit({ kind = "faint", side = "player",
-        text = Strings("%s fainted!", self:monName(self.player)) })
-      Runtime.emit("battle.fainted", { battle = self, battler = self.player,
-        side = self:sideRecord(self.player) })
-      self:faintHappiness(self.player)
-    end
+  if playerDown then
+    self:announcePlayerFaint()
     local nextIndex = Battle.firstHealthy(self.party)
-    if not nextIndex then
-      self:emit({ kind = "message",
-        text = Strings("You have no more POKéMON!") })
-      -- LostBattle (engine/battle/core.asm:2763-2782): only BATTLETYPE_CANLOSE
-      -- reaches PrintWinLossText on a loss; every other loss whites out.
-      if self.battleType == Battle.BATTLETYPE_CANLOSE then
-        self:printWinLossText("lose")
-      end
-      self:endBattle("lose")
-      return true
-    end
-    -- The player picks the replacement; the caller drives that with :switch.
-    --
-    -- Asked for ONCE, keyed the same way the faint line above is: takeTurn
-    -- reaches resolveFaints up to three times in a round, and every one of
-    -- them still sees a 0 HP mon because nothing switches until the player
-    -- answers.  HandlePlayerMonFaint runs ForcePlayerMonChoice a single time
-    -- (engine/battle/core.asm:2543) and the turn loop does not come back for
-    -- another; three prompts in the queue meant the party menu reopened on top
-    -- of the pick that had already been made, so the switch looked like it
-    -- took two or three attempts.  Battle:switch releases the guard.
+    if not nextIndex then return self:lostBattle() end
+    -- ForcePlayerMonChoice (engine/battle/core.asm:2644)
     if not self.pendingSwitch then
       self.pendingSwitch = true
       self:emit({ kind = "choose-switch" })
     end
-    -- Same `jp`, not `call`, as the enemy arm above (core.asm:874): whatever
-    -- is left of the attack phase is abandoned.
+    -- engine/battle/core.asm:885, :901
     self.faintInterrupt = true
     return false
   end
@@ -3682,6 +3792,8 @@ end
 function Battle:awardPrizeMoney()
   local save = self.save
   if not (save and save.player) then return nil end
+  -- engine/battle/core.asm:2371-2373, :2401-2418
+  if self.inBattleTowerBattle then return nil end
   local award = Prize.award(save, {
     baseMoney = self.trainer and self.trainer.baseMoney,
     -- wCurPartyLevel, left behind by ReadTrainerParty: the LAST row of the
@@ -3870,6 +3982,8 @@ end
 -- nothing (the pass loop skips fainted mons).
 function Battle:awardExperience(loser)
   if self.linkBattle then return self:resetParticipants() end
+  -- engine/battle/core.asm:6990-6992
+  if self.inBattleTowerBattle then return self:resetParticipants() end
   local def = self:speciesDef(loser)
 
   local participants = {}
@@ -4077,6 +4191,12 @@ function Battle:switch(index)
   self:breakTrapsOnSend(mon)
   self:checkAmuletCoin(mon)
   self:spikesDamage(mon)
+  -- DoubleSwitch (engine/battle/core.asm:2075-2097)
+  if self.pendingEnemySwitch and self.pendingEnemyIndex and not self.linkBattle then
+    local enemyIndex = self.pendingEnemyIndex
+    self.pendingEnemyIndex = nil
+    self:forcedReplacement("enemy", enemyIndex, true)
+  end
   return true
 end
 
@@ -4102,7 +4222,7 @@ function Battle:checkBerserkGene(mon)
   local def = self:itemDef(mon.item)
   mon.item = nil
   self:emit({ kind = "message",
-    text = Strings("%s's %s activated!", self:monName(mon),
+    text = Strings("%s's %s activated!", self:battlerName(mon),
       (def and def.name) or "BERSERK GENE") })
   self:changeStage(mon, "attack", 2)
   self:applyConfusion(mon, Battle.BERSERK_GENE_CONFUSE_TURNS)
@@ -4250,13 +4370,6 @@ function Battle:useBattleItem(itemId)
   local def = self:itemDef(itemId)
   self:emit({ kind = "message",
     text = Strings("Used the %s.", (def and def.name) or itemId) })
-  if itemId == "GUARD_SPEC" then
-    self:emit({ kind = "message",
-      text = Strings("%s's shrouded in MIST!", self:monName(self.player)) })
-  elseif itemId == "DIRE_HIT" then
-    self:emit({ kind = "message",
-      text = Strings("%s is getting pumped!", self:monName(self.player)) })
-  end
   return true
 end
 
@@ -4276,7 +4389,7 @@ function Battle:spikesDamage(mon)
   local damage = math.max(1, math.floor(maxHp / 8))
   mon.hp = math.max(0, mon.hp - damage)
   self:emit({ kind = "message",
-    text = Strings("%s is hurt by SPIKES!", self:monName(mon)) })
+    text = Strings("%s is hurt by SPIKES!", self:battlerName(mon)) })
   -- SpikesDamage is text, HP and a HUD redraw: no anim (core.asm:3902-3910).
   self:emit({ kind = "damage", side = side, amount = damage, hp = mon.hp,
     anim = false })
@@ -4703,12 +4816,16 @@ function Battle:vanillaEnemyMove()
     attacker = {
       level = self.enemy.level,
       stats = self.enemy.stats,
+      gender = self.enemy.gender,
       types = (self:speciesDef(self.enemy) or {}).types or self.enemy.types,
     },
     defender = {
       hp = self.player.hp,
       stats = self.player.stats,
       status = self.player.status,
+      gender = self.player.gender,
+      attract = self:volatile(self.player).attract,
+      nightmare = self:volatile(self.player).nightmare,
       -- AI_Basic reads SUBSTATUS_CONFUSED for the confusion moves, not the
       -- status byte.
       confused = self:volatile(self.player).confuseCount ~= nil,
@@ -4946,7 +5063,7 @@ local function runTurn(self, action, enemyAction)
         local moveDef = self:moveDef(enemyMoveId)
         local moveName = (moveDef and moveDef.name) or enemyMoveId or "?"
         self:emit({ kind = "message", text = Strings("%s's %s is DISABLED!",
-          self:monName(self.enemy), moveName) })
+          self:battlerName(self.enemy), moveName) })
         return
       end
       self:useMove(self.enemy, self.player, enemyMoveId)
@@ -4971,7 +5088,7 @@ local function runTurn(self, action, enemyAction)
       local moveDef = self:moveDef(enemyMoveId)
       local moveName = (moveDef and moveDef.name) or enemyMoveId or "?"
       self:emit({ kind = "message", text = Strings("%s's %s is DISABLED!",
-        self:monName(self.enemy), moveName) })
+        self:battlerName(self.enemy), moveName) })
       return
     end
     self:useMove(self.enemy, self.player, enemyMoveId)
@@ -4982,7 +5099,7 @@ local function runTurn(self, action, enemyAction)
     -- engine/battle/core.asm:1005
     self:tickStatus(mon)
     self:tickSeedAndCurse(mon)
-    if self:resolveFaints() then return true end
+    if self:resolveFaints(mon == self.player) then return true end
     return self.faintInterrupt and true or false
   end
 
@@ -5006,7 +5123,7 @@ local function runTurn(self, action, enemyAction)
         and (self.player.hp or 0) > 0 then
       enemyAttack()
       if self.over then return self:takeEvents() end
-      if self:resolveFaints() then return self:takeEvents() end
+      if self:resolveFaints(true) then return self:takeEvents() end
       residualHalf(self.enemy)
     end
   else
@@ -5015,7 +5132,7 @@ local function runTurn(self, action, enemyAction)
     -- WildFled_EnemyFled_LinkBattleCanceled and never reaches the player's
     -- half of the turn or the residual damage.
     if self.over then return self:takeEvents() end
-    if self:resolveFaints() then return self:takeEvents() end
+    if self:resolveFaints(true) then return self:takeEvents() end
     -- Same `jp` (core.asm:834-837): a mon that fainted to the enemy's move
     -- takes the rest of the attack phase with it.
     if not residualHalf(self.enemy) and not self.over
@@ -5027,7 +5144,7 @@ local function runTurn(self, action, enemyAction)
     end
   end
   if self.over then return self:takeEvents() end
-  if self:resolveFaints() then return self:takeEvents() end
+  if self:resolveFaints(not self.mirrored) then return self:takeEvents() end
   self.faintInterrupt = nil
 
   -- A successful Roar or Whirlwind ends the ROUND: the turn loop's `.quit`
@@ -5052,7 +5169,7 @@ local function runTurn(self, action, enemyAction)
   self:tickScreens()
   self:tickCounters(firstMon)
   self:tickCounters(secondMon)
-  self:resolveFaints()
+  self:resolveFaints(not self.mirrored)
   return self:takeEvents()
 end
 
@@ -5105,7 +5222,7 @@ function Battle:tickWeather()
         mon.hp = math.max(0, mon.hp - damage)
         self:emit({ kind = "message",
           text = Strings("%s is buffeted by the sandstorm!",
-            self:monName(mon)) })
+            self:battlerName(mon)) })
         -- .SandstormDamage plays ANIM_IN_SANDSTORM between two SwitchTurnCore
         -- calls, so it runs from the OTHER side (core.asm:1688-1693).
         self:emit({ kind = "damage", side = self:sideOf(mon),
@@ -5129,7 +5246,7 @@ function Battle:tickFutureSight(mon)
   if (target.hp or 0) <= 0 then return end
   self:emit({ kind = "message",
     text = Strings("%s took the FUTURE SIGHT attack!",
-      self:monName(target)) })
+      self:battlerName(target)) })
   self:dealDamage(mon, target, damage, {})
 end
 
@@ -5140,7 +5257,7 @@ function Battle:tickPerish(mon)
   state.perish = state.perish - 1
   if state.perish > 0 then
     self:emit({ kind = "message", text = Strings("%s's PERISH count is %d!",
-      self:monName(mon), state.perish) })
+      self:battlerName(mon), state.perish) })
     return
   end
   state.perish = nil
@@ -5162,7 +5279,7 @@ function Battle:tickSeedAndCurse(mon)
     local damage = math.min(math.max(1, math.floor(maxHp / 8)), mon.hp)
     mon.hp = mon.hp - damage
     self:emit({ kind = "message",
-      text = Strings("LEECH SEED saps %s!", self:monName(mon)) })
+      text = Strings("LEECH SEED saps %s!", self:battlerName(mon)) })
     -- ANIM_SAP plays between two SwitchTurnCore calls, from the seeder's side
     -- (core.asm:1013-1021).
     self:emit({ kind = "damage", side = self:sideOf(mon), amount = damage,
@@ -5170,11 +5287,20 @@ function Battle:tickSeedAndCurse(mon)
     local other = mon == self.player and self.enemy or self.player
     if (other.hp or 0) > 0 then self:heal(other, damage) end
   end
+  -- ../pokecrystal/engine/battle/core.asm:1091
+  if state.nightmare and (mon.hp or 0) > 0 then
+    local damage = math.max(1, math.floor(maxHp / 4))
+    mon.hp = math.max(0, mon.hp - damage)
+    self:emit({ kind = "message",
+      text = Strings("%s\nhas a NIGHTMARE!", self:battlerName(mon)) })
+    self:emit({ kind = "damage", side = self:sideOf(mon), amount = damage,
+      hp = mon.hp, anim = "ANIM_IN_NIGHTMARE", animSide = self:sideOf(mon) })
+  end
   if state.cursed and (mon.hp or 0) > 0 then
     local damage = math.max(1, math.floor(maxHp / 4))
     mon.hp = math.max(0, mon.hp - damage)
     self:emit({ kind = "message",
-      text = Strings("%s's hurt by the CURSE!", self:monName(mon)) })
+      text = Strings("%s's hurt by the CURSE!", self:battlerName(mon)) })
     -- The curse arm borrows ANIM_IN_NIGHTMARE, on the sufferer's own turn
     -- (core.asm:1057-1060).
     self:emit({ kind = "damage", side = self:sideOf(mon), amount = damage,
@@ -5194,14 +5320,14 @@ function Battle:tickWrap(mon)
   if state.wrapCount <= 0 then
     state.wrapCount, state.wrapMove, state.wrapMoveId = nil, nil, nil
     self:emit({ kind = "message",
-      text = Strings("%s was released from %s!", self:monName(mon), moveName) })
+      text = Strings("%s was released from %s!", self:battlerName(mon), moveName) })
     return
   end
   local maxHp = mon.maxHp or (mon.stats and mon.stats.hp) or 16
   local damage = math.max(1, math.floor(maxHp / 16))
   mon.hp = math.max(0, mon.hp - damage)
   self:emit({ kind = "message",
-    text = Strings("%s's hurt by %s!", self:monName(mon), moveName) })
+    text = Strings("%s's hurt by %s!", self:battlerName(mon), moveName) })
   -- The trapping move's own anim, played from the trapper's side between two
   -- SwitchTurnCore calls (core.asm:1198-1203).
   self:emit({ kind = "damage", side = self:sideOf(mon), amount = damage,
@@ -5230,7 +5356,7 @@ function Battle:tickScreens()
             -- engine/battle/core.asm:1527
             self:emit({ kind = "message",
               text = Strings("%s's SAFEGUARD faded!",
-                self:monName(self[side])) })
+                self:battlerName(self[side])) })
           else
             self:emit({ kind = "message",
               text = Strings(Battle.SCREEN_FALL_TEXT[field],
@@ -5256,7 +5382,7 @@ function Battle:tickCounters(mon)
     if state.encoreTurns <= 0 then
       state.encore, state.encoreTurns = nil, nil
       self:emit({ kind = "message",
-        text = Strings("%s's ENCORE ended!", self:monName(mon)) })
+        text = Strings("%s's ENCORE ended!", self:battlerName(mon)) })
     end
   end
   if state.disabledTurns then
@@ -5265,7 +5391,7 @@ function Battle:tickCounters(mon)
       state.disabled, state.disabledTurns = nil, nil
       self:emit({ kind = "message",
         text = Strings("%s's move is no longer disabled!",
-          self:monName(mon)) })
+          self:battlerName(mon)) })
     end
   end
 end
@@ -5306,7 +5432,7 @@ function Battle:tickHeldItem(mon)
   local effect, parameter = self:heldEffect(mon, "residual")
   if not effect then return end
   local maxHp = mon.maxHp or (mon.stats and mon.stats.hp) or 1
-  local name = self:monName(mon)
+  local name = self:battlerName(mon)
 
   if effect == "HELD_LEFTOVERS" then
     if (mon.hp or 0) >= maxHp then return end
@@ -5335,6 +5461,7 @@ function Battle:tickHeldItem(mon)
     mon.statusTurns = nil
     mon.toxicCounter = nil
     mon.item = nil
+    self:volatile(mon).nightmare = nil
     self:emit({ kind = "status", side = self:sideOf(mon), status = nil,
       text = Strings("%s's %s cured its status!", name,
         def.name or "item") })
@@ -5353,7 +5480,7 @@ function Battle:tickHeldItem(mon)
   end
 end
 
-function Battle:forcedReplacement(side, index)
+function Battle:forcedReplacement(side, index, noOffer)
   index = tonumber(index)
   if side == "enemy" then
     local party = self.enemyParty or {}
@@ -5364,13 +5491,16 @@ function Battle:forcedReplacement(side, index)
     end
     if not mon then return false end
     self.pendingEnemySwitch = nil
+    self.pendingEnemyIndex = nil
     local previous = self.enemy
     self:clearVolatile(previous)
     self.enemyIndex = index
     self.enemy = mon
     self:clearVolatile(mon)
     self.stages.enemy = Battle.newStages()
-    self:emit({ kind = "send", side = "enemy", mon = mon, replacement = true,
+    -- CheckWhetherToAskSwitch (engine/battle/core.asm:3463-3486)
+    self:emit({ kind = "send", side = "enemy", mon = mon,
+      replacement = not noOffer,
       hp = mon.hp or 0, status = mon.status or false,
       level = mon.level, experience = mon.experience,
       text = Battle.sentOutText((self.trainer and self.trainer.name) or "Foe",
@@ -5399,7 +5529,7 @@ Battle.LINK_VOLATILE = {
   "bideStored", "bideTurns", "chargeMove", "confuseCount", "curled", "cursed",
   "disabled", "disabledTurns", "encore", "encoreTurns", "endure", "flinched",
   "focusEnergy", "futureSight", "futureSightDamage", "futureSightSide",
-  "identified", "lastMove", "leechSeed", "lockOn", "mist", "perish", "protect",
+  "identified", "lastMove", "leechSeed", "lockOn", "mist", "nightmare", "perish", "protect",
   "protectCount", "rage", "rampCount", "rampMove", "rampageMove",
   "rampageTurns", "recharge", "rolloutLock", "substitute", "tookThisTurn",
   "transformed", "trapsTarget", "turnsTaken", "vanished", "wrapCount",

@@ -121,7 +121,8 @@ local function loadExtractorWithStubs(pokeRun, sectionsRun)
   for _, sibling in ipairs({
     "items_extract", "pokedex_chrome_extract", "storage_chrome_extract",
     "text_chrome_extract", "trainer_card_extract", "seagallop_extract",
-    "map_preview_extract",
+    "cave_transition_extract", "weather_extract", "ingame_trades_extract",
+    "union_room_classes_extract", "map_preview_extract",
   }) do
     package.loaded["src.import.gba." .. sibling] = { run = function() return true end }
   end
@@ -133,7 +134,7 @@ local function loadExtractorWithStubs(pokeRun, sectionsRun)
     ready = function() return true end,
     run = function() return {} end,
   }
-  for _, sibling in ipairs({ "credits_extract", "league_extract" }) do
+  for _, sibling in ipairs({ "credits_extract", "league_extract", "battle_ai_extract" }) do
     package.loaded["src.import.gba." .. sibling] = {
       ready = function() return true end,
       run = function() return {} end,
@@ -218,6 +219,7 @@ package.loaded["src.import.gba.region_map_extract"] = nil
 package.loaded["src.import.gba.multichoice_extract"] = nil
 package.loaded["src.import.gba.credits_extract"] = nil
 package.loaded["src.import.gba.league_extract"] = nil
+package.loaded["src.import.gba.battle_ai_extract"] = nil
 package.loaded["src.import.gba.map_sections_extract"] = nil
 package.loaded["src.import.gba.revision_view"] = nil
 package.loaded["src.import.gba.extract_intro"] = nil
@@ -227,6 +229,7 @@ package.loaded["src.import.RomExtractorGen3"] = nil
 for _, sibling in ipairs({
   "items_extract", "pokedex_chrome_extract", "storage_chrome_extract",
   "text_chrome_extract", "trainer_card_extract", "seagallop_extract",
+  "cave_transition_extract", "ingame_trades_extract", "union_room_classes_extract",
   "map_preview_extract",
 }) do
   package.loaded["src.import.gba." .. sibling] = nil
@@ -319,6 +322,9 @@ local function readyCacheWith(skip, format, numSpecies)
     [ROOT .. "/pokemon/front/" .. last .. ".rgba"] = 64 * 64 * 4,
     [ROOT .. "/pokemon/back/" .. last .. ".rgba"] = 64 * 64 * 4,
     [ROOT .. "/pokemon/icons/" .. last .. ".rgba"] = iconBytes,
+    [ROOT .. "/pokemon/front/410_handled.rgba"] = 64 * 64 * 4,
+    [ROOT .. "/pokemon/back/410_handled.rgba"] = 64 * 64 * 4,
+    [ROOT .. "/pokemon/icons/410_handled.rgba"] = iconBytes,
     [ROOT .. "/chrome/fonts/braille.lua"] = 64,
     [ROOT .. "/seagallop/manifest.lua"] = 64,
     [ROOT .. "/seagallop/wb.rgba"] = 32 * 8 * 32 * 8 * 4,
@@ -347,6 +353,10 @@ check(PokemonExtract.ready(readyCacheWith(ROOT .. "/pokemon/front/" .. last .. "
   "a cache with no last-species front sprite is not ready")
 check(PokemonExtract.ready(readyCacheWith(ROOT .. "/pokemon/icons/" .. last .. ".rgba"), ROOT) == false,
   "a cache with no last-species icon is not ready")
+check(PokemonExtract.ready(readyCacheWith(ROOT .. "/pokemon/front/410_handled.rgba"), ROOT) == false,
+  "a cache with no Deoxys form front pic is not ready")
+check(PokemonExtract.ready(readyCacheWith(ROOT .. "/pokemon/icons/410_handled.rgba"), ROOT) == false,
+  "a cache with no Deoxys form icon is not ready")
 check(PokemonExtract.ready(readyCacheWith(nil, PokemonExtract.FORMAT_VERSION - 1), ROOT) == false,
   "a cache written by an older species format is not ready")
 check(PokemonExtract.ready(readyCacheWith(nil, nil, 1), ROOT) == false,

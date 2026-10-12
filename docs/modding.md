@@ -388,6 +388,13 @@ actor walks -- right for Oak marching to his lab, wrong for an actor that
 moves on its own schedule (a networked player's ghost, an ambient walker).
 Five handle methods drive one without that lockout:
 
+On Gold/Crystal, the compatible form is
+`mod.world:spawnNpc(mapId, objectDefinition)`. It returns the generated object
+ID string (for example, `CHERRYGROVE_CITY_obj_2`), which can be resolved with
+`mod.world:npc(mapId, id)`. The later `world.interacted` payload keeps the
+cross-generation shape and puts the live object in `ev.target`; read
+`ev.target.id` rather than `ev.npcId`.
+
 ```lua
 local ghost = mod.world:spawnNpc({ map = "ROUTE_1", x = 5, y = 7,
                                    sprite = "SPRITE_RED" })
@@ -1212,9 +1219,9 @@ identifiers: `pc_box_withdraw`, `pc_box_deposit`, `pc_box_release`,
 control the battle text/menu layer and the HP/status panels. Both receive
 `(next, state)` and default to `true`, so vanilla rendering is unchanged.
 Both hooks apply to Gen 1 and Gen 2 battles.
-Text boxes and YES/NO prompts pushed above a battle inherit a `false` result
-for that battle, so hiding the bottom layer cannot leave their white backing
-behind under another overlay. Text boxes also pass through the hook as their
+Text boxes and YES/NO prompts pushed above a battle of either generation
+inherit a `false` result for that battle, so hiding the bottom layer cannot
+leave their white backing behind under another overlay. Text boxes also pass through the hook as their
 own state, preserving selective control outside a battle; a wrapper that only
 owns battle presentation should return `false` only for its active battle or
 text-box state.
@@ -1251,17 +1258,22 @@ level is part of a row label rather than a drawn field. Both are noted in
 RFC 0019 as follow-ups.
 
 `core.logic_speed` receives `(next, game)` once per `Game:logicSpeed()` call
-(once per frame). Vanilla behavior resolves the per-category GAME SPEED
-option (`GameSpeed.CATEGORIES`: overworld/battle/menu) for whichever
-category `Game.speedCategoryInStack` says is active right now. A mod may
-call `next(game)` and return its result to pass that resolution through, or
-return a different number outright to override it for that frame (a bot mod
-forcing 1X for one route segment, say, regardless of the category or saved
-option). The result is clamped to the nearest valid `GameSpeed.LEVELS` entry
-regardless of what a subscriber returns, so a bad value (0, negative, `nil`)
-cannot destabilize the fixed-step accumulator. This hook runs *after* link
-play's 1X lock and the `--speed`/equivalent run-argument override, both of
-which stay unconditional and are never visible to a subscriber.
+(once per frame), but only on frames where the speed is not locked. Link
+play (link, online, tournament and spectate battles included) and a
+fixed-speed minigame lock the logic clock to 1X, and `Game:speedLocked()`
+is checked before anything else: the hook is never called on those frames,
+so it cannot fast-forward a link battle. On every other frame vanilla
+behavior resolves the per-category GAME SPEED option (`speedOverworld`,
+`speedBattle` or `speedMenu`) for whichever category `Game.speedCategoryInStack` says is
+active. A mod may call `next(game)` and return its result to pass that
+resolution through, or return a different number outright to override it
+for that frame (a bot mod forcing 1X for one route segment, say). The
+result is clamped to the nearest valid `GameSpeed.LEVELS` entry regardless
+of what a subscriber returns, so a bad value (0, negative, `nil`) cannot
+destabilize the fixed-step accumulator. The `--speed`/`POKEPORT_SPEED`
+run-argument override also wins over the hook, but not over the lock.
+Gen 2 and Gen 3 have no hook; their `logicSpeed()` facades report the
+shell's own value, lock included.
 
 Developer mode also arms the mod loader's dev tripwire, which flags mods
 that reach outside their permission set.

@@ -152,9 +152,20 @@ function State.opposite(st, b)
   return State.battler(st, State.OPPOSITE(id))
 end
 
+local LOCAL_ORDER = { 0, 1, 2, 3 }
+-- pokefirered/src/battle_controllers.c:163
+local LINK_FOLLOWER_ORDER = { 1, 0, 3, 2 }
+
+function State.battlerOrder(st)
+  -- pokefirered/src/battle_controllers.c:229
+  if st and st.multi and st.linkOrder then return st.linkOrder end
+  if st and st.link and st.linkMaster == false then return LINK_FOLLOWER_ORDER end
+  return LOCAL_ORDER
+end
+
 function State.presentIds(st)
   local out = {}
-  for id = 0, 3 do
+  for _, id in ipairs(State.battlerOrder(st)) do
     if State.isPresent(st, id) then out[#out + 1] = id end
   end
   return out
@@ -162,7 +173,7 @@ end
 
 function State.present(st)
   local out = {}
-  for id = 0, 3 do
+  for _, id in ipairs(State.battlerOrder(st)) do
     if State.isPresent(st, id) then out[#out + 1] = State.battler(st, id) end
   end
   return out
@@ -213,7 +224,7 @@ function State.speedOrder(st, adapter, opts)
   end
   local function coin()
     if adapter and adapter.roll then return adapter:roll(0, 1) end
-    return math.random(0, 1)
+    return require("src.core.game3.battle.link_guard").fallback("state.coin", 0, 1)
   end
   for i = 1, #ids - 1 do
     for j = i + 1, #ids do
@@ -262,12 +273,66 @@ local function first_usable(party, exclude)
 end
 State.firstUsable = first_usable
 
+-- pokefirered/src/battle_main.c:1291
+function State.slotOwner(st, side, slot)
+  local owners = st and st.partyOwner and st.partyOwner[side]
+  return owners and owners[slot] or nil
+end
+
+function State.ownsSlot(st, id, slot)
+  -- pokeemerald/src/battle_util.c:2331
+  if st and st.foeHalf and id ~= nil and id % 2 == 1 then
+    return (id == 1) == ((tonumber(slot) or 0) <= st.foeHalf)
+  end
+  -- pokeemerald/src/battle_util.c:2274
+  if st and st.playerHalf and id ~= nil and id % 2 == 0 then
+    return (id == 0) == ((tonumber(slot) or 0) <= st.playerHalf)
+  end
+  if not (st and st.multi and st.partyOwner) then return true end
+  return State.slotOwner(st, State.sideOf(id), slot) == id
+end
+
+-- pokefirered/src/battle_controllers.c:237
+local function first_owned(party, owners, id, exclude)
+  for i = 1, #(party or {}) do
+    local m = party[i]
+    if owners[i] == id and i ~= exclude and m and not m.isEgg and (tonumber(m.hp) or 0) > 0
+        and (tonumber(m.species or m.speciesId) or 0) ~= 0 then
+      return i
+    end
+  end
+  return nil
+end
+
 function State.new(opts)
   opts = opts or {}
   local playerParty = opts.playerParty or {}
-  local pi = opts.playerIndex or first_usable(playerParty) or 1
+  local owners = opts.multi and opts.partyOwner or nil
   local foeMon = opts.foeMon
   local foeParty = opts.foeParty or { foeMon }
+  if owners then
+    opts.playerIndex = opts.playerIndex or first_owned(playerParty, owners.player, 0)
+    opts.partnerIndex = opts.partnerIndex or first_owned(playerParty, owners.player, 2)
+    opts.foeIndex = opts.foeIndex or first_owned(foeParty, owners.enemy, 1)
+    opts.foePartnerIndex = opts.foePartnerIndex or first_owned(foeParty, owners.enemy, 3)
+  end
+  local foeHalf = (opts.double and tonumber(opts.foeHalf)) or nil
+  if foeHalf then
+    -- pokeemerald/src/battle_controllers.c:650
+    local owners = { enemy = {} }
+    for i = 1, #foeParty do owners.enemy[i] = (i <= foeHalf) and 1 or 3 end
+    opts.foeIndex = opts.foeIndex or first_owned(foeParty, owners.enemy, 1, 0)
+    opts.foePartnerIndex = opts.foePartnerIndex or first_owned(foeParty, owners.enemy, 3, 0) or false
+  end
+  local playerHalf = (opts.double and tonumber(opts.playerHalf)) or nil
+  if playerHalf then
+    -- pokeemerald/src/battle_util.c:2281
+    local own = {}
+    for i = 1, #playerParty do own[i] = (i <= playerHalf) and 0 or 2 end
+    opts.playerIndex = first_owned(playerParty, own, 0, 0) or opts.playerIndex
+    opts.partnerIndex = opts.partnerIndex or first_owned(playerParty, own, 2, 0) or false
+  end
+  local pi = opts.playerIndex or first_usable(playerParty) or 1
   local ei = opts.foeIndex or first_usable(foeParty) or 1
   local eMon = foeMon or (foeParty and foeParty[ei]) or (foeParty and foeParty[1])
   local st = {
@@ -285,11 +350,16 @@ function State.new(opts)
     turn = 0,
     over = false,
     result = nil,
-    rng = opts.rng or require("src.core.game3.rng").compat,
+    rng = opts.rng or require("src.core.game3.battle.link_guard").source("state.rng",
+      require("src.core.game3.rng").compat),
     fleeAttempts = 0,
     log = {},
   }
   st.double = opts.double and true or false
+  st.foeHalf = foeHalf
+  st.playerHalf = playerHalf
+  st.multi = (st.double and owners) and true or false
+  st.partyOwner = st.multi and owners or nil
   st.battlersCount = st.double and 4 or 2
   st.battlers = battler_slots(st)
   st.absent = {}
@@ -305,13 +375,14 @@ function State.new(opts)
     return st
   end
   -- pokefirered/src/battle_controllers.c:290
-  local p2 = opts.partnerIndex or first_usable(playerParty, pi)
+  local p2 = opts.partnerIndex or (not owners and not playerHalf and first_usable(playerParty, pi)) or nil
   if p2 and playerParty[p2] then
     st.battlers[2] = State.makeBattler(playerParty[p2], "player", { partyIndex = p2, id = 2 })
   else
     st.absent[2] = true
   end
-  local e2 = opts.foePartnerIndex or first_usable(st.foeParty, st.enemy.partyIndex)
+  local e2 = opts.foePartnerIndex
+  if e2 == nil then e2 = (not owners and first_usable(st.foeParty, st.enemy.partyIndex)) or nil end
   if e2 and st.foeParty[e2] then
     st.battlers[3] = State.makeBattler(st.foeParty[e2], "enemy", { partyIndex = e2, id = 3 })
   else
@@ -381,6 +452,23 @@ function State.displayName(battler)
     if not Pokemon._names then Pokemon.install(nil) end
   end)
   return Pokemon.name(battler.species)
+end
+
+-- src/battle_message.c:1807
+function State.text(st, id, fill)
+  fill = require("src.core.game3.battle.adapter").fill(st, fill)
+  return require("src.core.game3.battle.battle_text").get(id, fill)
+end
+
+function State.prefixedName(st, battler, name)
+  name = name or State.displayName(battler)
+  if battler and battler.side == "player" then return name end
+  if require("src.core.game3.battle.adapter").textSink then return name end
+  local RomText = require("src.core.game3.rom_text")
+  local prefix = (st ~= nil and not st.wild) and "sText_FoePkmnPrefix" or "sText_WildPkmnPrefix"
+  local ok, pre = pcall(RomText.plain, prefix)
+  pre = ok and pre or (st ~= nil and not st.wild and "Foe " or "Wild ")
+  return require("src.core.game3.battle.battle_text").withMonPrefix(pre, name)
 end
 
 function State.isFainted(battler)

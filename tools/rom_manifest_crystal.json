@@ -14520,6 +14520,18 @@
       115,
       22385
     ],
+    "BTFemaleTrainerTexts": [
+      71,
+      29646
+    ],
+    "BTMaleTrainerTexts": [
+      71,
+      29490
+    ],
+    "BTTrainerClassGenders": [
+      71,
+      29424
+    ],
     "BTTrainerClassSprites": [
       92,
       19344
@@ -14748,6 +14760,10 @@
       126,
       17488
     ],
+    "BattleTowerText": [
+      71,
+      16384
+    ],
     "BattleTowerTrainerData": [
       124,
       16384
@@ -14875,6 +14891,14 @@
     "BracedItselfText": [
       32,
       22265
+    ],
+    "BuenasPasswordChannelName": [
+      46,
+      20849
+    ],
+    "BuenasPasswordTable": [
+      46,
+      20473
     ],
     "BugCatchingContestantEventFlagTable": [
       4,
@@ -18292,6 +18316,10 @@
       110,
       19608
     ],
+    "OutdoorSprites": [
+      5,
+      17592
+    ],
     "OverworldSprites": [
       5,
       18230
@@ -19711,6 +19739,10 @@
     "Tilesets": [
       19,
       21910
+    ],
+    "TimeCapsule_CatchRateItems": [
+      10,
+      18309
     ],
     "TimeFishGroups": [
       36,
@@ -23647,6 +23679,10 @@
     "_YourMonsHPWasHealedText": [
       111,
       20537
+    ],
+    "wBT_OTTrainerClass": [
+      3,
+      53514
     ],
     "wBaseUnusedBackpic": [
       1,

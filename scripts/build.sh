@@ -80,7 +80,7 @@ else
     tools/rom_manifest.json tools/rom_manifest_blue.json \
     tools/rom_manifest_yellow.json tools/rom_manifest_gold.json \
     tools/rom_manifest_silver.json tools/rom_manifest_crystal.json \
-    tools/rom_manifest_firered.json tools/rom_manifest_leafgreen.json \
+    tools/rom_manifest_firered.json tools/rom_manifest_leafgreen.json tools/rom_manifest_emerald.json tools/rom_manifest_ruby.json tools/rom_manifest_sapphire.json \
     -x '*.DS_Store' 'data/generated/*' 'assets/generated/*')
 fi
 # Materialize the listing once and grep the file: piping unzip straight into
@@ -104,7 +104,7 @@ for required in tools/save-editor/App.lua tools/save-editor/Kit.lua \
                 tools/rom_manifest_yellow.json tools/rom_manifest_gold.json \
                 tools/rom_manifest_silver.json \
                 tools/rom_manifest_crystal.json \
-                tools/rom_manifest_firered.json tools/rom_manifest_leafgreen.json; do
+                tools/rom_manifest_firered.json tools/rom_manifest_leafgreen.json tools/rom_manifest_emerald.json tools/rom_manifest_ruby.json tools/rom_manifest_sapphire.json; do
   grep -qxF "$required" "$LOVE_LISTING" \
     || fail "game.love is missing $required"
 done
@@ -386,11 +386,11 @@ PY
     if peresed "${args[@]}" "$exe_branded" >/dev/null; then
       cat "$exe_branded" "$LOVE_FILE" > "$out_dir/$APP_NAME.exe"
     else
-      warn "peresed failed to patch the exe icon,  shipping stock LÖVE icon"
+      warn "peresed failed to patch the exe icon, shipping stock LÖVE icon"
       cat "$love_dir/love.exe" "$LOVE_FILE" > "$out_dir/$APP_NAME.exe"
     fi
   else
-    warn "peresed not found (pipx install pe_tools),  shipping stock LÖVE exe icon"
+    warn "peresed not found (pipx install pe_tools), shipping stock LÖVE exe icon"
     cat "$love_dir/love.exe" "$LOVE_FILE" > "$out_dir/$APP_NAME.exe"
   fi
 

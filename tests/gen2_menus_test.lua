@@ -366,7 +366,7 @@ local options = OptionsMenu.new(optionsGame, {
 })
 -- The cart's seven rows, then the port's: CONTROLS, audio, PERFORMANCE,
 -- speed, display, SHADER FX + SHADER FX 2 (the second slot added alongside
-check("thirty-five rows", #OptionsMenu.ROWS, 35)
+check("thirty-seven row descriptors", #OptionsMenu.ROWS, 37)
 check("the cart's rows come first", OptionsMenu.ROWS[7].key, "frame")
 check("then the rebind screen", OptionsMenu.ROWS[8].id, "controls")
 check("then the port's audio group", OptionsMenu.ROWS[9].key, "musicVol")
@@ -377,6 +377,17 @@ check("last row is BACK", OptionsMenu.ROWS[#OptionsMenu.ROWS].cancel, true)
 local function hasRow(rows, key)
   for _, row in ipairs(rows) do if row.key == key then return true end end
   return false
+end
+check("ORIENTATION is a descriptor", hasRow(OptionsMenu.ROWS, "orientation"), true)
+do
+  local oldSystem = love.system
+  for _, osName in ipairs({ "Linux", "Android", "iOS" }) do
+    love.system = { getOS = function() return osName end }
+    local platformOptions = OptionsMenu.new(newGame(Save.newGame()))
+    check(osName .. " orientation row visibility",
+      hasRow(platformOptions.rows, "orientation"), osName ~= "Linux")
+  end
+  love.system = oldSystem
 end
 check("PRINT is still a descriptor", hasRow(OptionsMenu.ROWS, "print"), true)
 check("but never reaches the screen", hasRow(options.rows, "print"), false)
@@ -1684,33 +1695,31 @@ check("without a phone, right pages to the radio", noPhone:card().id, "radio")
 --
 -- AnimateTuningKnob.TuningKnob winds wRadioTuningKnob up towards 80 and down
 -- towards 0 and stops dead at either end -- `ret z` at the bottom and
--- `ret nc` at the top.  It does not wrap, so neither does the port's row.
+-- engine/pokegear/pokegear.asm:1398
 local knobGear = newMapGear({ clock = { hour = 14, minute = 0, weekday = 1 } })
 for index, card in ipairs(knobGear.cards) do
   if card.id == "radio" then knobGear.cardIndex = index end
 end
 knobGear.mode = "card"
 knobGear:update(0)
-check("entering the card resolves the frequency", knobGear.radioShow,
-  "OAKS_POKEMON_TALK")
+check("entering the card resolves initial dead air", knobGear.radioShow, nil)
 mapInput:press("up")
 knobGear:update(0)
-check("up winds the knob on", knobGear.station, 2)
-check("and retunes", knobGear.radioShow, "POKEMON_MUSIC")
+check("up winds the knob by two", knobGear.tuningKnob, 2)
+check("and resolves intermediate dead air", knobGear.radioShow, nil)
 mapInput:press("down")
 knobGear:update(0)
 mapInput:press("down")
 knobGear:update(0)
-check("down stops dead at the bottom of the dial", knobGear.station, 1)
-knobGear.station = #Pokegear.RADIO_CHANNELS
+check("down stops dead at the bottom of the dial", knobGear.tuningKnob, 0)
+knobGear.tuningKnob = 80
 mapInput:press("up")
 knobGear:update(0)
-check("and up stops dead at the top", knobGear.station,
-  #Pokegear.RADIO_CHANNELS)
+check("and up stops dead at the top", knobGear.tuningKnob, 80)
 
 -- The show only advances while the card is up, and B hands the map's music
 -- back (ExitPokegearRadio_HandleMusic) and throws the machine away.
-knobGear.station = 1
+knobGear.tuningKnob = 16
 knobGear:tuneRadio()
 for _ = 1, 300 do knobGear:update(0) end
 check("the show runs while the card is up", #knobGear.radio.log >= 2, true)
