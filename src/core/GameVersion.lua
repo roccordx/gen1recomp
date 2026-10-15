@@ -202,7 +202,6 @@ GameVersion.VERSIONS = {
     cartShape = "gba", cartShell = "#355ec4",
     cartLabel = "assets/labels/sapphire.png",
   },
-  },
 }
 
 local NO_FIXES = {}
