@@ -1506,48 +1506,66 @@ function RomExtractor:textGlyph(value)
 end
 
 function RomExtractor:decodeTextCommands(symbol, substitutions)
-  local address = symbol.address
-  local pending = 1
-  local out = {}
-  for _ = 1, 4096 do
-    local command = self.rom:byte(symbol.bank, address)
-    address = address + 1
-    if command == 0x50 then
-      assert(pending > #substitutions,
-        symbol.name .. ": unused dynamic text substitutions")
-      -- home/text.asm:221
-      if #out > 0 then out[#out + 1] = "{DONE}" end
-      return table.concat(out)
-    elseif command == 0 then
-      while true do
-        local value = self.rom:byte(symbol.bank, address)
-        address = address + 1
-        if value == 0x50 then break end
-        if value == 0x57 or value == 0x58 or value == 0x5F then
-          assert(pending > #substitutions,
-            symbol.name .. ": unused dynamic text substitutions")
-          -- constants/charmap.asm:19-20
-          if value ~= 0x5F and #out > 0 then
-            out[#out + 1] = (value == 0x58) and "{PROMPT}" or "{DONE}"
+  local diagnostics = os.getenv("POKEPORT_ITALIAN_IMPORT_DIAGNOSTICS") == "1"
+  local function decode()
+    local address = symbol.address
+    local pending = 1
+    local out = {}
+    for _ = 1, 4096 do
+      local command = self.rom:byte(symbol.bank, address)
+      address = address + 1
+      if command == 0x50 then
+        assert(pending > #substitutions,
+          symbol.name .. ": unused dynamic text substitutions")
+        -- home/text.asm:221
+        if #out > 0 then out[#out + 1] = "{DONE}" end
+        return table.concat(out)
+      elseif command == 0 then
+        while true do
+          local value = self.rom:byte(symbol.bank, address)
+          address = address + 1
+          if value == 0x50 then break end
+          if value == 0x57 or value == 0x58 or value == 0x5F then
+            assert(pending > #substitutions,
+              symbol.name .. ": unused dynamic text substitutions")
+            -- constants/charmap.asm:19-20
+            if value ~= 0x5F and #out > 0 then
+              out[#out + 1] = (value == 0x58) and "{PROMPT}" or "{DONE}"
+            end
+            return table.concat(out)
           end
-          return table.concat(out)
+          out[#out + 1] = self:textGlyph(value)
         end
-        out[#out + 1] = self:textGlyph(value)
+      elseif command == 1 or command == 2 or command == 9 then
+        local expected = substitutions[pending]
+        assert(expected, symbol.name .. ": missing dynamic text substitution")
+        assert(command == expected[1],
+          symbol.name .. ": dynamic text command mismatch")
+        out[#out + 1] = expected[2]
+        pending = pending + 1
+        address = address + (command == 1 and 2 or 3)
+      else
+        error(("%s: unsupported text command $%02X")
+          :format(symbol.name, command))
       end
-    elseif command == 1 or command == 2 or command == 9 then
-      local expected = substitutions[pending]
-      assert(expected, symbol.name .. ": missing dynamic text substitution")
-      assert(command == expected[1],
-        symbol.name .. ": dynamic text command mismatch")
-      out[#out + 1] = expected[2]
-      pending = pending + 1
-      address = address + (command == 1 and 2 or 3)
-    else
-      error(("%s: unsupported text command $%02X")
-        :format(symbol.name, command))
     end
+    error(symbol.name .. ": text command stream is too long")
   end
-  error(symbol.name .. ": text command stream is too long")
+
+  if not diagnostics then return decode() end
+  local startedAt = love.timer.getTime()
+  print(("[ITALIAN TEXT] begin symbol=%s bank=%02X address=%04X")
+    :format(symbol.name, symbol.bank, symbol.address))
+  local ok, result = xpcall(decode, debug.traceback)
+
+  if diagnostics then
+    print(("[ITALIAN TEXT] end symbol=%s bank=%02X address=%04X duration=%.3fs result=%s%s")
+      :format(symbol.name, symbol.bank, symbol.address,
+        love.timer.getTime() - startedAt, ok and "ok" or "error",
+        ok and "" or (" error=" .. tostring(result))))
+  end
+  if not ok then error(result, 0) end
+  return result
 end
 
 function RomExtractor:extractText()

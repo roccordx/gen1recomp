@@ -1,5 +1,6 @@
 local RomImporter = require("src.import.RomImporter")
 local GameVersion = require("src.core.GameVersion")
+local DIAGNOSTICS = os.getenv("POKEPORT_ITALIAN_IMPORT_DIAGNOSTICS") == "1"
 
 local function fail(message)
   error("[TEST A FAIL] " .. tostring(message), 0)
@@ -110,9 +111,22 @@ print("Running import coroutine...")
 
 local iterations = 0
 local maxIterations = 200000
+local startedAt = DIAGNOSTICS and love.timer.getTime() or nil
+local lastDiagnosticAt = startedAt
 
 while importer.worker do
   iterations = iterations + 1
+
+  if DIAGNOSTICS then
+    local now = love.timer.getTime()
+    if now - lastDiagnosticAt >= 1 then
+      print(("[ITALIAN IMPORT] elapsed=%.1fs resumes=%d stage=%s progress=%s current=%s/%s")
+        :format(now - startedAt, iterations, tostring(importer.status),
+          importer.progress and ("%.1f%%"):format(importer.progress * 100) or "?",
+          tostring(importer.stageCurrent), tostring(importer.stageTotal)))
+      lastDiagnosticAt = now
+    end
+  end
 
   if iterations > maxIterations then
     fail("import exceeded maximum coroutine iterations")
