@@ -20327,6 +20327,10 @@
       9,
       20950
     ],
+    "FallingObjects_DeltaXs": [
+      30,
+      23821
+    ],
     "FallingStar": [
       28,
       16784
@@ -22557,11 +22561,11 @@
     ],
     "_AlreadyOutText": [
       34,
-      22603
+      23060
     ],
     "_AntidoteText": [
       34,
-      24139
+      24654
     ],
     "_ArbokDexEntry": [
       43,
@@ -22585,7 +22589,7 @@
     ],
     "_AwakeningText": [
       34,
-      24232
+      24749
     ],
     "_BadlyPoisonedText": [
       37,
@@ -22601,7 +22605,7 @@
     ],
     "_BeganToNapText": [
       34,
-      23293
+      23750
     ],
     "_BellsproutDexEntry": [
       43,
@@ -22641,7 +22645,7 @@
     ],
     "_BikeShopExchangedVoucherText": [
       38,
-      20146
+      20300
     ],
     "_BikeShopMiddleAgedWomanText": [
       38,
@@ -22677,11 +22681,11 @@
     ],
     "_BillsHouseBillWhyDontYouGoInsteadOfMeText": [
       35,
-      21712
+      21778
     ],
     "_BillsHouseInitiatedText": [
       34,
-      18939
+      19153
     ],
     "_BillsHouseMonitorText": [
       34,
@@ -22729,7 +22733,7 @@
     ],
     "_BoostedText": [
       34,
-      23521
+      23519
     ],
     "_BootedUpHMText": [
       41,
@@ -22749,7 +22753,7 @@
     ],
     "_BoxFullText": [
       34,
-      24984
+      25516
     ],
     "_BoxIsFullText": [
       41,
@@ -22769,7 +22773,7 @@
     ],
     "_BrunosRoomBrunoDontRunAwayText": [
       33,
-      26699
+      27114
     ],
     "_BuildingRageText": [
       34,
@@ -22781,7 +22785,7 @@
     ],
     "_BurnHealText": [
       34,
-      24189
+      24705
     ],
     "_BurnedText": [
       37,
@@ -22797,7 +22801,7 @@
     ],
     "_CableClubNPCAreaReservedFor2FriendsLinkedByCableText": [
       40,
-      26923
+      27086
     ],
     "_CableClubNPCLinkClosedBecauseOfInactivityText": [
       40,
@@ -22817,7 +22821,7 @@
     ],
     "_CableClubNPCPleaseWaitText": [
       40,
-      27084
+      27244
     ],
     "_CableClubNPCWelcomeText": [
       40,
@@ -22825,7 +22829,7 @@
     ],
     "_CanMoveBouldersText": [
       41,
-      16465
+      16471
     ],
     "_CannotFlyHereText": [
       41,
@@ -22841,7 +22845,7 @@
     ],
     "_CannotUseTeleportNowText": [
       41,
-      16619
+      16647
     ],
     "_CantCarryMoreText": [
       34,
@@ -22885,11 +22889,11 @@
     ],
     "_CeladonChiefHouseRocketText": [
       39,
-      24842
+      25213
     ],
     "_CeladonChiefHouseSailorText": [
       39,
-      24892
+      25258
     ],
     "_CeladonCityDeptStoreSignText": [
       41,
@@ -22901,11 +22905,11 @@
     ],
     "_CeladonCityGameCornerSignText": [
       41,
-      24170
+      24607
     ],
     "_CeladonCityGirlText": [
       41,
-      23161
+      23502
     ],
     "_CeladonCityGramps1Text": [
       41,
@@ -22917,7 +22921,7 @@
     ],
     "_CeladonCityGramps3ReceivedTM41Text": [
       41,
-      23386
+      23752
     ],
     "_CeladonCityGramps3TM41ExplanationText": [
       41,
@@ -22953,7 +22957,7 @@
     ],
     "_CeladonCityPoliwrathText": [
       41,
-      23600
+      23969
     ],
     "_CeladonCityPrizeExchangeSignText": [
       41,
@@ -22997,7 +23001,7 @@
     ],
     "_CeladonDinerGymGuideReceivedCoinCaseText": [
       39,
-      24698
+      25086
     ],
     "_CeladonDinerGymGuideWinItBackText": [
       39,
@@ -23005,7 +23009,7 @@
     ],
     "_CeladonDinerMiddleAgedManText": [
       39,
-      24473
+      24869
     ],
     "_CeladonDinerMiddleAgedWomanText": [
       39,
@@ -23061,7 +23065,7 @@
     ],
     "_CeladonGymBattleText7": [
       39,
-      22487
+22782
     ],
     "_CeladonGymBattleText8": [
       39,
@@ -23113,7 +23117,7 @@
     ],
     "_CeladonGymReceivedTM21Text": [
       39,
-      21772
+      21966
     ],
     "_CeladonGymTM21NoRoomText": [
       39,
@@ -23133,7 +23137,7 @@
     ],
     "_CeladonMansion1FClefairyText": [
       39,
-      20284
+      20443
     ],
     "_CeladonMansion1FGrannyText": [
       39,
@@ -23145,11 +23149,11 @@
     ],
     "_CeladonMansion1FMeowthText": [
       39,
-      20206
+      20364
     ],
     "_CeladonMansion1FNidoranFText": [
       39,
-      20309
+      20470
     ],
     "_CeladonMansion2FMeetingRoomSignText": [
       39,
@@ -23161,7 +23165,7 @@
     ],
     "_CeladonMansion3FGameDesignerCompletedDexText": [
       39,
-      20653
+      20852
     ],
     "_CeladonMansion3FGameDesignerText": [
       39,
@@ -23205,7 +23209,7 @@
     ],
     "_CeladonMart1FDirectorySignText": [
       39,
-      18125
+      18213
     ],
     "_CeladonMart1FReceptionistText": [
       39,
@@ -23225,11 +23229,11 @@
     ],
     "_CeladonMart3FClerkReceivedTM18Text": [
       39,
-      18522
+      18648
     ],
     "_CeladonMart3FClerkTM18ExplanationText": [
       39,
-      18542
+      18669
     ],
     "_CeladonMart3FClerkTM18NoRoomText": [
       39,
@@ -23241,7 +23245,7 @@
     ],
     "_CeladonMart3FCurrentFloorSignText": [
       39,
-      19108
+      19295
     ],
     "_CeladonMart3FFightingGameText": [
       39,
@@ -23321,7 +23325,7 @@
     ],
     "_CeladonMartRoofLittleGirlImNotThirstyText": [
       39,
-      19821
+      19988
     ],
     "_CeladonMartRoofLittleGirlImThirstyText": [
       39,
@@ -23329,43 +23333,43 @@
     ],
     "_CeladonMartRoofLittleGirlNoRoomText": [
       39,
-      19789
+      19955
     ],
     "_CeladonMartRoofLittleGirlReceivedTM13Text": [
       39,
-      19462
+      19651
     ],
     "_CeladonMartRoofLittleGirlReceivedTM48Text": [
       39,
-      19601
+      19781
     ],
     "_CeladonMartRoofLittleGirlReceivedTM49Text": [
       39,
-      19741
+      19904
     ],
     "_CeladonMartRoofLittleGirlTM13ExplanationText": [
       39,
-      19482
+      19672
     ],
     "_CeladonMartRoofLittleGirlTM48ExplanationText": [
       39,
-      19621
+      19802
     ],
     "_CeladonMartRoofLittleGirlTM49ExplanationText": [
       39,
-      19760
+      19924
     ],
     "_CeladonMartRoofLittleGirlYayFreshWaterText": [
       39,
-      19404
+      19602
     ],
     "_CeladonMartRoofLittleGirlYayLemonadeText": [
       39,
-      19686
+      19855
     ],
     "_CeladonMartRoofLittleGirlYaySodaPopText": [
       39,
-      19546
+      19730
     ],
     "_CeladonMartRoofSuperNerdText": [
       39,
@@ -23393,7 +23397,7 @@
     ],
     "_CeruleanBadgeHouseMarshBadgeText": [
       38,
-      21384
+      21542
     ],
     "_CeruleanBadgeHouseMiddleAgedManText": [
       38,
@@ -23405,7 +23409,7 @@
     ],
     "_CeruleanBadgeHouseMiddleAgedManWhichBadgeText": [
       38,
-      20794
+      20940
     ],
     "_CeruleanBadgeHouseRainbowBadgeText": [
       38,
@@ -23473,7 +23477,7 @@
     ],
     "_CeruleanCityRocketIBetterGetMovingText": [
       41,
-      20374
+      20577
     ],
     "_CeruleanCityRocketIGiveUpText": [
       41,
@@ -23485,7 +23489,7 @@
     ],
     "_CeruleanCityRocketReceivedTM28Text": [
       41,
-      20354
+      20555
     ],
     "_CeruleanCityRocketTM28NoRoomText": [
       41,
@@ -23573,11 +23577,11 @@
     ],
     "_CeruleanGymMistyReceivedCascadeBadgeText": [
       38,
-      19376
+      19534
     ],
     "_CeruleanGymMistyReceivedTM11Text": [
       38,
-      19325
+      19490
     ],
     "_CeruleanGymMistyTM11ExplanationText": [
       38,
@@ -23657,7 +23661,7 @@
     ],
     "_ChargeMoveEffectText": [
       37,
-      18444
+      18631
     ],
     "_CharizardDexEntry": [
       43,
@@ -23673,7 +23677,7 @@
     ],
     "_ChooseABoxText": [
       37,
-      18096
+      18293
     ],
     "_CinnabarGymBlainePostBattleAdviceText": [
       40,
@@ -23685,15 +23689,15 @@
     ],
     "_CinnabarGymBlaineReceivedTM38Text": [
       40,
-      18856
+      18887
     ],
     "_CinnabarGymBlaineReceivedVolcanoBadgeText": [
       40,
-      18631
+      18661
     ],
     "_CinnabarGymBlaineTM38ExplanationText": [
       40,
-      18876
+      18908
     ],
     "_CinnabarGymBlaineTM38NoRoomText": [
       40,
@@ -23713,7 +23717,7 @@
     ],
     "_CinnabarGymQuizCorrectText": [
       34,
-      18788
+      19022
     ],
     "_CinnabarGymQuizIncorrectText": [
       34,
@@ -23801,7 +23805,7 @@
     ],
     "_CinnabarGymSuperNerd7BattleText": [
       40,
-      19712
+      19845
     ],
     "_CinnabarGymSuperNerd7EndBattleText": [
       40,
@@ -23881,7 +23885,7 @@
     ],
     "_CinnabarLabMetronomeRoomScientist1ReceivedTM35Text": [
       40,
-      20296
+      20551
     ],
     "_CinnabarLabMetronomeRoomScientist1TM35ExplanationText": [
       40,
@@ -23905,7 +23909,7 @@
     ],
     "_CinnabarLabRAndDSignText": [
       40,
-      20103
+      20337
     ],
     "_CinnabarLabTestingRoomSignText": [
       40,
@@ -23941,7 +23945,7 @@
     ],
     "_CinnabarQuizQuestionsText2": [
       34,
-      18576
+      18799
     ],
     "_CinnabarQuizQuestionsText3": [
       34,
@@ -23957,7 +23961,7 @@
     ],
     "_CinnabarQuizQuestionsText6": [
       34,
-      18761
+      18988
     ],
     "_ClearSaveDataText": [
       34,
@@ -23973,15 +23977,14 @@
     ],
     "_ClosedOaksPCText": [
       34,
-      25467
+      25999
     ],
     "_CloysterDexEntry": [
       43,
       27136
     ],
     "_CoinCaseNumCoinsText": [
-      41,
-      26944
+      41, 27484
     ],
     "_CoinsScatteredText": [
       37,
@@ -23992,8 +23995,7 @@
       19396
     ],
     "_ComeBackText": [
-      34,
-      23829
+      34, 24311
     ],
     "_ConfusedNoMoreText": [
       34,
@@ -24004,16 +24006,14 @@
       16533
     ],
     "_ContCharText": [
-      34,
-      26275
+      34, 26852
     ],
     "_ConvertedTypeText": [
       37,
       19122
     ],
     "_CopycatsHouse1FChanseyText": [
-      40,
-      21910
+      40, 22101
     ],
     "_CopycatsHouse1FMiddleAgedManText": [
       40,
@@ -24024,40 +24024,34 @@
       21979
     ],
     "_CopycatsHouse2FCopycatDoYouLikePokemonText": [
-      40,
-      21933
+      40, 22126
     ],
     "_CopycatsHouse2FCopycatReceivedTM31Text": [
-      40,
-      22133
+      40, 22329
     ],
     "_CopycatsHouse2FCopycatTM31Explanation1Text": [
-      40,
-      22153
+      40, 22350
     ],
     "_CopycatsHouse2FCopycatTM31Explanation2Text": [
       40,
       22401
     ],
     "_CopycatsHouse2FCopycatTM31NoRoomText": [
-      40,
-      22323
+      40, 22502
     ],
     "_CopycatsHouse2FCopycatTM31PreReceiveText": [
       40,
       22275
     ],
     "_CopycatsHouse2FDoduoText": [
-      40,
-      22345
+      40, 22521
     ],
     "_CopycatsHouse2FPCCantSeeText": [
       40,
       22772
     ],
     "_CopycatsHouse2FPCMySecretsText": [
-      40,
-      22511
+      40, 22678
     ],
     "_CopycatsHouse2FRareDollText": [
       40,
@@ -24132,8 +24126,7 @@
       16450
     ],
     "_DaycareGentlemanOweMoneyText": [
-      34,
-      27773
+      34, 28367
     ],
     "_DaycareGentlemanWhichMonText": [
       34,
@@ -24144,8 +24137,7 @@
       28214
     ],
     "_DepositHowManyText": [
-      34,
-      24565
+      34, 25086
     ],
     "_DepositWhichMonText": [
       34,
@@ -24161,7 +24153,7 @@
     ],
     "_DexRatingText": [
       34,
-      16999
+      17024
     ],
     "_DexRatingText_Own0To9": [
       37,
@@ -24233,7 +24225,7 @@
     ],
     "_DidNotLearnText": [
       40,
-      26506
+      26676
     ],
     "_DidntAffectText": [
       37,
@@ -24257,7 +24249,7 @@
     ],
     "_DisabledNoMoreText": [
       34,
-      22888
+      23355
     ],
     "_DittoDexEntry": [
       43,
@@ -31693,7 +31685,7 @@
     ],
     "_TrainerSentOutText": [
       34,
-      22452
+      22886
     ],
     "_TrainerWantsToFightText": [
       34,
@@ -33114,6 +33106,12 @@
         [
           1,
           "{RAM:wStringBuffer}"
+        ]
+      ],
+      "_DisabledNoMoreText": [
+        [
+          1,
+          "{RAM:wNameBuffer}"
         ]
       ],
       "_DoYouWantToNicknameText": [
