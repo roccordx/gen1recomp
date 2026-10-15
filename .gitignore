@@ -132,3 +132,56 @@ src/import/gba/chrome/*.pal
 src/import/gba/chrome/*.rgba
 /os
 /re
+
+# Local Italian ROM import harness and its junction-backed project tree.
+/test-italian-run/
+
+# Local comparison artifacts and malformed shell-redirection output.
+/dcc3b6dd-manifest.diff
+/tore -- toolsrom_variantsred_ita_manifest.json
+
+# Local source/debug backups; keep these out of version control without
+# broadly ignoring backup-like source or data files.
+/src/core/GameVersion.lua.pre_syntax_fix.bak
+/src/import/Rom.lua.debug-backup
+/src/import/RomExtractor.lua.debug-backup
+/src/import/RomExtractor.lua.pre_dex_pointer.bak
+/tools/build_rom_data.py.pre_dex_pointer.bak
+/tools/build_rom_data.py.pre_static_skip_20261009_123900.bak
+/tools/build_rom_data.py.pre_valueerror_skip_20261009_124010.bak
+/tools/rom_variants/red_ita_manifest.json.bak_20261012_122104
+/tools/rom_variants/red_ita_manifest.json.before-remove-dexlabels
+/tools/rom_variants/red_ita_manifest.json.pre-mapheader-batch
+
+# One-off Italian ROM mapping and correctness audit outputs.
+/tools/ambiguous_candidate_scoring.tsv
+/tools/ambiguous_candidates.tsv
+/tools/bank20_alignment_diagnostics.txt
+/tools/bank20_chain_analysis.txt
+/tools/bank20_chain_dependency.tsv
+/tools/bank20_chain_sensitivity.tsv
+/tools/bank20_correctness_audit.tsv
+/tools/bank20_correctness_audit.txt
+/tools/bank20_mapping_audit.txt
+/tools/bank20_mapping_validation.tsv
+/tools/bank20_mapping_validation.txt
+/tools/bank20_pass1_candidates.tsv
+/tools/bank20_runtime_usage.tsv
+/tools/bank20_runtime_usage.txt
+/tools/bank20_six_case_semantic_audit.tsv
+/tools/bank20_six_case_semantic_audit.txt
+/tools/italian_rom_locator.tsv
+/tools/italian_rom_locator_report.txt
+/tools/italian_text_manifest_report.txt
+/tools/mapheaders_f891521_vs_rom.csv
+/tools/pass2_neighbor_context.txt
+/tools/pass3_ambiguous_analysis.tsv
+/tools/pass3_ambiguous_analysis.txt
+/tools/pass4_content_verification.tsv
+/tools/pass4_content_verification.txt
+/tools/pass6_4_manifest_audit.tsv
+/tools/pass6_5_5_mapping_collision_audit.tsv
+/tools/pass6_5_manifest_corpus_audit.tsv
+/tools/pass6_5_manifest_validation.tsv
+/tools/pokecorpus_gen1recomp_analysis.tsv
+/tools/pokecorpus_gen1recomp_analysis.txt
