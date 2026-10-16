@@ -346,3 +346,225 @@ broaden it to arbitrary PowerShell commands. The background PowerShell worker
 is hidden so it survives the short `Start` command, while `lovec.exe` is
 explicitly normal/visible. No scheduler or repository configuration change is
 used.
+
+## Home workstation: GreatlyRose mapping, import not started (2026-10-16)
+
+The checkout started clean on `feature/italian-rom-support`, HEAD
+`cd826f4cf58d4071be6f045ab5b634181516fef4`. The runner, harness and both
+local ROMs are available. No synchronization was performed.
+
+`_GreatlyRoseText` was changed from `[37, 18336]` (`25:47A0`) to
+`[37, 18541]` (`25:486D`, file offset `0x9486D`). Identity was checked
+against the stat-increase dispatch in upstream `engine/battle/effects.asm`
+(`UpdateStatDone`, `MonsStatsRoseText`, `GreatlyRoseText`, `RoseText`) and
+the corresponding raw Italian and USA ROM instructions:
+
+- Italian `0F:751D` (file `0x3F51D`): `21 31 75 CD 61 3C` loads
+  the composite text at `0F:7531` and calls PrintText.
+- `0F:7531` (file `0x3F531`): `17 59 48 25 08` prints the stat-increase
+  prefix and enters text assembly.
+- `0F:7536`: `21 4B 75 F0 F3 A7 FA D8 CF 28 03 FA D2 CF FE 12 D0
+  21 50 75 C9` selects the greatly-rose wrapper or the ordinary rose wrapper
+  according to the current move effect, matching upstream control flow.
+- `0F:754B` (file `0x3F54B`): `0A 17 6D 48 25 17 70 48 25 50`
+  pauses, references `25:486D`, falls through to `25:4870`, and ends.
+  The USA equivalent at `0F:7542` instead references `25:47A0` and
+  `25:47AB`; the Italian target was followed through its own pointers.
+- Italian `25:486D`: `00 50 50`, an empty text fragment with text and
+  command-stream terminators. The next independently referenced stream starts
+  at `25:4870` with `00 E7 58`. No dynamic substitutions or exact manifest
+  collisions apply. The old Italian address starts at the glyph `AC` inside
+  the stream beginning `25:479E`.
+
+JSON validation, `git diff --check`, and runner `SelfTest` passed. A single
+`Start` invocation was attempted through the normal approval mechanism, but
+the runner refused **before launching LÖVE or creating a new run directory**:
+
+`Refusing to start while a prior import may still be active`
+
+The blocking records under `C:\gen1recomp\AItest\ROM-TestLogs` are:
+
+- `italian-20261014-160149-bef47034`: `STATE=RUNNING`, worker PID 4644,
+  LÖVE PID 22060, no exit-code file, truncated stdout.
+- `italian-20261014-162048-f83f1b55`: `STATE=RUNNING`, worker PID 16416,
+  LÖVE PID 14384, no exit-code file, truncated stdout.
+
+Both process checks return `NOT_VISIBLE_OR_ABSENT`; this does not prove
+completion. Historical status/log files were left unchanged. No alternative
+runner or bypass was used. The current runner deliberately rejects these
+unresolved records at line 227, even when their PIDs are not visible.
+
+There were **zero new imports**. `_GreatlyRoseText` is structurally proven
+but has no observed `result=ok`; batch 9 remains at eight verified corrections.
+There is no new next-symbol error, exit code or PASS. The current cache marker
+`test-italian-run/cache-temp/LOVE/test-italian-run/red_ita/rom-cache.complete`
+is absent. `_TrainerSentOutText` remains unverified.
+
+## Home harness asset repair and GreatlyRose run (2026-10-16)
+
+Run `italian-20261016-194713-9afaff16` ended `FINISHED`, exit code `1`,
+before extraction. Its stdout recorded `RomImporter.lua:1746: Could not open
+file assets/logo/logo.png`; stderr was empty and `TEST A` was not reported.
+LÖVE's source is the `test-italian-run` directory passed as the command-line
+argument. The canonical asset existed at `assets/logo/logo.png` in the project,
+while `test-italian-run/assets` was absent. The ignored local harness now has a
+single junction `test-italian-run/assets` targeting the project's `assets`
+directory. Both `assets/logo/logo.png` and `assets/logo/bcg.png`, loaded in
+`RomImporter.new`, are reachable through that junction. No asset was copied or
+replaced.
+
+The runner now checks the harness entry point and both assets before Start or
+Preflight. It recognizes `Error: ...` from LÖVE in addition to decoder and
+test failures. It reports a startup error before any text diagnostic as
+`ERROR_PHASE=LOVE_INITIALIZATION`, while keeping `TEST_A=NOT_REPORTED`
+distinct from an observed test pass or failure. The previous run can be read
+with these classifications without altering its original logs. SelfTest
+passed for general LÖVE error detection, normal output, process identity,
+cross-process exclusion, syntax, and harness assets; Preflight and
+`git diff --check` passed.
+
+Exactly one new import was launched in
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-201457-90056cca`.
+At the last observation it remained `RUNNING`, worker PID 16836 and LÖVE PID
+11084 both verified active in session 1, with regular worker heartbeats and
+empty stdout/stderr. Exit code and `TEST A` were unavailable; the cache marker
+was absent. An `Untitled` LÖVE window was listed, but its screenshot capture
+timed out and accessibility returned no text. No window was closed. This run
+must be observed to a definitive state before any other import is started.
+
+`_GreatlyRoseText` remains structurally established at `[37, 18541]` but
+**not yet confirmed** with `result=ok`. Batch 9 remains at eight verified
+mappings. No error after `_GreatlyRoseText` has been established.
+
+Next action: resolve the runner's handling of historical runs from the other
+workstation with explicit machine/process provenance, preserving original logs
+and never converting an interrupted run to FINISHED. This requires a separate
+runner change/review before retrying the GreatlyRose import; no such change was
+made in this operation.
+
+## Home runner migration and GreatlyRose verification attempt
+
+The runner now records a hash of the Windows machine identity, computer name,
+worker and LÖVE PID, start time, executable path, and Windows session. Process
+identity checks reject PID reuse. A machine-wide named mutex and the existing
+exclusive log lock protect a live local import. The preflight also refuses an
+uncertain local record or a currently visible LÖVE/worker process.
+
+The two legacy `RUNNING` records of 14 October have no originating machine
+identity. Based on the confirmed office-to-home transfer, separate
+`classification-*.json` notes bind each to its exact original `status.txt`
+SHA-256 and classify it `HISTORICAL_UNRESOLVED_REMOTE`. Original status files,
+stdout and stderr were not changed, and neither run was declared `FINISHED`.
+Two other legacy records contain a final bare `FINISHED` line, which the
+runner now reads correctly. New runs always record their machine identity.
+
+Runner `SelfTest` passed for syntax, window enumeration, exact current-process
+identity, PID reuse, local uncertainty, remote classification, and exclusion
+across two harmless PowerShell processes. `Preflight` passed after registering
+the transferred records. During the new import, a second preflight correctly
+refused worker PID 13556 and LÖVE PID 1260; no duplicate import started.
+
+The **single** GreatlyRose verification run is
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-194713-9afaff16`.
+At the last observation, `STATE=RUNNING`, the worker and LÖVE identities were
+`ACTIVE_LOCAL`, stdout and stderr were empty, and no exit code or `TEST A`
+result existed. The cache marker was absent. Computer-use listed an `Untitled`
+LÖVE window, but two attempts to capture it timed out; its content could not
+be established. No window or process was closed. The harness on this PC has
+`test-italian-run/main.lua` but no local `tests/` directory; whether that
+caused the current behavior is **unconfirmed**.
+
+`_GreatlyRoseText` remains structurally proven at `[37, 18541]` and is still
+**not verified** with `result=ok`. Batch 9 remains at eight verified mappings.
+The first known mapping error remains `_GreatlyRoseText`; no later error is
+established. The following section supersedes this historical observation.
+
+## Result of the harness asset repair run
+
+`italian-20261016-201457-90056cca` reached `FINISHED` at
+`2026-10-16T20:21:53+02:00`, exit code `1`, `[TEST A FAIL]`, and no
+`rom-cache.complete`. `RomImporter.new` succeeded after the `assets` junction
+was repaired. The first actual failure occurred when the import coroutine
+tried to read `tools/rom_variants/red_ita_manifest.json` through LÖVE's source
+filesystem, which is `test-italian-run`. The canonical manifest exists in the
+repository, but the harness has no `tools` link. Stdout reports:
+
+`RomManifest.lua:14: ROM import metadata is missing: Could not open file tools/rom_variants/red_ita_manifest.json. Does not exist.`
+
+Stderr was empty. The error window was verified as belonging to this run's
+`lovec.exe` PID 11084, session 1, handle 262608. A screenshot was saved as
+`love-foreground-window.png` in the run directory before a normal `WM_CLOSE`
+was posted to that specific handle. LÖVE and the worker then exited and the
+runner recorded the final state.
+
+`_GreatlyRoseText` was not reached, so its mapping `[37, 18541]` remains
+structurally demonstrated without `result=ok`. Batch 9 remains at eight
+verified corrections. There is no next text mapping error yet. The runner's
+`ERROR_PHASE=LOVE_INITIALIZATION` is too broad for this case: the importer was
+created and the failure occurred at the start of extraction. The status line
+`TEST_ERROR_EVIDENCE=E` is also truncated, although `FIRST_ERROR` and stdout
+preserve the complete message. Do not infer a mapping or parser fault from
+these runner fields.
+
+Next operation: restore the missing `tools` access from the LÖVE harness using
+the same local junction approach, verify any further required source paths,
+and inspect the runner's error-phase and first-evidence formatting before a
+new controlled import. No new import was started during this result recovery.
+
+## Complete home harness and GreatlyRose result (2026-10-16)
+
+The ignored local harness had `assets` linked, but no `tools` entry. Since
+`RomManifest.decode` uses `love.filesystem.read(info.manifest)`, LÖVE could not
+read `tools/rom_variants/red_ita_manifest.json` from its `test-italian-run`
+source. A junction `test-italian-run/tools` now points to the canonical project
+`tools` directory. The canonical manifest was not copied. The test previously
+loaded `src` and `tests` modules via `require`, read the ROM through `io.open`
+from the project working directory, and initialized `RomImporter`; no other
+source junction was demonstrated necessary for this import path.
+
+The runner Preflight and Start now verify the harness entry point, the exact
+`assets` and `tools` junction targets, the two startup images, the manifest as
+seen through the LÖVE source, the test ROM and required Lua modules in the
+project, as well as the absence of a concurrent import. Error phases now
+distinguish `LOVE_INITIALIZATION`, `IMPORTER_INITIALIZATION`,
+`MANIFEST_LOADING`, and `ROM_EXTRACTION`. The full first error is stored in
+the status file; the former single-character `TEST_ERROR_EVIDENCE=E` issue was
+fixed. SelfTest, Preflight, JSON validation and `git diff --check` passed
+before LÖVE started.
+
+Exactly one new run was started:
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-202515-76a3cf70`.
+It reached `FINISHED` at `2026-10-16T20:25:27+02:00`, exit code `1`,
+`TEST_A=FAIL`, `ERROR_PHASE=ROM_EXTRACTION`; `rom-cache.complete` is absent.
+The persistent stdout records `_GreatlyRoseText` at `25:486D` with
+`result=ok`. The first subsequent error is `_GrewLevelText: unsupported text
+command $B4` at diagnostic position `22:5C01` (`RomExtractor.lua:1548`).
+The runner captured the LÖVE error window in `love-error-20261016-202526-553.png`,
+sent `WM_CLOSE` only to its verified PID 13768 / handle 1181214, and recorded
+the final process exit. No additional import was started.
+
+Batch 9 now has **nine** mappings verified with `result=ok`. `_TrainerSentOutText`
+remains structurally mapped but without an observed `result=ok`; `TEST A: PASS`
+and the cache marker are still absent. The next work is structural diagnosis
+of `_GrewLevelText`; do not infer its target from the byte alone.
+
+## Batch 9 complete: GrewLevelText (2026-10-16)
+
+The Italian experience routine at `15:53F7` loads wrapper `15:54DD` before
+`PrintText`. The wrapper bytes `17 D2 5D 22 0B 50` select `TX_FAR` target
+`22:5DD2` (ROM offset `0x89DD2`), followed by the level-up sound command and
+text end. The Italian target begins `01 6D CD 00`, includes `09 2C D1 13`,
+and ends `00 E7 50 50`. These use the existing ordered name and level
+substitutions; no dynamic metadata changed. No other manifest symbol uses
+the target address. `_GrewLevelText` changed from `[34, 23553]` to
+`[34, 24018]`.
+
+Exactly one import was run in
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-205124-ef699357`.
+It reached `FINISHED`, exit code `1`; stdout records
+`_GrewLevelText: result=ok`. Batch 9 has **10/10 verified corrections**. The next observed
+failure is `_HereYouGoText: unsupported text command $A8` at diagnostic
+position `22:62E7` (`RomExtractor.lua:1548`). `TEST A` is `FAIL`, and
+`rom-cache.complete` is absent. `_TrainerSentOutText` remains structurally
+mapped but without observed `result=ok`. Next operation: structurally trace
+`_HereYouGoText` before changing its mapping.
