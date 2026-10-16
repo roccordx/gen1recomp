@@ -11,11 +11,12 @@ without treating USA addresses as valid Italian mappings by default.
 
 ## Manifest inventory
 
-The last audit counted 3,279 symbols, including 2,423 text labels. Relative to
-the base commit, 89 text mappings have changed. The latest import log records
-`result=ok` for 88 of those changed text mappings. This count describes decoder
-results in that run; it does not replace the structural evidence for each
-symbol's identity.
+The last audit counted 3,279 symbols, including 2,423 text labels. A read-only
+comparison of the current manifest with the base commit finds 100 changed text
+mappings. Persistent import logs contain `result=ok` for 99 of those mappings;
+`_TrainerSentOutText` is the only changed mapping without an observed successful
+decode. This count describes decoder results in available logs; it does not
+replace structural evidence for each symbol's identity.
 
 ## Structural evidence
 
@@ -54,19 +55,65 @@ The hidden coin texts have similar contents but distinct wrapper references.
 The existing dynamic metadata for the coin amount and hidden item name remained
 unchanged. `_TrainerSentOutText` still has no observed `result=ok`.
 
+### Batch 8: structurally mapped and import verified
+
+Ten corrections have been made in Batch 8. Each was followed by one Italian
+import; every listed corrected symbol returned `result=ok` in its import log.
+
+| Symbol | Previous | Italian target | Structural reference |
+| --- | --- | --- | --- |
+| `_FuchsiaGoodRodHouseFishingGuruReceivedGoodRodText` | `[40, 18152]` | `[40, 18202]` (`28:471A`) | Good Rod success branch wrapper `15:61C2`, `TX_FAR`; existing string-buffer substitution |
+| `_FuchsiaGymKogaReceivedTM06Text` | `[40, 16619]` | `[40, 16629]` (`28:40F5`) | Fuchsia Gym text ID 9 and Koga reward wrapper `1D:560D`, `TX_FAR` |
+| `_FullHealText` | `[34, 24246]` | `[34, 24770]` (`22:60C2`) | Italian party-item wrapper sequence, Full Heal entry |
+| `_GainedText` | `[34, 23490]` | `[34, 23958]` (`22:5D96`) | Experience routine wrapper `15:54B2`, `TX_FAR` followed by `text_asm` |
+| `_GameCornerClerk1DoYouNeedSomeGameCoinsText` | `[39, 22810]` | `[39, 23147]` (`27:5A6B`) | Game Corner Clerk 1 script loads `12:4D21`; wrapper `17 6B 5A 27 50` |
+| `_GameCornerClerk2Received20CoinsText` | `[39, 23631]` | `[39, 23972]` (`27:5DA4`) | Object text ID 9 → table at `12:4C89` → Clerk 2 script `12:4DD8` → reward wrapper `12:4E2A` |
+| `_GameCornerFishingGuruReceived10CoinsText` | `[39, 23209]` | `[39, 23545]` (`27:5BF9`) | Object text ID 5 → table at `12:4C89` → Fishing Guru reward branch wrapper `12:4DA0` |
+| `_GameCornerGentlemanReceived20CoinsText` | `[39, 23787]` | `[39, 24121]` (`27:5E39`) | Object text ID `0A` → table at `12:4C9B` → Gentleman success branch loads wrapper `12:4E8C`; `17 39 5E 27 0B 50` (`TX_FAR`, reward sound, end); stream decodes `<PLAYER> riceve{LINE}20 gettoni!` |
+| `_GameCornerPosterSwitchBehindPosterText` | `[39, 23984]` | `[39, 24331]` (`27:5F0B`) | Game Corner header `12:4BB0` → sign record `12:4FB1` ID `0C` → table `12:4C9F` → script `12:4EDC` → wrapper `12:4F08`, `17 0B 5F 27 08` (`TX_FAR` then `text_asm`) |
+| `_GetmText` | `[34, 23757]` | `[34, 24243]` (`22:5EB3`) | HP 10–39% branch in dispatch `16:4E90` selects wrapper `16:4EBC`; `17 B3 5E 22 08` points to `22:5EB3` then `text_asm` |
+
+The Game Corner reward wrappers include `sound_get_item_1` after their
+`TX_FAR`; the mapped text streams themselves contain no dynamic RAM
+substitutions. The poster stream is `00 84 A7 A8 E7 51 94 AD 7F AF B4 AB B2
+A0 AD B3 A4 7F A3 A8 A4 B3 B1 AE 4F A0 AB 7F AF AE B2 B3 A4 B1 E7 55 8F B1
+A4 AC A8 A0 AC AE AB AE E7 50` and ends before the following separate stream.
+`_GetmText` is `00 83 A0 A8 E7 7F 50` («Dai! »), with the next
+`_EnemysWeakText` stream beginning at `22:5EBB`. The ROM order and wrappers
+confirm boundaries; neither candidate has an exact manifest collision.
+
 ## Latest import result
 
-- First open error: `_FuchsiaGoodRodHouseFishingGuruReceivedGoodRodText:
-  unsupported text command $80` at `28:46E8`
-  (`src/import/RomExtractor.lua:1548`).
-- `_FoundHiddenItemText` returned `result=ok` at `22:563B` in the tenth import
-  of this batch. `_TrainerSentOutText` was not reached and remains unverified
-  by import.
-- `TEST A: PASS`: **not observed**.
-- `rom-cache.complete`: **absent**.
-- LÖVE exit code: `1`.
-- Log directory:
-  `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-hiddenitem-104730-8cea1df2`
+- Ten imports were run for Batch 8, one per correction. The first six ended
+  at the next explicit unsupported-command errors: Koga TM06 (`$A4`), Full
+  Heal (`$A8`), Gained (`$AC`), Game Corner Clerk 1 (`$A7`), Clerk 2 received
+  coins (`$B2`), then Fishing Guru received coins (`$F6`). Each triggering
+  symbol was corrected only after structural verification and returned
+  `result=ok` in the following import.
+- The seventh import later completed and confirmed
+  `_GameCornerFishingGuruWinsComeAndGoText: result=ok`, then failed at
+  `_GameCornerGentlemanReceived20CoinsText` (`$A8`).
+- The eighth import confirmed
+  `_GameCornerGentlemanReceived20CoinsText: result=ok`, then failed at
+  `_GameCornerPosterSwitchBehindPosterText` (`$7F`). Its worker eventually
+  reached `FINISHED`, exit code `1`, and marker absent; the diagnostic was at
+  `27:5DB0`. Log directory:
+  `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-124213-gentleman-6cec31f4`.
+- The ninth import confirmed
+  `_GameCornerPosterSwitchBehindPosterText: result=ok`, then failed at
+  `_GetmText: unsupported text command $7F` at `22:5CCD`. It reached
+  `FINISHED`, exit code `1`, marker absent. Log directory:
+  `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-125122-poster-84934cb4`.
+- The tenth import confirmed `_GetmText: result=ok`, then failed at
+  `_GoText: unsupported text command $AD` at `22:5CBC`. It reached `FINISHED`,
+  exit code `1`, marker absent; stderr was empty. Log directory:
+  `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-130248-getm-bd83f0e1`.
+- `TEST A: PASS`: **not observed**; the tenth stdout contains `TEST A FAIL`.
+- First open mapping: `_GoText`, unsupported command `$AD` at `22:5CBC`.
+- `rom-cache.complete`: **absent** after the tenth import.
+- LÖVE exit code: **1** for each of imports eight through ten.
+- Last log directory:
+  `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-130248-getm-bd83f0e1`
 
 ## Import procedure
 
@@ -86,11 +133,8 @@ test status, and the cache marker. Preserve old logs and cache data.
 
 ## Open work and risks
 
-1. Diagnose `_FuchsiaGoodRodHouseFishingGuruReceivedGoodRodText` from Italian
-   ROM and caller evidence before changing its mapping; do not assume `$80`
-   is a parser defect.
-2. Verify `_TrainerSentOutText` with `result=ok` only after the importer reaches
-   it.
+1. Structurally investigate `_GoText` before changing its mapping.
+2. Verify `_TrainerSentOutText` with `result=ok` only if the importer reaches it.
 3. Keep decoder success, structural identity, full `TEST A: PASS`, and cache
    completion as separate status fields.
 4. The NAS copy has not been identified; do not treat it as synchronized.
