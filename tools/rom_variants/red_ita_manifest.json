@@ -25005,7 +25005,7 @@
     ],
     "_GoText": [
       34,
-      23740
+      24227
     ],
     "_GolbatDexEntry": [
       43,
@@ -25025,7 +25025,7 @@
     ],
     "_GoodText": [
       34,
-      23821
+      24303
     ],
     "_GotAwayText": [
       34,
@@ -25033,15 +25033,15 @@
     ],
     "_GotMapText": [
       37,
-      19612
+      19866
     ],
     "_GotMonText": [
       41,
-      16768
+      16829
     ],
     "_GotOffBicycleText1": [
       42,
-      16420
+      16419
     ],
     "_GotOffBicycleText2": [
       42,
@@ -25049,11 +25049,11 @@
     ],
     "_GotOnBicycleText1": [
       42,
-      16399
+      16398
     ],
     "_GotOnBicycleText2": [
       42,
-      16414
+      16413
     ],
     "_GravelerDexEntry": [
       43,
@@ -25061,7 +25061,7 @@
     ],
     "_GreatlyFellText": [
       37,
-      18366
+      18565
     ],
     "_GreatlyRoseText": [
       37,
@@ -33208,12 +33208,7 @@
           "{RAM:wNameBuffer}"
         ]
       ],
-      "_GotMapText": [
-        [
-          1,
-          "{RAM:wStringBuffer}"
-        ]
-      ],
+      "_GotMapText": [],
       "_GotMonText": [
         [
           1,
