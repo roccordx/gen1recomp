@@ -568,3 +568,200 @@ position `22:62E7` (`RomExtractor.lua:1548`). `TEST A` is `FAIL`, and
 `rom-cache.complete` is absent. `_TrainerSentOutText` remains structurally
 mapped but without observed `result=ok`. Next operation: structurally trace
 `_HereYouGoText` before changing its mapping.
+
+## Batch 10 progress: HereYouGo through IgnoredOrders (2026-10-16)
+
+`_HereYouGoText` was corrected from `[34, 25319]` to `[34, 25856]` and its
+initial run was recovered conclusively: `result=ok`; the later `_HiddenItemBagFullText`
+line from that old run had only been partial and is not treated as an error.
+
+Three more mappings have since been structurally corrected and confirmed by
+completed imports:
+
+| Symbol | Previous | Corrected | Evidence / result |
+| --- | --- | --- | --- |
+| `_HisNameIsText` | `[34, 26186]` | `[34, 26771]` | Rival naming path selects wrapper `01:6A43` (`17 93 68 22 50`) to `22:6893`; the text includes `{RIVAL}` as literal charmap token, with no dynamic slot. `result=ok`. |
+| `_HookedMonAttackedText` | `[34, 23603]` | `[34, 24073]` | Italian battle branch tests `wMoveMissed` and selects wrapper `16:4E40` (`17 09 5E 22 50`) to `22:5E09`; its single `$CFDF` substitution is the enemy Pokémon nickname, matching existing metadata. `result=ok`. |
+| `_IceHealText` | `[34, 24212]` | `[34, 24730]` | Item text dispatch table at `04:6E83`, entry 2 points to wrapper `04:6ECE` (`17 9A 60 22 50`) and target `22:609A`; the one `$CD6D` substitution is `wNameBuffer`. `result=ok`. |
+
+`_IgnoredOrdersText` changed from `[34, 23346]` to `[34, 23806]`. The Italian
+disobedience branch selects wrapper `0F:5DCD` (`17 FE 5C 22 50`) to `22:5CFE`;
+its single `$D00E` slot is `wBattleMonNick`. Import run
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-222527-dfce17d0`
+finished with `_IgnoredOrdersText: result=ok`, then failed on
+`_ItemUseBallText05: unsupported text command $7F` at `29:67CF`.
+`TEST_A=FAIL`, exit code `1`; the cache marker is absent.
+
+`_ItemUseBallText05` was then changed from `[41, 26575]` (`29:67CF`) to
+`[41, 27108]` (`29:69E4`, ROM offset `0xA69E4`). In the Italian ball-use
+routine, `03:58B4` contains `21 50 59 CD 61 3C` (`LD HL,5950; CALL PrintText`),
+selecting wrapper `03:5950`. That wrapper is `17 E4 69 29 12 06 50`: `TX_FAR`
+to `29:69E4`, followed by the caught-mon sound sequence. It follows the
+Italian `ItemUseBallText00` through `04` wrappers in the same order; the
+upstream `engine/items/item_effects.asm` uses `ItemUseBallText05` for the
+successful-catch message and defines its wrapper with `sound_caught_mon` and a
+prompt. Target bytes `00 81 A4 AD A8 B2 B2 A8 AC AE E7 7F 87 A0 A8 4F AF B1 A4
+B2 AE 7F 50 01 DF CF 00 E7 50 50` form “Benissimo! Hai preso {RAM:wEnemyMonNick}!”
+with one dynamic substitution and complete end/prompt delimiters. Existing
+metadata `[[1, "{RAM:wEnemyMonNick}"]]` matches that single `$CFDF` command;
+no exact symbol collision was found. This address is structurally demonstrated,
+but has not yet returned `result=ok`.
+
+One import is active in
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-231628-2c3e6e62`.
+At the latest check, runner state was `RUNNING` / `ACTIVE_LOCAL`, worker PID
+`11828` and LÖVE PID `18284` were present and responsive, heartbeat was current,
+and no exit code or final `TEST A` result existed. Stdout remained on the
+incomplete line `[ITALIAN TEXT] end symbol=_ItemUseBallText01 bank=29 address=`;
+there was no explicit error yet. `rom-cache.complete` was absent. Do not launch
+another import while this one remains active or indeterminate.
+
+Batch 10 currently has **5/10 mappings confirmed with `result=ok`**:
+`_HereYouGoText`, `_HisNameIsText`, `_HookedMonAttackedText`, `_IceHealText`,
+and `_IgnoredOrdersText`. `_ItemUseBallText05` is the sixth correction and is
+structurally demonstrated but still awaiting importer verification. Six
+imports are associated with these corrections: five have conclusive outcomes
+and the current sixth run remains open. No subsequent mapping error is yet
+confirmed. `TEST A: PASS` has not been observed; the current run has no final
+PASS or FAIL. `_TrainerSentOutText` remains unverified. Next operation: recover
+the current run's conclusive outcome before starting another import.
+
+## Batch 10 continuation: ItemUseBallText05 and 06 (2026-10-17)
+
+The prior run `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261016-231628-2c3e6e62`
+reached `FINISHED` with exit code `1` and `TEST_A=FAIL`. It confirms
+`_ItemUseBallText05: result=ok`; the first error was
+`_ItemUseBallText06: unsupported text command $B4` at `29:6835`. The cache
+marker is absent.
+
+`_ItemUseBallText06` was changed from `[41, 26677]` (`29:6835`, file offset
+`0xA6835`) to `[41, 27203]` (`29:6A43`, file offset `0xA6A43`). The Italian
+catch routine at `03:58E0` loads `HL=5961` and calls `PrintText` in its new-
+Pokédex-data branch. Wrapper `03:5961` is `17 43 6A 29 13 06 50`: `TX_FAR`
+to `29:6A43`, followed by the Pokédex-page sound and prompt. This links the
+wrapper to the new Pokédex entry message, consistent with the
+`_ItemUseBallText06` caller in `src/battle/BattleState.lua`. The target starts
+with `00`; its text section ends at `50` at `29:6A5B`, then command `01 DF CF`
+substitutes `$CFDF` (`{RAM:wEnemyMonNick}`), followed by `00 E7 50` and final
+`50` at `29:6A62`. The next text starts at `29:6A63` (`_SurfingGotOnText`).
+Existing dynamic metadata for `_ItemUseBallText06` already specifies one
+`{RAM:wEnemyMonNick}` substitution and is unchanged. No exact manifest symbol
+collision was found. The target is structurally demonstrated; importer
+verification is pending.
+
+One import was started with the corrected mapping:
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-115025-cd836364`.
+At the latest observation it remained `RUNNING` / `ACTIVE_LOCAL`, worker PID
+`5632`, LÖVE PID `18052`; the runner heartbeat was current. At 12:01 both
+process CPU times had increased, but stdout had not changed since 11:50:34 by
+12:06:55. Stdout had reached `_ItemUseBallText00: result=ok` and contained an
+incomplete begin line for the next ball text. No exit code, final `TEST A`
+result, or cache marker was available. The runner still identifies this as a
+local active run, but the result is indeterminate while the diagnostic output
+has stopped advancing; do not start another import until this run is resolved.
+
+Batch 10 now has six verified corrections: `_HereYouGoText`, `_HisNameIsText`,
+`_HookedMonAttackedText`, `_IceHealText`, `_IgnoredOrdersText`, and
+`_ItemUseBallText05`. `_ItemUseBallText06` is the seventh correction, with
+structural evidence but no observed `result=ok` yet. `TEST A: PASS` has not been
+observed and `rom-cache.complete` is absent. `_TrainerSentOutText` remains
+unverified. Next operation: recover the conclusive result of the active run;
+do not launch a duplicate import.
+
+## Batch 10 continuation: ItemUseBallText06 and 07 (2026-10-17)
+
+Run `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-115025-cd836364`
+finished with exit code `1` and `TEST_A=FAIL`. It confirms
+`_ItemUseBallText06: result=ok`; the first error was
+`_ItemUseBallText07: unsupported text command $88` at `29:67EE`. The cache
+marker is absent.
+
+`_ItemUseBallText07` was changed from `[41, 26606]` (`29:67EE`, file offset
+`0xA67EE`) to `[41, 27138]` (`29:6A02`, file offset `0xA6A02`). The Italian
+catch/box branch at `03:590E` loads `HL=5957`; it tests the `EVENT_MET_BILL`
+bit at `03:5911` and, when clear, loads `HL=595C` at `03:5918` before calling
+the text dispatcher at `03:591B`. Wrapper `03:5957` is `17 02 6A 29 50`, a
+`TX_FAR` to `29:6A02`; sibling wrapper `03:595C` is `17 23 6A 29 50`, to
+`29:6A23` (`_ItemUseBallText08`). This matches the two conditional branches
+in `src/battle/BattleState.lua`, which choose ItemUseBallText07/08 on the Bill
+flag after depositing the caught Pokémon.
+
+The target starts with dynamic command `01 0B DE` (`$DE0B`), followed by text
+bytes `00 4F BB 7F B3 B1 A0 B2 A5 A4 B1 A8 B3 AE 7F A0 AB 55 8F 82 7F A3 A8
+7F 81 88 8B 8B E7 58`; the prompt/end delimiter is at `29:6A22`. The next
+target begins immediately at `29:6A23`. Existing manifest metadata specifies
+one `{RAM:wBoxMonNicks}` substitution, consistent with the ROM command and
+the caller's single caught-Pokémon-name argument. No exact manifest collision
+was found. The target is structurally demonstrated; its importer result is
+pending.
+
+The runner started one import for this mapping at
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-140419-cc5e6c13`.
+At the latest check it was `RUNNING` / `ACTIVE_LOCAL`, worker PID `16584`,
+LÖVE PID `10012`. The last completed text diagnostic was
+`_IsUnaffectedText: result=ok`; `_ItemUseBallText00` had begun but its output
+line was incomplete. There was no error, exit code, final `TEST A` result, or
+cache marker. Do not start another import until this run concludes.
+
+Seven Batch 10 corrections now have importer-confirmed `result=ok`:
+`_HereYouGoText`, `_HisNameIsText`, `_HookedMonAttackedText`, `_IceHealText`,
+`_IgnoredOrdersText`, `_ItemUseBallText05`, and `_ItemUseBallText06`.
+`_ItemUseBallText07` is the eighth correction, structurally demonstrated but
+not yet importer-verified. `TEST A: PASS` has not been observed;
+`rom-cache.complete` is absent. `_TrainerSentOutText` remains unverified.
+
+The runner's configured log root remains
+`C:\gen1recomp\AItest\ROM-TestLogs`; `C:\gen1recomp\AI-TestLogs` does not
+exist on this workstation. The differing path spelling was in the request,
+not a runner configuration change.
+
+## Batch 10 completed: ItemUseBallText07/08 and ItemUseText002 (2026-10-17)
+
+Run `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-140419-cc5e6c13`
+reached `FINISHED`, exit code `1`, and `TEST_A=FAIL`. It confirmed
+`_ItemUseBallText07: result=ok` at `29:6A02`. The first subsequent error was
+`_ItemUseBallText08: unsupported text command $A2` at the old mapping
+`[41, 26640]` (`29:6810`). The cache marker was absent.
+
+`_ItemUseBallText08` was changed to `[41, 27171]` (`29:6A23`, file offset
+`0xA6A23`). In the Italian catch/box branch, `03:590E` loads wrapper `03:5957`
+for the Bill case; `FA F6 D7 CB 47 20 03` tests the Bill flag, and the other
+branch at `03:5918` loads wrapper `03:595C`. That wrapper contains
+`17 23 6A 29 50`, a `TX_FAR` to `29:6A23`. The target begins with one
+dynamic command `01 0B DE` (`$DE0B`), matching the existing
+`{RAM:wBoxMonNicks}` substitution. Its text says the caught Pokémon was
+transferred to an unspecified PC and ends with `58` at `29:6A42`; the next
+stream begins at `29:6A43`. No exact manifest mapping collision was found.
+
+Run `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-144628-d3d6d9bd`
+reached `FINISHED`, exit code `1`, and `TEST_A=FAIL`. It confirmed
+`_ItemUseBallText08: result=ok`. Its first error was
+`_ItemUseText002: unused dynamic text substitutions` at the old mapping
+`[42, 16393]` (`2A:4009`). The cache marker was absent.
+
+`_ItemUseText002` was changed to `[42, 16392]` (`2A:4008`, file offset
+`0xA8008`). Italian item-use callsites load `HL=65E2` (for example
+`03:655D: 21 E2 65 CD 61 3C`). The composite wrapper at `03:65E2` contains
+`17 00 40 2A 05 17 08 40 2A 50`: first `TX_FAR 2A:4000`, a continuation
+command `05`, then `TX_FAR 2A:4008`. The first target prints the player using
+an item; the second begins with dynamic command `01 50 CF` (`$CF50`), prints
+`!`, and ends with `57` at `2A:400D`. The previous mapping pointed to the
+`50` parameter inside that command, leaving the one configured dynamic
+substitution unused. Existing metadata `{RAM:wStringBuffer}` was retained;
+no exact manifest mapping collision was found. The USA address `2A:4009`
+was not reused as evidence for the Italian address.
+
+Run `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-145114-2fb5b5d4`
+reached `FINISHED`, exit code `1`, and `TEST_A=FAIL`. It confirmed
+`_ItemUseText002: result=ok` at `2A:4008`. The first remaining error is
+`_LancesRoomLanceAfterBattleText: unsupported text command $91` at
+`21:5E9E` (`src/import/RomExtractor.lua:1548`). The cache marker is absent.
+
+Batch 10 is **10/10 corrections confirmed with `result=ok`**:
+`_HereYouGoText`, `_HisNameIsText`, `_HookedMonAttackedText`,
+`_IceHealText`, `_IgnoredOrdersText`, `_ItemUseBallText05`,
+`_ItemUseBallText06`, `_ItemUseBallText07`, `_ItemUseBallText08`, and
+`_ItemUseText002`. `TEST A: PASS` has not been observed and
+`rom-cache.complete` is absent. `_TrainerSentOutText` remains structurally
+demonstrated but without observed `result=ok`. Next operation: investigate
+`_LancesRoomLanceAfterBattleText` structurally before changing its mapping.
