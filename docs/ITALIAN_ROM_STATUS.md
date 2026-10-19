@@ -1,6 +1,6 @@
 # Italian ROM support status
 
-**Updated:** 2026-10-16<br>
+**Updated:** 2026-10-18<br>
 **Branch:** `feature/italian-rom-support`<br>
 **Base commit:** `cef04466343377836e973257175bf1ebb99c81d1`
 
@@ -11,12 +11,13 @@ without treating USA addresses as valid Italian mappings by default.
 
 ## Manifest inventory
 
-The last audit counted 3,279 symbols, including 2,423 text labels. A read-only
-comparison of the current manifest with the base commit finds 103 changed text
-mappings. Persistent import logs contain `result=ok` for 102 of those mappings.
-`_TrainerSentOutText` is the changed mapping without an observed successful
-decode. This count describes decoder results in available logs; it does not
-replace structural evidence for each symbol's identity.
+The manifest contains 3,279 symbols, including 2,423 text labels. A read-only
+comparison with base commit `cef0446` on 18 October finds 139 changed text
+addresses. The earlier audit's 102 successful decodes covered an older manifest;
+a new project-wide log census has not been performed. The ten Batch 12 mappings
+below each have an explicit `result=ok`. `_TrainerSentOutText` still has no
+observed successful decode. Decoder success does not replace structural evidence
+for a symbol's identity.
 
 ## Structural evidence
 
@@ -765,3 +766,232 @@ Batch 10 is **10/10 corrections confirmed with `result=ok`**:
 `rom-cache.complete` is absent. `_TrainerSentOutText` remains structurally
 demonstrated but without observed `result=ok`. Next operation: investigate
 `_LancesRoomLanceAfterBattleText` structurally before changing its mapping.
+
+## Batch 11 — 17 October 2026 (run still active)
+
+Five mappings have an observed `result=ok`; the fifth import remains active,
+so its final test result and next error are not yet established. No further
+import is permitted until that run reaches a conclusive state.
+
+| Symbol | Previous | Italian target | Structural evidence | Import result |
+| --- | --- | --- | --- | --- |
+| `_LancesRoomLanceAfterBattleText` | `[33, 24222]` | `[33, 24510]` (`21:5FBE`, `0x85FBE`) | Lance trainer header `16:6397` selects wrapper `16:63B8`, `17 BE 5F 21`; stream starts `00`, ends `50 50` before the next text. | `result=ok`; `FINISHED`, exit 1, next Cubone error. |
+| `_LavenderCuboneHouseCuboneText` | `[38, 25144]` | `[38, 25246]` (`26:629E`, `0x9A29E`) | Cubone object has text ID `01`; first table entry at `07:59B3` selects wrapper `07:59B7`, `17 9E 62 26`; stream `00 ... E7 50`, followed by the next text. | `result=ok`; `FINISHED`, exit 1, next Nugget error. |
+| `_LavenderMartCooltrainerMNuggetText` | `[38, 25059]` | `[38, 25166]` (`26:624E`, `0x9A24E`) | Cooltrainer M is object/text ID `03`; conditional wrapper `17:4938` selects `17:4956`, `17 4E 62 26 50`; PEPITA text starts `00`, ends `57` before Cubone text. | `result=ok`; `FINISHED`, exit 1, next LearnedMove1 error. |
+| `_LearnedMove1Text` | `[40, 26427]` | `[40, 26598]` (`28:67E6`, `0xA27E6`) | Italian move-learning callsite `01:6F52` loads wrapper `01:7001`, `17 E6 67 28 0B 06 50`; target has `01 3B D0` then `01 50 CF`, matching the two existing substitutions, and ends `50 50` before `28:67FA`. | `result=ok`; `FINISHED`, exit 1, next LinkBattleLost error. |
+| `_LinkBattleLostText` | `[34, 22386]` | `[34, 22818]` (`22:5922`, `0x89922`) | Link-battle loss wrapper `0F:488E`, `17 22 59 22 50`, points to one `$D04F` dynamic command and text ending `58` at `22:5934`; next text starts `22:5935`. Existing `wTrainerName` metadata retained. | `result=ok` observed; run still `RUNNING / ACTIVE_LOCAL`. |
+
+Completed run directories, in order:
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-150941-a76728af`,
+`italian-20261017-151400-0cc45a21`,
+`italian-20261017-151822-54f8ffc9`, and
+`italian-20261017-152020-1a9c3eda` under the same log root.
+The current run is
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-152142-308f4208`.
+At the last observation, worker PID `620` and LÖVE PID `1992` were active,
+the heartbeat was updating, stdout stopped in a partial
+`_LinkCableHelpText1` diagnostic, stderr was empty, no exit code or `TEST A`
+result had been recorded, and `rom-cache.complete` was absent. This partial
+line is not an established decoder error. `_TrainerSentOutText` remains
+unverified. That run subsequently reached `FINISHED`, exit code `1`,
+`TEST_A=FAIL`, with no cache marker. It confirmed the LinkBattleLost mapping;
+its first next error was `_LinkCableHelpText1: unsupported text command $82`
+at the old address `22:5001`.
+
+The sixth Batch 11 mapping, `_LinkCableHelpText1`, was changed from
+`[34, 20481]` to `[34, 20766]` (`22:511E`, file offset `0x8911E`).
+The Italian link-help routine loads wrapper `17:5C9A`; the wrapper bytes
+`17 1E 51 22 50` point to a stream beginning `00` and spelling
+“CONSIGLI UTILI / Uso del Cavo Game Link.” It ends with `58` at `22:5145`,
+immediately before `_LinkCableHelpText2` at `22:5146`. No dynamic
+substitution or exact manifest collision was found. The address is
+structurally demonstrated, but `result=ok` has **not** been observed.
+
+The verification run
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-164943-36c958ed`
+was `RUNNING / ACTIVE_LOCAL` at the last observation (worker PID `16404`,
+LÖVE PID `18636`). Heartbeat continued, but stdout stopped in a partial
+diagnostic for `_LinkCableHelpText1`; stderr was empty, exit code and `TEST A`
+result were not yet available, and `rom-cache.complete` was absent. Window
+enumeration found no top-level window owned by that LÖVE PID. This is an
+indeterminate test outcome, not a demonstrated decoder failure. Batch 11
+remains **5 verified mappings out of 10**. `_TrainerSentOutText` remains
+unverified. That run subsequently reached `FINISHED`, exit code `1`,
+`TEST_A=FAIL`, with the cache marker absent. It confirmed
+`_LinkCableHelpText1: result=ok`; its first next error was
+`_LoafingAroundText: unsupported text command $5A` at old address
+`22:5AE5`.
+
+The seventh Batch 11 mapping, `_LoafingAroundText`, was changed from
+`[34, 23269]` to `[34, 23728]` (`22:5CB0`, file offset `0x89CB0`).
+The Italian disobedience dispatch at `0F:5D28` loads wrapper `0F:5DB9`
+for the first random outcome; wrapper bytes `17 B0 5C 22 50` point to the
+loafing text. The target begins with `01 0E D0` (`$D00E`, existing
+`{RAM:wBattleMonNick}` substitution), says the Pokémon is ciondolando,
+ends with `58` at `22:5CC5`, and the next text begins at `22:5CC6`.
+No exact manifest collision was found. This mapping is structurally
+demonstrated but has **no observed `result=ok` yet**.
+
+Its only verification run is
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-165845-c27947dc`.
+At the latest observation it remained `RUNNING / ACTIVE_LOCAL` (worker PID
+`18492`, LÖVE PID `16536`) with a current heartbeat, no exit code, empty
+stderr, no recorded `TEST A` result and no `rom-cache.complete`. Stdout
+remained partial during `_LinkCableHelpText1`; the last complete diagnostic
+was `_LinkBattleLostText: result=ok`. No result for `_LoafingAroundText`
+or next error can be inferred from that partial output. Batch 11 is now
+**6 mappings verified out of 10**, with the seventh awaiting its test.
+`_TrainerSentOutText` remains unverified. Next operation: recover this run's
+conclusive state before starting another import.
+
+The LoafingAround verification run later reached `FINISHED`, exit code `1`,
+`TEST_A=FAIL`, with the cache marker absent. Its log confirms
+`_LoafingAroundText: result=ok`; the first next error was
+`_LoreleisRoomLoreleiDontRunAwayText: unsupported text command $B3` at
+the old address `21:6729`. Batch 11 therefore reached **7/10 verified**.
+
+`_LoreleisRoomLoreleiDontRunAwayText` was changed from `[33, 26409]` to
+`[33, 26804]` (`21:68B4`, file offset `0x868B4`). The Italian room script
+uses text ID `02` when blocking the player from leaving; the second text
+pointer at `1D:62CA` leads to wrapper `1D:62F2`, whose bytes
+`17 B4 68 21 50` target `21:68B4`. That stream begins `00`, says
+“Una voce: Non scappare!”, and ends with `57` at `21:68CC` before the
+next text. It has no dynamic substitutions. The address currently also
+appears under `_LoreleiEndBattleText` in the manifest; this collision was
+recorded but the other symbol was not changed. The identity of the
+DontRunAway target follows from the script ID and wrapper, independently
+of the collision.
+
+Its single verification run is
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-190453-1afd4a25`.
+At the latest observation it remained `RUNNING / ACTIVE_LOCAL` (worker
+PID `10224`, LÖVE PID `18008`) with heartbeat, empty stderr, no exit
+code, no `TEST A` result, and no `rom-cache.complete`. Stdout was partial
+around `_LinkCableHelpText1`; `_LoreleisRoomLoreleiDontRunAwayText` had
+not yet appeared with `result=ok`. The eighth mapping is structurally
+demonstrated but **not import verified**. `_TrainerSentOutText` also remains
+unverified. Next operation: recover this run's conclusive state before any
+further mapping correction or import.
+
+### Batch 11: Lorelei collision audit (18 October 2026)
+
+The run `C:\gen1recomp\AItest\ROM-TestLogs\italian-20261017-190453-1afd4a25`
+subsequently reached `FINISHED`, exit code `1`, `TEST_A=FAIL`, with
+`rom-cache.complete` absent. Stdout records
+`_LoreleisRoomLoreleiDontRunAwayText: result=ok` at `21:68B4`; batch 11
+therefore has **8/10 import-verified corrections**. The first next error is
+`_MewtwoBattleText: unsupported text command $A0` at `21:5C72`.
+
+The Italian Lorelei room text table at `1D:62C8` contains `D9 62 F2 62`.
+The exit-block script selects text ID `02`, reaching the wrapper at
+`1D:62F2` (`17 B4 68 21 50`) and the `21:68B4` stream (`00`, “Una voce:
+Non scappare!”, `57` at `21:68CC`). The trainer header at `1D:62CC`
+contains pointers to distinct trainer wrappers: `1D:62E8` has
+`17 33 68 21 50` for the end-battle line at `21:6833`, and `1D:62ED`
+has `17 4A 68 21 50` for the after-battle line at `21:684A`. These
+streams begin with `00`; the former ends with `58` immediately before
+`21:684A`, and the latter with `57` immediately before `21:68B4`.
+
+The manifest's `_LoreleisRoomLoreleiEndBattleText` is a text label used
+by the Lorelei trainer header. The separate `_LoreleiEndBattleText` key
+also maps to `21:68B4`, but is absent from `text.labels`, the USA
+manifest, and the game's Lua callers. Its current address duplicates the
+exit-block text despite its name; no independent callsite establishes
+whether it was intended as an alias or what it should designate. It was
+already present at this address in the published manifest and was not
+modified during this audit. Because the identity of that extra key is
+unresolved, no further mapping was changed or import started. Next
+operation: establish the provenance and intended use of
+`_LoreleiEndBattleText` before resuming at `_MewtwoBattleText`.
+`_TrainerSentOutText` remains without explicit `result=ok` evidence.
+
+### Batch 11 completed: Mewtwo and Mirror Move (18 October 2026)
+
+The extra `_LoreleiEndBattleText` manifest symbol remains a **semantic
+audit issue**, not a validated alias. The actual Italian end-battle
+path is the trainer header at `1D:62CC` via wrapper `1D:62E8`
+(`17 33 68 21 50`) to `21:6833` (“Come ti sei permesso!”, `00` through
+`58`). `_LoreleiEndBattleText` is absent from `text.labels`, the USA
+manifest, and project Lua callers; its `21:68B4` mapping instead names
+the independently demonstrated exit-block text. The historical
+`CONFIRMED` entry in `tools/italian_global_mapping.tsv` is not evidence
+of an Italian callsite. No unique intended use for this extra key has
+been established; it was not changed. It does not participate in the
+subsequent Mewtwo or Mirror Move call chains.
+
+`_MewtwoBattleText` was corrected from `[33, 23666]` to `[33, 23962]`
+(`21:5D9A`, file offset `0x85D9A`). The Italian Cerulean Cave B1F
+header at `11:5EE4` points to the text table at `11:5F09`. Its first
+entry `1C 5F` selects the Mewtwo `text_asm` wrapper at `11:5F1C`,
+which loads trainer header `11:5F0F`; the header points to `11:5F26`.
+That wrapper begins `17 9A 5D 21 08`: `TX_FAR` targets `21:5D9A`, then
+the wrapper plays Mewtwo's cry. The first object record at `11:5F3E`
+has Mewtwo's text ID `41` (trainer flag plus text 1). The target begins
+`00 8C A4 B6 E7 50 50` (“Mew!”), has no dynamic substitutions, and
+ends before the next stream at `21:5DA1`; no exact manifest collision
+was found. Run
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261018-134918-39e92048`
+reached `FINISHED`, exit code `1`, with `_MewtwoBattleText: result=ok`.
+Its first next error was `_MirrorMoveFailedText: unsupported text
+command $4F` at the old `22:5B96`.
+
+`_MirrorMoveFailedText` was corrected from `[34, 23446]` to
+`[34, 23908]` (`22:5D64`, file offset `0x89D64`). In the Italian
+battle routine, `0F:6318` checks Mirror Move (`FE 77`); its failure
+branch loads wrapper `0F:6327` (`21 27 63` at `0F:631F`) and calls
+`PrintText`. The wrapper is `17 64 5D 22 50`, targeting `22:5D64`.
+The stream starts `00`, reads “La SPECULMOSSA è fallita!”, ends with
+`58` at `22:5D7E`, and the next stream starts `00` at `22:5D7F`.
+There are no dynamic commands or exact manifest collisions. Run
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261018-135202-50439bc0`
+reached `FINISHED`, exit code `1`, and records
+`_MirrorMoveFailedText: result=ok`.
+
+Batch 11 is **10/10 import verified**. The last run reports
+`TEST_A=FAIL`, `rom-cache.complete` absent, and the first next error
+`_MonCannotLearnMachineMoveText: unused dynamic text substitutions`
+at `29:6A6E`. No mapping for that symbol was changed in this batch.
+`_TrainerSentOutText` still lacks explicit `result=ok` evidence.
+Next operation: separately trace the Italian dynamic commands and
+manifest substitutions for `_MonCannotLearnMachineMoveText` before
+changing it.
+
+### Batch 12 completed: dynamic text and adjacent battle/house texts (18 October 2026)
+
+All ten rows below were changed one at a time in the Italian manifest. Each
+change passed JSON parsing and `git diff --check`, then returned `result=ok` in
+one completed Italian import. Dynamic metadata was retained in every row;
+the initial `unused dynamic text substitutions` errors came from wrong text
+addresses, not excess substitutions at the demonstrated targets.
+
+| Symbol | Previous | Italian target | Structural and dynamic evidence |
+| --- | --- | --- | --- |
+| `_MonCannotLearnMachineMoveText` | `[41, 27246]` | `[41, 27796]` (`29:6C94`, `0xA6C94`) | TM/HM refusal branch `03:651B` selects wrapper `03:6558` (`17 94 6C 29 50`); commands `01 6D CD` and twice `01 50 CF` use the Pokémon name and move name twice; ends `$58` at `29:6CCB`. |
+| `_MonWasReleasedText` | `[34, 25192]` | `[34, 25737]` (`22:6489`, `0x8A489`) | Bill's PC release callsite `08:56AF` selects wrapper `08:581D` (`17 89 64 22 50`); two `01 50 CF` name substitutions; ends `$58` at `22:64AB`. |
+| `_MonWasStoredText` | `[34, 24921]` | `[34, 25452]` (`22:636C`, `0x8A36C`) | Bill's PC deposit callsite `08:5614` selects wrapper `08:57F5` (`17 6C 63 22 50`); `01 50 CF` is the Pokémon name and `01 3D CD` the destination Box number; ends `$58` at `22:638C`. |
+| `_MoneyForWinningText` | `[34, 22237]` | `[34, 22671]` (`22:588F`, `0x8988F`) | Trainer victory routine at `0F:46D7` prints wrapper `0F:46E4` (`17 8F 58 22 50`) before adding prize money; `02 7E D0 C3 00` reads the numeric winnings, matching existing metadata; ends `$58` at `22:58A0`. |
+| `_MonsStatsFellText` | `[37, 18355]` | `[37, 18547]` (`25:4873`, `0x94873`) | Stat-down routine prints wrapper `0F:766A` (`17 73 48 25 08`) after preparing the stat name; `01 50 CF` uses `wStringBuffer`; stream ends `$50` at `25:4884` before the following text at `25:4885`. |
+| `_MoveIsDisabledText` | `[34, 23081]` | `[34, 23539]` (`22:5BF3`, `0x89BF3`) | Disabled-move routine at `0F:5A8B` selects wrapper `0F:5AAB` (`17 F3 5B 22 50`); one `01 6D CD` uses `wNameBuffer`; ends `$58` before the next stream. |
+| `_MoveWasDisabledText` | `[37, 18590]` | `[37, 18784]` (`25:4960`, `0x94960`) | Disable effect at `0F:7B0E` prints wrapper `0F:7B18` (`17 60 49 25 50`); one `01 6D CD` uses `wNameBuffer`; ends `$58` at `25:4976`. |
+| `_MrFujisHouseMrFujiReceivedPokeFluteText` | `[38, 24571]` | `[38, 24690]` (`26:6072`, `0x9A072`) | House header `07:589D` selects table `07:58AD`; Mr. Fuji's object record `07:598F` has text ID 5, table entry `07:58B5` points to conditional script `07:5919`; gift-success branch prints wrapper `07:5952` (`17 72 60 26 11`), followed by sound and explanation. `01 50 CF` uses `wStringBuffer` for the item name; ends with `$50 $50` at `26:6085–6086`. |
+| `_MrFujisHouseNidorinoText` | `[38, 24453]` | `[38, 24560]` (`26:5FF0`, `0x99FF0`) | Object record `07:5989` has text ID 4; table entry `07:58B3` points to wrapper `07:590C` (`17 F0 5F 26 08`), then the cry routine. Literal Nidorino text ends `$50 $50` at `26:6001–6002`; no dynamic commands. |
+| `_MrFujisHousePsyduckText` | `[38, 24434]` | `[38, 24542]` (`26:5FDE`, `0x99FDE`) | Object record `07:5983` has text ID 3; table entry `07:58B1` points to wrapper `07:58FF` (`17 DE 5F 26 08`), then the cry routine. Literal Psyduck text ends `$50 $50` at `26:5FEE–5FEF`; no dynamic commands. |
+
+The House text targets have separate starts and adjacent terminators; none of
+the ten new target addresses has an exact manifest collision. Ten imports were
+started for these ten corrections. The last run is
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261018-170352-bd78e52f`:
+`FINISHED`, exit code `1`, `_MrFujisHousePsyduckText: result=ok`,
+`TEST_A=FAIL`, and `rom-cache.complete` absent. Its first next error is
+`_MrPsychicsHouseMrPsychicReceivedTM29Text: unsupported text command $AD`
+at the old `28:652A`. No mapping for that symbol was changed. Some earlier
+Batch 12 runs held an error window open after printing a partial stdout line;
+the exact test PID and the window content were captured before using the
+runner's controlled window-close function, after which `FINISHED` and the
+exit code were recorded. The runner was not modified.
+
+Batch 12 is **10/10 import verified**. `_TrainerSentOutText` still lacks
+explicit `result=ok`. `_LoreleiEndBattleText` remains the unresolved semantic
+audit issue described above; neither mapping was changed in this batch. Next
+operation: trace the Italian Mr. Psychic gift-success script and wrapper for
+the TM29 receipt text, then verify any demonstrated correction in a new batch.
