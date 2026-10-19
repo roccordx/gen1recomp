@@ -25369,7 +25369,7 @@
     ],
     "_LancesRoomLanceAfterBattleText": [
       33,
-      24222
+      24510
     ],
     "_LancesRoomLanceBeforeBattleText": [
       33,
@@ -25393,7 +25393,7 @@
     ],
     "_LavenderCuboneHouseCuboneText": [
       38,
-      25144
+      25246
     ],
     "_LavenderMartBaldingGuyText": [
       38,
@@ -25401,7 +25401,7 @@
     ],
     "_LavenderMartCooltrainerMNuggetText": [
       38,
-      25059
+      25166
     ],
     "_LavenderMartCooltrainerMReviveText": [
       38,
@@ -25457,7 +25457,7 @@
     ],
     "_LearnedMove1Text": [
       40,
-      26427
+      26598
     ],
     "_LickitungDexEntry": [
       43,
@@ -25473,11 +25473,11 @@
     ],
     "_LinkBattleLostText": [
       34,
-      22386
+      22818
     ],
     "_LinkCableHelpText1": [
       34,
-      20481
+      20766
     ],
     "_LinkCableHelpText2": [
       34,
@@ -25501,7 +25501,7 @@
     ],
     "_LoafingAroundText": [
       34,
-      23269
+      23728
     ],
     "_LoreleisRoomLoreleiAfterBattleText": [
       33,
@@ -25513,7 +25513,7 @@
     ],
     "_LoreleisRoomLoreleiDontRunAwayText": [
       33,
-      26409
+      26804
     ],
     "_LoreleisRoomLoreleiEndBattleText": [
       33,
@@ -25585,7 +25585,7 @@
     ],
     "_MewtwoBattleText": [
       33,
-      23666
+      23962
     ],
     "_MewtwoDexEntry": [
       43,
@@ -25597,7 +25597,7 @@
     ],
     "_MirrorMoveFailedText": [
       34,
-      23446
+      23908
     ],
     "_MoltresDexEntry": [
       43,
@@ -25605,7 +25605,7 @@
     ],
     "_MonCannotLearnMachineMoveText": [
       41,
-      27246
+      27796
     ],
     "_MonIsTakenOutText": [
       34,
@@ -25613,19 +25613,19 @@
     ],
     "_MonWasReleasedText": [
       34,
-      25192
+      25737
     ],
     "_MonWasStoredText": [
       34,
-      24921
+      25452
     ],
     "_MoneyForWinningText": [
       34,
-      22237
+      22671
     ],
     "_MonsStatsFellText": [
       37,
-      18355
+      18547
     ],
     "_MonsStatsRoseText": [
       37,
@@ -25637,7 +25637,7 @@
     ],
     "_MoveIsDisabledText": [
       34,
-      23081
+      23539
     ],
     "_MoveNameText": [
       34,
@@ -25649,7 +25649,7 @@
     ],
     "_MoveWasDisabledText": [
       37,
-      18590
+      18784
     ],
     "_MrFujisHouseLittleGirlPokemonAreNiceToHugText": [
       38,
@@ -25681,15 +25681,15 @@
     ],
     "_MrFujisHouseMrFujiReceivedPokeFluteText": [
       38,
-      24571
+      24690
     ],
     "_MrFujisHouseNidorinoText": [
       38,
-      24453
+      24560
     ],
     "_MrFujisHousePsyduckText": [
       38,
-      24434
+      24542
     ],
     "_MrFujisHouseSuperNerdMrFujiHadBeenPrayingText": [
       38,
