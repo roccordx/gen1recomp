@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-  [ValidateSet('Start', 'Status', 'Wait', 'Worker', 'SelfTest', 'Preflight', 'RegisterTransferred')]
+  [ValidateSet('Start', 'Status', 'Wait', 'Worker', 'SelfTest', 'Preflight', 'RegisterTransferred', 'ReconcileLocal')]
   [string]$Action = 'Start',
   [string]$RunId,
   [string]$RunDir,
@@ -17,6 +17,8 @@ $script:LoveExe = 'C:\Program Files\LOVE\lovec.exe'
 $script:Identity = 'test-italian-run'
 $script:AppData = Join-Path $script:Repo 'test-italian-run\cache-temp'
 $script:Utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+$script:CaptureHelper = Join-Path $PSScriptRoot 'capture_import_window.ps1'
+$script:ImportMutexName = 'Global\Gen1RecompItalianImport'
 $machineGuid = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Cryptography' -Name MachineGuid).MachineGuid
 $script:MachineId = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($machineGuid)))
 $script:Computer = [Environment]::MachineName
@@ -29,6 +31,37 @@ function Get-RunClassification($Fields, [bool]$Transferred, [string]$Worker, [st
   if ($Fields['MACHINE_ID'] -and $Fields['MACHINE_ID'] -ne $script:MachineId) { return 'STALE_REMOTE' }
   if (-not $Fields['MACHINE_ID'] -and $Transferred) { return 'HISTORICAL_UNRESOLVED_REMOTE' }
   return 'LOCAL_OR_UNKNOWN_UNRESOLVED'
+}
+
+function Get-LocalReconciliationPath([string]$Dir) {
+  Join-Path $script:LogRoot ("reconciliation-{0}-{1}.json" -f (Split-Path $Dir -Leaf), $script:MachineId)
+}
+
+function Get-OriginalLogHashes([string]$Dir) {
+  $hashes = @{}
+  foreach ($name in @('status.txt', 'stdout.log', 'stderr.log')) {
+    $path = Join-Path $Dir $name
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Original run file missing: $path" }
+    $hashes[$name] = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
+  }
+  return $hashes
+}
+
+function Test-LocalReconciliation($Note, [string]$Dir, $Fields, [string]$Worker, [string]$Love) {
+  if (-not $Note -or $Note.RunId -ne (Split-Path $Dir -Leaf) -or
+      $Note.MachineId -ne $script:MachineId -or $Fields['MACHINE_ID'] -ne $script:MachineId -or
+      $Fields['STATE'] -ne 'RUNNING' -or $Note.OriginalState -ne 'RUNNING' -or
+      $Note.OperationalState -ne 'INACTIVE' -or
+      $Note.DiagnosticOutcome -ne 'INTERRUPTED_UNVERIFIED' -or
+      $Worker -notin @('NOT_VISIBLE_OR_ABSENT', 'PID_REUSED') -or
+      $Love -notin @('NOT_VISIBLE_OR_ABSENT', 'PID_REUSED')) { return $false }
+  try {
+    $hashes = Get-OriginalLogHashes $Dir
+    foreach ($name in $hashes.Keys) {
+      if ($Note.OriginalHashes.$name -ne $hashes[$name]) { return $false }
+    }
+  } catch { return $false }
+  return $true
 }
 
 function Get-ClassificationPath([string]$Dir) {
@@ -48,7 +81,41 @@ function Observe-Run([string]$Dir) {
   }
   $w = Get-ProcessState $f['WORKER_PID'] 'pwsh' $f['WORKER_STARTED'] $f['WORKER_EXE'] $f['WORKER_SESSION']
   $l = Get-ProcessState $f['LOVE_PID'] 'lovec' $f['LOVE_STARTED'] $f['LOVE_EXE'] $f['LOVE_SESSION']
+  $localNote = Get-LocalReconciliationPath $Dir
+  if (Test-Path -LiteralPath $localNote -PathType Leaf) {
+    try {
+      $reconciled = Read-SharedText $localNote | ConvertFrom-Json
+      if (Test-LocalReconciliation $reconciled $Dir $f $w $l) { return 'HISTORICAL_INTERRUPTED_LOCAL' }
+    } catch { } # A damaged or stale note cannot release the import lock.
+  }
   Get-RunClassification $f $transferred $w $l
+}
+
+function Enter-ImportGate([bool]$WaitForGate) {
+  $mutex = [Threading.Mutex]::new($false, $script:ImportMutexName)
+  $held = $false
+  $file = $null
+  try {
+    try { $held = if ($WaitForGate) { $mutex.WaitOne() } else { $mutex.WaitOne(0) } }
+    catch [Threading.AbandonedMutexException] { $held = $true }
+    if (-not $held) { throw 'Another import operation holds the machine mutex' }
+    $file = [IO.File]::Open((Join-Path $script:LogRoot 'italian-import.active.lock'),
+      [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
+    return [pscustomobject]@{ Mutex=$mutex; File=$file }
+  } catch {
+    if ($file) { $file.Dispose() }
+    if ($held) { $mutex.ReleaseMutex() }
+    $mutex.Dispose()
+    throw
+  }
+}
+
+function Exit-ImportGate($Gate) {
+  if ($Gate) {
+    $Gate.File.Dispose()
+    $Gate.Mutex.ReleaseMutex()
+    $Gate.Mutex.Dispose()
+  }
 }
 
 function Assert-NoLocalImport {
@@ -64,11 +131,20 @@ function Assert-NoLocalImport {
   if ($busy.Count) { throw "Local import/process present; refusing duplicate: $($busy.ProcessId -join ',')" }
 }
 
-function Assert-Ready {
+function Assert-Ready([string]$ExcludeRunId = '') {
   Assert-NoLocalImport
   $blocked = @()
   foreach ($d in Get-ChildItem -LiteralPath $script:LogRoot -Directory) {
     if (-not (Test-Path -LiteralPath (Join-Path $d.FullName 'status.txt'))) { continue }
+    if ($ExcludeRunId -and $d.Name -eq $ExcludeRunId) {
+      $self = Get-RunFields (Join-Path $d.FullName 'status.txt')
+      if ($self['RUN_ID'] -ne $ExcludeRunId -or $self['MACHINE_ID'] -ne $script:MachineId -or
+          $self['WORKER_PID'] -ne [string]$PID -or
+          (Get-ProcessState $self['WORKER_PID'] 'pwsh' $self['WORKER_STARTED'] $self['WORKER_EXE'] $self['WORKER_SESSION']) -ne 'ACTIVE') {
+        throw 'Worker identity does not match the newly created run'
+      }
+      continue
+    }
     $classification = Observe-Run $d.FullName
     if ($classification -in @('ACTIVE_LOCAL', 'LOCAL_OR_UNKNOWN_UNRESOLVED')) {
       $blocked += "$($d.Name): $classification"
@@ -78,6 +154,9 @@ function Assert-Ready {
 }
 
 function Assert-HarnessSource {
+  if (-not (Test-Path -LiteralPath $script:CaptureHelper -PathType Leaf)) {
+    throw 'Screenshot helper is missing: capture_import_window.ps1'
+  }
   $source = Join-Path $script:Repo $script:Identity
   if (-not (Test-Path -LiteralPath (Join-Path $source 'main.lua') -PathType Leaf)) {
     throw "LÖVE source has no main.lua: $source"
@@ -148,6 +227,68 @@ function Get-ProcessState([string]$IdText, [string]$ExpectedName, [string]$Start
     if ($p.Path -ine $ExpectedPath -or [string]$p.SessionId -ne $ExpectedSession) { return 'PID_REUSED' }
   } catch { return 'UNKNOWN' }
   return 'ACTIVE'
+}
+
+function Invoke-LocalReconciliation([string]$Id) {
+  if ($Id -notmatch '^italian-[A-Za-z0-9-]+$') { throw 'Invalid run ID' }
+  $gate = Enter-ImportGate $false
+  try {
+    $dir = Join-Path $script:LogRoot $Id
+    if (-not (Test-Path -LiteralPath $dir -PathType Container)) { throw "Run not found: $Id" }
+    $statusPath = Join-Path $dir 'status.txt'
+    $fields = Get-RunFields $statusPath
+    if ($fields['RUN_ID'] -ne $Id -or $fields['MACHINE_ID'] -ne $script:MachineId -or
+        $fields['STATE'] -ne 'RUNNING') { throw 'Only an unresolved run from this machine can be reconciled' }
+    foreach ($key in @('WORKER_PID', 'WORKER_STARTED', 'WORKER_EXE', 'WORKER_SESSION',
+                       'LOVE_PID', 'LOVE_STARTED', 'LOVE_EXE', 'LOVE_SESSION')) {
+      if ([string]::IsNullOrWhiteSpace($fields[$key])) { throw "Incomplete process identity: $key" }
+    }
+    if ($fields['LOVE_EXE'] -ine $script:LoveExe -or
+        $fields['WORKER_EXE'] -ine (Join-Path $PSHOME 'pwsh.exe')) {
+      throw 'Recorded executable identity does not match this runner'
+    }
+    $worker = Get-ProcessState $fields['WORKER_PID'] 'pwsh' $fields['WORKER_STARTED'] $fields['WORKER_EXE'] $fields['WORKER_SESSION']
+    $love = Get-ProcessState $fields['LOVE_PID'] 'lovec' $fields['LOVE_STARTED'] $fields['LOVE_EXE'] $fields['LOVE_SESSION']
+    if ($worker -notin @('NOT_VISIBLE_OR_ABSENT', 'PID_REUSED') -or
+        $love -notin @('NOT_VISIBLE_OR_ABSENT', 'PID_REUSED')) {
+      throw "Recorded process remains active or uncertain: worker=$worker LOVE=$love"
+    }
+    # An inaccessible process list, any other import worker or any LOVE process blocks recovery.
+    Assert-NoLocalImport
+    $notePath = Get-LocalReconciliationPath $dir
+    if (Test-Path -LiteralPath $notePath) {
+      $existing = Read-SharedText $notePath | ConvertFrom-Json
+      if (-not (Test-LocalReconciliation $existing $dir $fields $worker $love)) {
+        throw 'Existing local reconciliation note is invalid; manual review required'
+      }
+      "RECONCILIATION=ALREADY_RECORDED"
+      "CLASSIFICATION=$(Observe-Run $dir)"
+      "RECONCILIATION_FILE=$notePath"
+      return
+    }
+    $hashes = Get-OriginalLogHashes $dir
+    $summary = Get-TestSummary $dir
+    if ($summary.Test -ne 'NOT_REPORTED' -or $summary.Marker -or
+        (Test-Path -LiteralPath (Join-Path $dir 'exit-code.txt'))) {
+      throw 'Run has result evidence; interrupted classification requires manual review'
+    }
+    $data = [ordered]@{
+      RunId=$Id; MachineId=$script:MachineId; Computer=$script:Computer
+      OriginalState=$fields['STATE']; OperationalState='INACTIVE'
+      DiagnosticOutcome='INTERRUPTED_UNVERIFIED'
+      WorkerProcess=$worker; LoveProcess=$love
+      WorkerPid=$fields['WORKER_PID']; LovePid=$fields['LOVE_PID']
+      LastHeartbeat=$fields['HEARTBEAT']; RecordedAt=[DateTimeOffset]::Now.ToString('o')
+      OriginalHashes=$hashes
+    } | ConvertTo-Json -Depth 4
+    $stream = [IO.File]::Open($notePath, [IO.FileMode]::CreateNew,
+      [IO.FileAccess]::Write, [IO.FileShare]::Read)
+    try { $bytes = $script:Utf8NoBom.GetBytes($data); $stream.Write($bytes, 0, $bytes.Length) }
+    finally { $stream.Dispose() }
+    "RECONCILIATION=RECORDED"
+    "CLASSIFICATION=$(Observe-Run $dir)"
+    "RECONCILIATION_FILE=$notePath"
+  } finally { Exit-ImportGate $gate }
 }
 
 function Get-TestSummary([string]$Dir) {
@@ -228,7 +369,6 @@ public static class ItalianImportNative {
   [DllImport("user32.dll", CharSet=CharSet.Unicode)] private static extern int GetClassName(IntPtr hWnd, StringBuilder text, int max);
   [DllImport("user32.dll")] private static extern bool IsWindowVisible(IntPtr hWnd);
   [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
-  [DllImport("user32.dll")] public static extern bool PrintWindow(IntPtr hWnd, IntPtr hdc, uint flags);
   [DllImport("user32.dll")] private static extern bool PostMessage(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam);
   public static WindowInfo[] GetWindows(int targetPid) {
     var rows = new List<WindowInfo>();
@@ -245,7 +385,7 @@ public static class ItalianImportNative {
   }
   public static bool CloseOwnedWindow(IntPtr h, int expectedPid) {
     int pid; GetWindowThreadProcessId(h, out pid);
-    return pid == expectedPid && PostMessage(h, 0x0010, IntPtr.Zero, IntPtr.Zero);
+    return expectedPid > 0 && pid == expectedPid && PostMessage(h, 0x0010, IntPtr.Zero, IntPtr.Zero);
   }
 }
 '@
@@ -272,7 +412,68 @@ function Get-FailureEvidence([string]$Dir) {
   return @(Get-FailureLines $all | Select-Object -First 1)
 }
 
+function Invoke-BoundedWindowCapture($Process, [IntPtr]$Handle, [string]$Dir, [int]$TimeoutMilliseconds = 5000) {
+  # Only this disposable child can block in PrintWindow. Never kill the test process.
+  $capture = Join-Path $Dir ("love-error-{0}.png" -f [guid]::NewGuid().ToString('N'))
+  $info = [Diagnostics.ProcessStartInfo]::new((Join-Path $PSHOME 'pwsh.exe'))
+  $info.UseShellExecute = $false
+  $info.CreateNoWindow = $true
+  $info.RedirectStandardOutput = $true
+  $info.RedirectStandardError = $true
+  foreach ($arg in @('-NoProfile', '-File', $script:CaptureHelper,
+      '-TargetPid', [string]$Process.Id, '-TargetStarted', $Process.StartTime.ToUniversalTime().ToString('o'),
+      '-TargetPath', $Process.Path, '-TargetSession', [string]$Process.SessionId,
+      '-WindowHandle', [string]$Handle.ToInt64(), '-OutputPath', $capture)) {
+    $info.ArgumentList.Add($arg)
+  }
+  $child = $null
+  try {
+    $child = [Diagnostics.Process]::Start($info)
+    $outTask = $child.StandardOutput.ReadToEndAsync()
+    $errTask = $child.StandardError.ReadToEndAsync()
+    Add-Line (Join-Path $Dir 'status.txt') "SCREENSHOT_HELPER_PID=$($child.Id) STARTED=$($child.StartTime.ToUniversalTime().ToString('o'))"
+    if (-not $child.WaitForExit($TimeoutMilliseconds)) {
+      Add-Line (Join-Path $Dir 'status.txt') "SCREENSHOT_TIMEOUT LIMIT_MS=$TimeoutMilliseconds HELPER_PID=$($child.Id)"
+      # Process owns the original child handle, so a reused PID is never selected.
+      try {
+        $child.Kill()
+        if (-not $child.WaitForExit(2000)) {
+          Add-Line (Join-Path $Dir 'status.txt') 'SCREENSHOT_HELPER_EXIT_UNCONFIRMED'
+        }
+      } catch { Add-Line (Join-Path $Dir 'status.txt') "SCREENSHOT_HELPER_STOP_EXCEPTION=$($_.Exception.Message)" }
+      return 'TIMEOUT'
+    }
+    Add-Line (Join-Path $Dir 'status.txt') "SCREENSHOT_HELPER_EXIT_CODE=$($child.ExitCode)"
+    if ($outTask.IsCompletedSuccessfully) { Add-Line (Join-Path $Dir 'status.txt') "SCREENSHOT_HELPER_OUTPUT=$($outTask.Result.Trim())" }
+    if ($errTask.IsCompletedSuccessfully -and $errTask.Result) { Add-Line (Join-Path $Dir 'status.txt') "SCREENSHOT_HELPER_ERROR=$($errTask.Result.Trim())" }
+    if ($child.ExitCode -eq 0 -and (Test-Path -LiteralPath $capture -PathType Leaf)) {
+      Add-Line (Join-Path $Dir 'status.txt') "ERROR_WINDOW_CAPTURE=$capture"
+      return 'CAPTURED'
+    }
+    return 'FAILED'
+  } catch {
+    Add-Line (Join-Path $Dir 'status.txt') "SCREENSHOT_EXCEPTION=$($_.Exception.Message)"
+    return 'FAILED'
+  } finally {
+    if ($child) {
+      try {
+        if (-not $child.HasExited) { $child.Kill(); [void]$child.WaitForExit(2000) }
+      } catch { Add-Line (Join-Path $Dir 'status.txt') "SCREENSHOT_HELPER_CLEANUP_EXCEPTION=$($_.Exception.Message)" }
+      $child.Dispose()
+    }
+  }
+}
+
+function Test-RecordedErrorProcess($Process, [string]$Dir) {
+  $f = Get-RunFields (Join-Path $Dir 'status.txt')
+  if ($f['LOVE_PID'] -ne [string]$Process.Id -or $f['LOVE_EXE'] -ine $script:LoveExe -or
+      $f['MACHINE_ID'] -ne $script:MachineId -or @(Get-FailureEvidence $Dir).Count -eq 0) { return $false }
+  $state = Get-ProcessState $f['LOVE_PID'] 'lovec' $f['LOVE_STARTED'] $f['LOVE_EXE'] $f['LOVE_SESSION']
+  return $state -eq 'ACTIVE'
+}
+
 function Capture-AndCloseErrorWindow($Process, [string]$Dir) {
+  if (-not (Test-RecordedErrorProcess $Process $Dir)) { return $false }
   Add-NativeWindowType
   $Process.Refresh()
   $all = @([ItalianImportNative]::GetWindows($Process.Id))
@@ -288,31 +489,15 @@ function Capture-AndCloseErrorWindow($Process, [string]$Dir) {
   if (-not $target) {
     return $false
   }
-  $capture = Join-Path $Dir ("love-error-{0}.png" -f (Get-Date -Format 'yyyyMMdd-HHmmss-fff'))
-  try {
-    Add-Type -AssemblyName System.Drawing.Common
-    $rect = New-Object ItalianImportNative+RECT
-    $hasRect = [ItalianImportNative]::GetWindowRect($target.Handle, [ref]$rect)
-    $width = $rect.Right - $rect.Left
-    $height = $rect.Bottom - $rect.Top
-    if ($hasRect -and $width -gt 0 -and $height -gt 0) {
-      $bitmap = [System.Drawing.Bitmap]::new($width, $height)
-      $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
-      $hdc = $graphics.GetHdc()
-      try { $captured = [ItalianImportNative]::PrintWindow($target.Handle, $hdc, 2) }
-      finally { $graphics.ReleaseHdc($hdc) }
-      if ($captured) { $bitmap.Save($capture, [System.Drawing.Imaging.ImageFormat]::Png) }
-      $graphics.Dispose()
-      $bitmap.Dispose()
-    } else { $captured = $false }
-    if ($captured) {
-      Add-Line (Join-Path $Dir 'status.txt') "ERROR_WINDOW_CAPTURE=$capture"
-    } else {
-      Add-Line (Join-Path $Dir 'status.txt') 'ERROR_WINDOW_CAPTURE=PrintWindow or GetWindowRect returned false'
-    }
-  } catch {
-    Add-Line (Join-Path $Dir 'status.txt') "ERROR_WINDOW_CAPTURE_EXCEPTION=$($_.Exception.Message)"
-  }
+  Add-Line (Join-Path $Dir 'status.txt') "ERROR_WINDOW_EVIDENCE=$(@(Get-FailureEvidence $Dir)[0])"
+  $captureResult = Invoke-BoundedWindowCapture $Process $target.Handle $Dir
+  Add-Line (Join-Path $Dir 'status.txt') "SCREENSHOT_RESULT=$captureResult"
+  # Revalidate after the helper wait, including handle ownership and class.
+  if (-not (Test-RecordedErrorProcess $Process $Dir)) { return $false }
+  $current = @([ItalianImportNative]::GetWindows($Process.Id) | Where-Object {
+    $_.Handle -eq $target.Handle -and $_.Visible -and $_.ClassName -eq $target.ClassName
+  })
+  if ($current.Count -ne 1) { return $false }
   $closed = [ItalianImportNative]::CloseOwnedWindow($target.Handle, $Process.Id)
   Add-Line (Join-Path $Dir 'status.txt') "ERROR_WINDOW_WM_CLOSE_POSTED=$closed HANDLE=$($target.Handle) PID=$($Process.Id)"
   if ($closed) { Add-Line (Join-Path $Dir 'status.txt') 'STATE=ERROR_WINDOW_CLOSE_REQUESTED' }
@@ -356,27 +541,14 @@ function Invoke-Worker([string]$Dir) {
   $exitFile = Join-Path $Dir 'exit-code.txt'
   $exceptionFile = Join-Path $Dir 'powershell-exception.txt'
   $markerFile = Join-Path $Dir 'rom-cache-marker.txt'
-  $lock = $null
-  $machineLock = $null
-  $machineLockHeld = $false
+  $gate = $null
   $process = $null
   $finished = $false
   try {
-    $machineLock = [Threading.Mutex]::new($false, 'Global\Gen1RecompItalianImport')
-    try { $machineLockHeld = $machineLock.WaitOne(0) }
-    catch [Threading.AbandonedMutexException] { $machineLockHeld = $true }
-    if (-not $machineLockHeld) {
-      Add-Line $status 'STATE=REFUSED_ACTIVE_IMPORT'
-      return
-    }
-    Assert-NoLocalImport
-    try {
-      $lock = [IO.File]::Open((Join-Path $script:LogRoot 'italian-import.active.lock'), [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
-    } catch {
-      Add-Line $status "REFUSED=$($_.Exception.Message)"
-      Add-Line $status 'STATE=REFUSED_ACTIVE_IMPORT'
-      return
-    }
+    # Start releases this gate after recording worker identity. Recheck all other
+    # records while holding it, before the ROM process can be launched.
+    $gate = Enter-ImportGate $true
+    Assert-Ready (Split-Path $Dir -Leaf)
     Set-Location -LiteralPath $script:Repo
     $env:POKEPORT_NO_THREAD = '1'
     $env:POKEPORT_ITALIAN_IMPORT_DIAGNOSTICS = '1'
@@ -478,9 +650,7 @@ function Invoke-Worker([string]$Dir) {
     }
     Add-Line $status 'STATE=WORKER_ERROR'
   } finally {
-    if ($lock) { $lock.Dispose() }
-    if ($machineLockHeld) { $machineLock.ReleaseMutex() }
-    if ($machineLock) { $machineLock.Dispose() }
+    Exit-ImportGate $gate
   }
   if (-not $finished -and $process) {
     try { $process.Refresh(); Add-Line $status "LOVE_EXITED_AFTER_WORKER_ERROR=$(-not $process -or $process.HasExited)" } catch { }
@@ -488,7 +658,14 @@ function Invoke-Worker([string]$Dir) {
 }
 
 switch ($Action) {
-  'Preflight' { Assert-Ready; Assert-HarnessSource; 'PREFLIGHT=PASS (no import launched)' }
+  'Preflight' {
+    $gate = Enter-ImportGate $false
+    try { Assert-Ready; Assert-HarnessSource; 'PREFLIGHT=PASS (no import launched)' }
+    finally { Exit-ImportGate $gate }
+  }
+  'ReconcileLocal' {
+    Invoke-LocalReconciliation $RunId
+  }
   'RegisterTransferred' {
     if ($RunId -notmatch '^italian-[A-Za-z0-9-]+$' -or $ExpectedStatusHash -notmatch '^[A-Fa-f0-9]{64}$' -or
         [string]::IsNullOrWhiteSpace($TransferReason)) { throw 'Provide RunId, ExpectedStatusHash and explicit transfer provenance in TransferReason.' }
@@ -511,9 +688,12 @@ switch ($Action) {
     "CLASSIFICATION=$(Observe-Run $dir)"
   }
   'Start' {
-    $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-    $id = "italian-$stamp-$([guid]::NewGuid().ToString('N').Substring(0,8))"
-    Start-Worker (Join-Path $script:LogRoot $id)
+    $gate = Enter-ImportGate $false
+    try {
+      $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+      $id = "italian-$stamp-$([guid]::NewGuid().ToString('N').Substring(0,8))"
+      Start-Worker (Join-Path $script:LogRoot $id)
+    } finally { Exit-ImportGate $gate }
   }
   'Status' {
     if (-not $RunId) { throw 'Pass -RunId from the Start output.' }
