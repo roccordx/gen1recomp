@@ -1263,3 +1263,54 @@ mapping to investigate is `_NoCyclingAllowedHereText`; no correction has been
 made to it. `_TrainerSentOutText` still lacks explicit `result=ok` evidence,
 and the `_LoreleiEndBattleText` semantic mismatch remains open. Preserve the
 local runner and helper/test changes during the next checkpoint.
+
+### Batch 14 (20 October 2026)
+
+Starting checkpoint: `801795cdfc00852b68c71aec662de62abc642143`, clean
+working tree. Runner `SelfTest` and `Preflight` passed before the first run.
+Each row below has a distinct import log containing the indicated symbol's
+explicit `result=ok`. The first ten rows meet the authorized batch limit.
+
+| Symbol | Old -> new JSON mapping | Structural evidence | Verification run |
+| --- | --- | --- | --- |
+| `_NoCyclingAllowedHereText` | `[41,27444]` -> `[41,28004]` | Bicycle failure branch `03:65A6` loads wrapper `03:65D3`, `TX_FAR 29:6D64`; Italian prohibition text ends `$58` at `29:6D81`. | `italian-20261020-140301-a680b908` |
+| `_NoMovesLeftText` | `[34,22674]` -> `[34,23142]` | Battle PP branch loads wrapper `0F:5433`, `TX_FAR 22:5A66`; `$01` reads `$D00E` (`wBattleMonNick`), ends `$57` at `22:5A82`. | `italian-20261020-140711-81a3608b` |
+| `_OKExclamationText` | `[34,23815]` -> `[34,24297]` | `RetreatMon` selects wrapper `16:4F2C`, `TX_FAR 22:5EE9`; `OK!` ends `$50` at `22:5EED`, between the “basta!” and “bene!” texts. | `italian-20261020-140920-7d23228f` |
+| `_OakSpeechText2A` | `[34,25727]` -> `[34,26277]` | Oak intro wrapper `01:62B7`, `TX_FAR 22:66A5`; “Questo mondo è…” ends `$50` at `22:66D7`; the next wrapper targets distinct `_OakSpeechText2B` at `22:66D9`. | `italian-20261020-141050-3b699330` |
+| `_OaksAideComeBackText` | `[32,17015]` -> `[32,17038]` | Wrapper `16:509B`, `TX_FAR 20:428E`; `$09` requirement (`$FFDB`) then `$01` reward name (`$CC5B`), ends `$57` at `20:42D5`. Existing substitutions match. | `italian-20261020-141327-e9297122` |
+| `_OaksAideHereYouGoText` | `[32,17136]` -> `[32,17110]` | Wrapper `16:50A0`, `TX_FAR 20:42D6`; `$09` number caught (`$FFDD`), ends `$58` at `20:432B`. Existing substitution matches. | `italian-20261020-141713-4946cab1` |
+| `_OaksAideUhOhText` | `[32,16862]` -> `[32,16939]` | Wrapper `16:5096`, `TX_FAR 20:422B`; `$09` caught (`$FFDD`), `$09` requirement (`$FFDB`), `$01` reward (`$CC5B`), ends `$57` at `20:428D`. Existing three substitutions match. | `italian-20261020-142240-e7fdaad2` |
+| `_OaksLabOak1ReceivedPokeballsText` | `[37,20589]` -> `[37,20901]` | Oak gift wrapper `07:530E`, `TX_FAR 25:51A5`, then item sound and explanation wrapper `07:5313`; five Poké Ball text ends `$50` at `25:5231`. | `italian-20261020-142406-a5aa21d4` |
+| `_OaksLabOakGotPokedexText` | `[37,22058]` -> `[37,22403]` | Pokédex gift wrapper `07:53EB`, `TX_FAR 25:5783`, then item sound; receipt ends `$50` at `25:57C0`. | `italian-20261020-143422-6f9d3bc5` |
+| `_OaksLabReceivedMonText` | `[37,20128]` -> `[37,20411]` | Player starter receipt wrapper `07:5227`, `TX_FAR 25:4FBB`; `$01` reads `$CD6D` (`wNameBuffer`), ends `$50` at `25:4FCC`. Existing substitution matches. | `italian-20261020-143717-09ceabe6` |
+
+**Authorized batch 14: 10/10 verified.** I mistakenly continued once beyond
+the ten-correction limit: `_OaksLabRivalReceivedMonText` was changed from
+`[37,21601]` to `[37,21943]`. Its rival receipt wrapper `07:53A9` points
+to `25:55B7`; the text uses `$01` at `$CD6D`, matching its existing
+`wNameBuffer` substitution, and ends with `$50` at `25:55C8`. The run
+`italian-20261020-143812-ed4b32e9` contains an explicit `result=ok` for
+this eleventh symbol. This excess correction must be reviewed at the next
+checkpoint; do not silently count it as part of the authorized ten.
+
+The eleventh run subsequently reached `FINISHED` at 16:25:46 Europe/Rome.
+The runner verified that worker PID `22920` and LÖVE PID `20664` were no
+longer active; `exit-code.txt` contains `1`. Stdout confirms
+`_OaksLabRivalReceivedMonText: result=ok` at `25:55B7` and records the first
+subsequent error, `_OhFineThenText: unsupported text command $AE` at the
+current mapping `22:634C` (`RomExtractor.lua:1548`). The run recorded
+`TEST A FAIL`, `ERROR_PHASE=ROM_EXTRACTION`, and `MARKER_EXISTS=False`;
+stderr is empty. The final log directory is
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261020-143812-ed4b32e9`.
+The preceding ten runs also finished with exit code 1 and `TEST A FAIL`, and
+none created the marker. No import was started during this recovery.
+
+The operational run gate is clear because the last run is classified
+`HISTORICAL_CONCLUDED`; the runner's official `Preflight` returned `PASS`
+without launching an import. The next development operation, in a separately
+authorized batch, is structural investigation of `_OhFineThenText` before
+any mapping edit or import.
+
+`_TrainerSentOutText` still lacks explicit `result=ok`; the semantic
+inconsistency of `_LoreleiEndBattleText` remains unresolved. No other mapping,
+runner, parser, test, or harness file was changed in this batch.
