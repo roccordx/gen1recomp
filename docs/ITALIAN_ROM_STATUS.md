@@ -1,6 +1,6 @@
 # Italian ROM support status
 
-**Updated:** 2026-10-18<br>
+**Updated:** 2026-10-19<br>
 **Branch:** `feature/italian-rom-support`<br>
 **Base commit:** `cef04466343377836e973257175bf1ebb99c81d1`
 
@@ -995,3 +995,271 @@ explicit `result=ok`. `_LoreleiEndBattleText` remains the unresolved semantic
 audit issue described above; neither mapping was changed in this batch. Next
 operation: trace the Italian Mr. Psychic gift-success script and wrapper for
 the TM29 receipt text, then verify any demonstrated correction in a new batch.
+
+### Runner screenshot isolation verified (19 October 2026)
+
+`PrintWindow` now runs only in the disposable child
+`tools/capture_import_window.ps1`. The supervisor in
+`tools/run_italian_import.ps1` waits at most 5 seconds for that child and records
+`SCREENSHOT_TIMEOUT` if it does not finish. It terminates only the child it
+created, using its process object; it never applies this timeout or termination
+to LÖVE. Helper cleanup waits are also bounded. Screenshot filenames are unique
+and opened with `CreateNew`; stdout, stderr and original import results remain
+untouched. The helper does not send window input or close windows.
+
+Before capture and again before `WM_CLOSE`, the runner requires a recorded error
+and matching machine, PID, start time, executable path and session. It rechecks
+the selected visible handle and window class after the capture attempt, and the
+native close function checks handle ownership immediately before posting
+`WM_CLOSE`. Screenshot failure does not prevent that controlled close. Existing
+single-import mutex and file lock protections are unchanged. The helper must
+accompany the runner when moving to another workstation; preflight checks its
+presence.
+
+Validation commands:
+
+```powershell
+pwsh -NoProfile -File .\tools\run_italian_import.ps1 -Action SelfTest
+pwsh -NoProfile -File .\tests\test_import_window_capture.ps1
+pwsh -NoProfile -File .\tools\run_italian_import.ps1 -Action Preflight
+```
+
+PowerShell syntax checks, `git diff --check`, existing SelfTest (including
+cross-process exclusion), and preflight passed. The GUI test created only its
+own disposable windows. A real `PrintWindow` capture produced a valid PNG. A
+first attempt to provoke a native hang by suspending the fixture's message
+pump still produced a screenshot; it was not treated as proof of a timeout.
+The deterministic test therefore substitutes a deliberately non-returning
+capture child at the same supervisor boundary. It recorded
+`SCREENSHOT_TIMEOUT`, returned in **5.11 seconds**, confirmed the helper had
+exited while both fixture processes remained alive, refused a foreign PID's
+window and a close without recorded LÖVE/error identity, and preserved hashes
+of fixture stdout, stderr and exit code. Both fixture windows then closed
+normally. This proves the supervisor timeout path; it does not claim that a
+native `PrintWindow` hang was reproduced. Test artifacts are preserved under
+`C:\gen1recomp\AItest\ROM-TestLogs\runner-selftests\capture-1fb7ccf18ce144f8adff63269bca75bd`.
+
+Exactly one ordinary Italian import was then run without manifest changes:
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261019-134933-5431b356`.
+It reached `FINISHED`, exit code `1`, `TEST_A=FAIL`, `ERROR_PHASE=ROM_EXTRACTION`,
+with `rom-cache.complete` absent. The screenshot helper (PID `21156`) exited
+with code `0`; the runner recorded `SCREENSHOT_RESULT=CAPTURED` and
+`ERROR_WINDOW_WM_CLOSE_POSTED=True` for LÖVE PID `17588`, handle `10225908`.
+LÖVE and worker PID `12408` exited without manual window interaction. The first
+error remains `_MrPsychicsHouseMrPsychicReceivedTM29Text: unsupported text
+command $AD` at `28:652A`. Batch 12 stays complete at 10/10; batch 13 has not
+started. `_TrainerSentOutText` and the Lorelei semantic audit remain unresolved.
+
+Remaining limits: absent/ambiguous windows or unverified process identity still
+prevent automatic close. A window that ignores `WM_CLOSE` is left running with
+heartbeat and the import lock held; no import timeout or forced LÖVE termination
+was added. Computer Use screenshots are not required by this runner.
+
+### Batch 13 in progress (19 October 2026)
+
+The runner, screenshot helper and GUI self-test changes above are preserved.
+Only the Italian manifest and this status document are being edited.
+
+| Symbol | Previous | Italian target | Evidence and result |
+| --- | --- | --- | --- |
+| `_MrPsychicsHouseMrPsychicReceivedTM29Text` | `[40, 25898]` | `[40, 26097]` (`28:65F1`, `0xA25F1`) | Header `07:5E31` selects table `07:5E40` and object data `07:5E8B`; NPC record `07:5E97` has text ID 1, selecting script `07:5E42`. GiveItem (`00:3E46`) receives item `$E5`, quantity 1; its success branch loads wrapper `07:5E7B`, `17 F1 65 28 0B 50`. Target uses one `01 50 CF` with existing `wStringBuffer` item-name metadata; ends `$50 $50` at `28:6604–6605`, before explanation at `6606`; no exact collision. `result=ok` in `italian-20261019-140202-db7962bd`, `FINISHED`, exit 1. |
+| `_MrPsychicsHouseMrPsychicTM29ExplanationText` | `[40, 25918]` | `[40, 26118]` (`28:6606`, `0xA2606`) | Same NPC script checks `$D7C2` bit 0; the already-received branch at `07:5E6D` loads wrapper `07:5E81`, `17 06 66 28 50`. Literal explanation ends `$57` at `28:6644`, before no-room text at `6645`; no dynamics or exact collision. `result=ok` in `italian-20261019-140254-09d4bf50`, `FINISHED`, exit 1. |
+
+The second run held its error window open while stdout stopped mid-line. A
+bounded helper capture identified the actual error on the exact SDL window
+(LÖVE PID `12096`, handle `1050454`). The screenshot and a separate visual
+evidence entry were preserved before posting `WM_CLOSE` via the runner's native
+ownership-checking function. The original stdout was not edited. After normal
+exit, complete stdout confirmed `_MtMoonPokecenterMagikarpSalesmanIGotADealText:
+unsupported text command $B3` at `22:6976`, `TEST_A=FAIL`, marker absent.
+
+Third mapping verified: `_MtMoonPokecenterMagikarpSalesmanIGotADealText`
+`[34, 26998]` -> `[34, 27638]` (`22:6BF6`, `0x8ABF6`). Header `12:52C5`
+points to table `12:52D7` and object data `12:5378`. The salesman record at
+`12:5396` has text ID 4; table entry `12:52DD` is `EE 52`. Script `12:52EE`
+checks the purchase event and loads wrapper `12:535E` for the initial offer,
+before the yes/no choice and money check. Wrapper `17 F6 6B 22 50` leads to
+literal offer text ending `$57` at `22:6C67`, immediately before the refusal
+text at `6C68`. No dynamic commands or exact collision. Verification run:
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261019-144331-957ef8b2`.
+The run finished with exit 1, `result=ok`, `TEST_A=FAIL`, marker absent;
+the next error was `_Museum1FScientist1ThankYouText`, `$B1` at `25:6572`.
+
+Fourth mapping: `_Museum1FScientist1ThankYouText` `[37, 25970]` ->
+`[37, 26754]` (`25:6882`, `0x96882`). Header `17:40EB` contains table
+`17:412B` and object pointer `17:42C1`. First NPC (text ID 1) selects
+`17:4135`. Its ticket-purchase path checks money `$00 $00 $50`, then loads
+`HL=$4224` and prints before setting `$D759` bit 0 and subtracting the price.
+Wrapper `17:4224` is `17 82 68 25 50`. Literal payment acknowledgement
+starts `$00`, ends `$57` at `25:689A`; previous text ends `$58` at `6881`,
+next starts `$00` at `689B`. No dynamics or collision. `result=ok` in
+`italian-20261019-144638-c1d7028f`, FINISHED, exit 1, TEST_A FAIL, marker absent.
+The subsequent Old Amber error was buffered mid-line; bounded capture saved
+`love-error-b2a258dbb90d4c7bbd24940b4d368726.png`, showing `$A2`. PID/start/path/
+session and SDL handle `1247062` were rechecked before native `WM_CLOSE` for
+LÖVE PID `12912`. Final stdout confirmed the error without editing stdout.
+
+Fifth mapping verified: `_Museum1FScientist2ReceivedOldAmberText`
+`[37, 26512]` -> `[37, 27318]` (`25:6AB6`, `0x96AB6`). Same header, third
+NPC/text ID 3 selects script `17:4256`. It tests `$D759` bit 1, calls GiveItem
+with `BC=$011F` (one Old Amber), branches on carry, sets the event and hides
+the object on success, then loads wrapper `17:4293`: `17 B6 6A 25 0B 50`.
+The target contains PLAYER plus a literal item name, no RAM substitutions;
+ends `$50 $50` at `25:6ACF–6AD0`, before follow-up at `6AD1`. Previous text
+ends `$58` at `6AB5`; no exact collision. Run:
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261019-144843-8d2cd143`.
+This run reached FINISHED, exit 1, `result=ok`, TEST_A FAIL, marker absent.
+Its buffered stdout was recovered after bounded capture of the verified SDL
+window and native WM_CLOSE (PID `16304`, handle `1508822`); screenshot
+`love-error-368dc2951eae4fdabb2fa77a314124e8.png` and original logs remain.
+Next error: `_Museum1FScientist3Text`, `$A3` at `25:67E8`.
+
+Sixth mapping verified: `_Museum1FScientist3Text`
+`[37, 26600]` -> `[37, 27413]` (`25:6B15`, `0x96B15`). Object record
+`17:42EB` is `20 08 15 FF FF 04`; ID 4 selects table entry `17:4131`,
+`A3 42`. Script `17:42A3` is `08 21 AD 42 CD 61 3C C3 D7 24`, loading
+wrapper `17:42AD`, `17 15 6B 25 50`. Literal description of the two fossils
+starts `$00`, ends `$57` at `25:6B55`; previous terminator at `6B14`, next
+stream `$00` at `6B56`. No RAM commands or collision. Run:
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261019-145035-fd2b975d`.
+Result: FINISHED, exit 1, `result=ok`, TEST_A FAIL, marker absent. Buffered
+stdout was recovered after capture `love-error-36dcb4fedb7f45f78f20a3bba34cf07d.png`
+and verified native WM_CLOSE (PID `20380`, SDL handle `1967246`). Next error:
+`_Museum2FGrampsText`, `$A0` at `25:6869`.
+
+Seventh mapping verified: `_Museum2FGrampsText`
+`[37, 26729]` -> `[37, 27554]` (`25:6BA2`, `0x96BA2`). Header `17:430B`
+is `0A 04 07 48 40 1A 43 17 43 00 4B 43`; table `17:431A`, objects
+`17:434B`. Second object at `17:435F` is `25 09 04 FF D0 02` (x0,y5,
+text ID 2), matching the upstream Gramps object. Entry `17:431C` is `2D 43`;
+wrapper `17:432D` is `17 A2 6B 25 50`. Literal moon-landing recollection
+starts `$00`, ends `$57` at `25:6BFC`; boundaries `6BA1=$57`, `6BFD=$00`.
+No dynamics or exact collision. Run:
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261019-145219-d3be3c07`.
+Result: FINISHED, exit 1, `result=ok`, TEST_A FAIL, marker absent. Screenshot
+`love-error-516ee9214bac480aa3ca71e13886ca74.png` preserved the next error before
+verified WM_CLOSE (PID `17688`, SDL handle `1442660`); final stdout confirmed
+`_Museum2FMoonStoneSignText: unsupported text command $80` at `25:694B`.
+
+Eighth mapping verified: `_Museum2FMoonStoneSignText`
+`[37, 26955]` -> `[37, 27811]` (`25:6CA3`, `0x96CA3`). Same Museum2F
+header/table; object data declares two BG records. Second record `17:4355`
+is `05 02 07` (x2,y5, text ID 7), matching the upstream Moon Stone sign.
+Table entry `17:4326` is `46 43`; wrapper `17:4346` is `17 A3 6C 25 50`.
+Literal meteorite sign starts `$00`, ends `$57` at `25:6CD1`, bounded by
+`6CA2=$57` and `6CD2=$00`. No dynamics or collision. Run:
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261019-145359-2fe0a192`.
+This run reached `FINISHED`, exit code 1, `TEST_A=FAIL`, marker absent.
+The original stdout records `_Museum2FMoonStoneSignText: result=ok` at
+`25:6CA3`. Its next error was
+`_NameRatersHouseNameRaterATrulyImpeccableNameText: unsupported text command
+$A3` at `26:646B`. The test-owned SDL window (LÖVE PID `13440`, handle
+`1247160`) was captured as `love-error-155f3b70ee65429d87e5d399a6f548b5.png`
+and closed via verified `WM_CLOSE` before the worker recorded its exit.
+
+Ninth mapping structurally demonstrated, **not import-verified**:
+`_NameRatersHouseNameRaterATrulyImpeccableNameText` `[38, 25707]` ->
+`[38, 25757]` (`26:649D`, `0x9A49D`). Header `07:5A07` selects text table
+`07:5A55` and object data `07:5AD7`; the NPC's text ID 1 selects script
+`07:5A57`. After the party menu, the script loads the selected Pokémon name,
+checks original trainer identity via `07:5A21`, and on mismatch loads wrapper
+`07:5AD2`, `17 9D 64 26 50`. The Italian target has two `01 6D CD`
+commands reading `$CD6D`; the two existing `{RAM:wNameBuffer}` metadata
+entries remain unchanged. The text ends with `$57` at `26:64CA`, bounded by
+the preceding `$57` at `649C` and the following stream at `64CB`; no exact
+collision was found.
+
+The one verification run is
+`C:\gen1recomp\AItest\ROM-TestLogs\italian-20261019-145557-a2ed50f1`.
+Its original `status.txt` still says `RUNNING`, with worker PID `12500`,
+LÖVE PID `21072` and last heartbeat on 19 October at 15:38:59 CEST.
+The last stdout bytes are an incomplete line during
+`_Museum1FScientist2TakeThisToAPokemonLabText`; stderr is empty. No
+`exit-code.txt`, `FINISHED`, `TEST A` outcome, or
+`_NameRatersHouseNameRaterATrulyImpeccableNameText: result=ok` exists.
+On 20 October, both recorded PIDs were absent from `Get-Process`; no relevant
+Application log event was found in the run interval. The runner classified
+the unchanged local record `LOCAL_OR_UNKNOWN_UNRESOLVED` and observed
+`RECORDED_RUNNING_PROCESSES_NOT_VISIBLE_TO_THIS_QUERY`. Its supported
+`RegisterTransferred` action applies only to legacy records lacking machine
+identity. The local record had no supported reconciliation action at the time
+of that audit. `rom-cache.complete` remains absent.
+
+Current batch 13 total: **8/10 verified**. `_TrainerSentOutText` remains
+unverified; the `_LoreleiEndBattleText` semantic issue remains open. The next
+operation is to verify the ninth mapping with a single import after confirming
+the run gate and preflight again.
+
+### Local interrupted-run recovery (20 October 2026)
+
+`tools/run_italian_import.ps1` now supports `-Action ReconcileLocal -RunId`.
+It checks the run ID and current machine identity, complete recorded PID/start
+time/executable/session fields for both worker and LÖVE, current process
+identity, the full local process list, and the exclusive import lock. It
+requires neither recorded process to be active or uncertain, and rejects
+another import or an inaccessible process list. It writes a separate,
+atomically created `reconciliation-<run-id>-<machine-id>.json` containing
+`OriginalState=RUNNING`, `OperationalState=INACTIVE`, and
+`DiagnosticOutcome=INTERRUPTED_UNVERIFIED`, together with hashes of the three
+original logs. The original status, stdout, stderr and absent exit code are
+unchanged. A repeated reconciliation validates the same note and is
+idempotent. A stale or altered note cannot release the import gate.
+
+The `Start`, `Preflight`, worker and reconciliation actions now share the
+named mutex and exclusive lock file. After the launcher releases the gate,
+the worker checks all other run records again under that gate before starting
+LÖVE. The worker excludes only its own run after verifying its recorded
+identity; a concurrent start or uncertain record blocks the launch.
+
+PowerShell syntax, runner `SelfTest`, and the new fixture tests passed. The
+fixture tests covered interrupted and active runs, reused PID, incomplete
+identity, another lock holder, repeated and concurrent reconciliation,
+verified exclusion of the worker's own run, and unchanged original log hashes.
+No LÖVE import was launched by these tests.
+
+The 19 October run `italian-20261019-145557-a2ed50f1` was reconciled through
+the new action. Its separate note is under
+`C:\gen1recomp\AItest\ROM-TestLogs\reconciliation-italian-20261019-145557-a2ed50f1-D22CF422726A8432C3F3BDE043D7025B6E6A3F679697E6D86EFB316B75A66CEC.json`.
+Both recorded processes were absent; the note's original-log hashes matched
+the unchanged files. `Status` now reports `HISTORICAL_INTERRUPTED_LOCAL` while
+showing the original `RUNNING`, empty exit code and no TEST A result.
+`Preflight` returned `PASS` on this computer without starting LÖVE. The
+ninth Name Rater mapping remains structurally demonstrated but has no
+`result=ok`; batch 13 remains **8/10 verified**, marker absent. Before the
+next import, repeat `Preflight`; do not treat this reconciliation as an
+import result.
+
+### Batch 13 completion (20 October 2026)
+
+The ninth mapping, `_NameRatersHouseNameRaterATrulyImpeccableNameText`
+`[38, 25707]` -> `[38, 25757]`, returned `result=ok` at `26:649D` in
+`italian-20261020-130358-97bc1581`. That run finished with exit code 1 and
+`TEST A FAIL`; the next error was
+`_NameRatersHouseNameRaterGiveItANiceNameText: unsupported text command $A8`
+at the old address `26:637F`. The cache marker remained absent.
+
+The tenth mapping, `_NameRatersHouseNameRaterGiveItANiceNameText`
+`[38, 25471]` -> `[38, 25565]` (`26:63DD`, file offset `0x9A3DD`), follows
+the same Name Rater NPC with text ID 1 and script `07:5A57`. The renameable
+Pokémon branch at `07:5A8F` loads wrapper `07:5ABE`, whose bytes are
+`17 DD 63 26 50` (`TX_FAR 26:63DD`). The old address `26:637F` contains
+glyph `$A8` within the earlier Name Rater text. The Italian target begins
+`01 6D CD 00`, contains one dynamic read of `$CD6D`, and decodes as
+`{RAM:wNameBuffer}? / Non è male! / Ti suggerisco un altro soprannome? /
+Sei d'accordo?`. The existing single `{RAM:wNameBuffer}` substitution matches
+that command and the caller's selected Pokémon name. The stream ends with
+`$57` at `26:6420`, preceded by the prior stream's `$58` at `26:63DC` and
+followed by another stream at `26:6421`. There is no exact manifest collision.
+
+After JSON validation, `git diff --check` and runner preflight passed, the
+single verification run `italian-20261020-133215-9b2a793c` finished with
+exit code 1. Its original stdout records
+`_NameRatersHouseNameRaterGiveItANiceNameText: result=ok` at `26:63DD`, then
+`_NoCyclingAllowedHereText: unsupported text command $55` at `29:6B34`.
+`TEST A FAIL` was recorded and `rom-cache.complete` is absent.
+
+**Batch 13: 10/10 mapping corrections verified with `result=ok`.** The next
+mapping to investigate is `_NoCyclingAllowedHereText`; no correction has been
+made to it. `_TrainerSentOutText` still lacks explicit `result=ok` evidence,
+and the `_LoreleiEndBattleText` semantic mismatch remains open. Preserve the
+local runner and helper/test changes during the next checkpoint.
